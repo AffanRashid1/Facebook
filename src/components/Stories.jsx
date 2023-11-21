@@ -105,7 +105,10 @@ export default function Stories() {
                   </Fab>
                 </div>
                 <p>
-                  <small id="create-story-text" style={{ color: "gray" }}>
+                  <small
+                    id="create-story-text"
+                    style={{ color: "gray", textAlign: "center" }}
+                  >
                     Create story
                   </small>
                 </p>

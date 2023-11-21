@@ -77,6 +77,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const handleLogout = async () => {
     try {
+      axios.defaults.withCredentials = true;
       let response = await axios.get("http://localhost:5000/users/logout");
       toast.success(response?.data?.message);
       dispatch(setInitialLogged());
@@ -118,7 +119,12 @@ const Navbar = () => {
           </IconsBorder>
 
           <Avatar
-            sx={{ width: "35px", height: "35px", border: "2px solid transparent", outline: "2px solid grey" }}
+            sx={{
+              width: "35px",
+              height: "35px",
+              border: "2px solid transparent",
+              outline: "2px solid grey",
+            }}
             src={user?.profile_photo}
             onClick={(e) => setOpen(true)}
           ></Avatar>

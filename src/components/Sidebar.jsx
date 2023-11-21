@@ -7,7 +7,6 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { Divider } from "@mui/material";
 import { useSelector } from "react-redux";
-
 import {
   Box,
   List,
@@ -41,22 +40,27 @@ const Sidebar = ({ setMode, mode }) => {
               <ListItemText primary="Home" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <Avatar
-                  sx={{
-                    width: "30px",
-                    height: "30px",
-                    border: "2px solid transparent",
-                    outline: "2px solid grey",
-                  }}
-                  src={user.profile_photo}
-                ></Avatar>
-              </ListItemIcon>
-              <ListItemText primary={user?.name} />
-            </ListItemButton>
-          </ListItem>
+          <Link
+            to="/profile"
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Avatar
+                    sx={{
+                      width: "30px",
+                      height: "30px",
+                      border: "2px solid transparent",
+                      outline: "2px solid grey",
+                    }}
+                    src={user.profile_photo}
+                  ></Avatar>
+                </ListItemIcon>
+                <ListItemText primary={user?.name} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
           <Divider variant="fullWidth" />
           <ListItem disablePadding>
             <ListItemButton component="a" href="#video">

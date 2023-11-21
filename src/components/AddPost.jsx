@@ -26,7 +26,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import CloseIcon from "@mui/icons-material/Close";
 import { Close } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -56,7 +56,10 @@ const UserBox = styled(Box)(({ theme }) => ({
 }));
 
 const AddPost = () => {
+  const [open, setOpen] = useState(false);
+  const user = useSelector((state) => state.appReducer.user);
   const [postElem, setpostElem] = useState("");
+  const dispatch = useDispatch();
 
   const createPost = async () => {
     if (postElem == "") {
@@ -68,20 +71,18 @@ const AddPost = () => {
           caption: postElem,
         });
         setpostElem("");
+        setOpen(false);
         toast.success("Added Succesfully");
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   };
 
-  const [open, setOpen] = useState(false);
-  const user = useSelector((state) => state.appReducer.user);
-
   return (
     <>
       <Box mb={3}>
-        <Card pb={5} pt={5} sx={{ padding: "20px 0" }}>
+        <Card pb={5} pt={5} sx={{ padding: "10px 0" }}>
           <Search>
             <Avatar
               sx={{ width: "45px", height: "45px", marginRight: "15px" }}
@@ -89,25 +90,28 @@ const AddPost = () => {
             ></Avatar>
             <InputBase
               placeholder={`Whats on your mind ${user?.name}`}
-              sx={{ width: { xs: "50%", md: "100%" }, color: "black" }}
+              sx={{
+                width: { xs: "50%", md: "100%", userSelect: "none" },
+                color: "black",
+              }}
+              readOnly
               onClick={(e) => setOpen(true)}
             />
           </Search>
           <Divider variant="middle" />
           <Box
             sx={{
-              maxWidth: "80%",
+              maxWidth: "100%",
               display: "flex",
               justifyContent: "space-around",
-              margin: "auto",
-              marginTop: "20px",
+              margin: "10px 0",
             }}
           >
             <IconButton
               aria-label="share"
               sx={{ display: "flex", alignItems: "center" }}
             >
-              <VideoCallIcon sx={{ color: "red", fontSize: "35px" }} />
+              <VideoCallIcon sx={{ color: "red", fontSize: "30px" }} />
               <Typography
                 variant="small"
                 sx={{
@@ -123,7 +127,7 @@ const AddPost = () => {
               aria-label="share"
               sx={{ display: "flex", alignItems: "center" }}
             >
-              <CollectionsIcon sx={{ color: "green", fontSize: "30px" }} />
+              <CollectionsIcon sx={{ color: "green", fontSize: "25px" }} />
               <Typography
                 variant="small"
                 sx={{
@@ -139,7 +143,7 @@ const AddPost = () => {
               aria-label="share"
               sx={{ display: "flex", alignItems: "center" }}
             >
-              <TagFacesIcon sx={{ color: "red", fontSize: "30px" }} />
+              <TagFacesIcon sx={{ color: "red", fontSize: "25px" }} />
               <Typography
                 variant="small"
                 sx={{
@@ -162,8 +166,9 @@ const AddPost = () => {
         aria-describedby="modal-modal-description"
       >
         <Box
-          width={400}
-          height={280}
+          sx={{
+            width: { sm: 400, xs: "60vw" },
+          }}
           bgcolor={"background.default"}
           color={"text.primary"}
           borderRadius={5}
@@ -209,14 +214,20 @@ const AddPost = () => {
               setpostElem(e.target.value);
             }}
           />
-          <Stack direction={"row"} gap={6} mt={2} mb={3}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              margin: "15px 0",
+            }}
+          >
             <CollectionsIcon color="success" />
             <PersonAddAltIcon color="primary" />
-            <TagFacesIcon color="success" />
-            <LocationOnIcon color="error" />
+            {/* <TagFacesIcon color="success" /> */}
+            {/* <LocationOnIcon color="error" /> */}
             <GifBoxIcon color="primary" />
             <MoreHorizIcon color="error" />
-          </Stack>
+          </Box>
           <ButtonGroup
             fullWidth
             variant="contained"

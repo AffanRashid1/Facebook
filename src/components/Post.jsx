@@ -17,6 +17,7 @@ import Checkbox from "@mui/material/Checkbox";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { useDispatch, useSelector } from "react-redux";
 import { addLike, removeLike } from "../store/store";
+import axios from "axios";
 
 const Post = ({
   image,
@@ -32,14 +33,18 @@ const Post = ({
   // const posts = useSelector((state) => state.post.posts);
   const dispatch = useDispatch();
 
-  const handleLikeClick = (postIndex, liked) => {
-    if (liked) {
-      dispatch(removeLike(postIndex));
-    } else {
-      dispatch(addLike(postIndex));
+  const handleLikeClick = async (postId, liked) => {
+    try {
+      await axios.post(`http://localhost:5000/posts/like/${postId}`);
+    } catch (error) {
+      console.log(error);
     }
+    // if (liked) {
+    //   dispatch(removeLike(postIndex));
+    // } else {
+    //   dispatch(addLike(postIndex));
+    // }
   };
-
   return (
     <>
       <Card key={id} sx={{ marginBottom: "20px" }}>
@@ -54,17 +59,12 @@ const Post = ({
           title={name}
           subheader={date}
         />
-        <CardMedia
-          component="img"
-          height="auto%"
-          image={image}
-          alt="Image"
-        />
         <CardContent>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="black">
             {description}
           </Typography>
         </CardContent>
+        <CardMedia component="img" height="auto%" image={image} alt="Image" />
         {/* Buttons */}
         <CardActions
           disableSpacing
