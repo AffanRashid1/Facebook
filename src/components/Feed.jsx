@@ -19,9 +19,11 @@ const Feed = () => {
       console.log(err);
     }
   };
+
   useEffect(() => {
     feedPosts();
   }, []);
+
   return (
     <Box flex={3} p={2} sx={{ paddingTop: "84px" }}>
       <Stories />
@@ -33,8 +35,8 @@ const Feed = () => {
             image={profile}
             date={post.createdAt}
             description={post.caption}
-            name={user?.name}
-            icon={user?.profile_photo}
+            name={post?.owner?.name}
+            icon={post?.owner?.profile_photo}
             id={post._id}
             shareCount="32"
             likes={post.likes.length}

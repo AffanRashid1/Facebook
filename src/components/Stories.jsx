@@ -1,13 +1,16 @@
-import { Fab, Stack } from "@mui/material";
+import { Box, Fab, Stack } from "@mui/material";
 import { useRef, useState, useEffect } from "react";
 import arrow from "../assets/arrow.png";
 import AddIcon from "@mui/icons-material/Add";
+import Story from "./Story";
+import { useSelector } from "react-redux";
 
 export default function Stories() {
   const [isScrollEnd, setIsScrollEnd] = useState(false);
   const container = useRef();
   const btnNext = useRef();
   const btnPrev = useRef();
+  const user = useSelector((state) => state.appReducer.user);
 
   useEffect(() => {
     //
@@ -96,9 +99,19 @@ export default function Stories() {
             <div className="stories" style={{ border: "1px solid gray" }}>
               <Stack
                 direction={"column"}
-                className=" story create-story"
+                className="story"
+                style={{
+                  backgroundImage: `url(${user.profile_photo})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  width: "100%",
+                  height: "75%",
+                  borderRadius: "0",
+                  position: "relative",
+                  zIndex: "2",
+                }}
               ></Stack>
-              <Stack direction={"row"} className="create-container">
+              <Box>
                 <div className="plus-story top-icon">
                   <Fab size="small" color="primary" aria-label="add">
                     <AddIcon />
@@ -107,55 +120,23 @@ export default function Stories() {
                 <p>
                   <small
                     id="create-story-text"
-                    style={{ color: "gray", textAlign: "center" }}
+                    style={{
+                      position: "absolute",
+                      top: "90%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      zIndex: "2",
+                    }}
                   >
                     Create story
                   </small>
                 </p>
-              </Stack>
+              </Box>
             </div>
-            <div className="stories">
-              <div className="flex-column story story-1"></div>
-              <p>
-                <small>Fireship io</small>
-              </p>
-            </div>
-            <div className="stories">
-              <div className="flex-column story story-2"></div>
-              <p>
-                <small>Pham Hanni</small>
-              </p>
-            </div>
-            <div className="stories">
-              <div className="flex-column story story-3"></div>
-              <p>
-                <small>Kim Minji</small>
-              </p>
-            </div>
-            <div className="stories">
-              <div className="flex-column story story-4"></div>
-              <p>
-                <small>Kang Haerin</small>
-              </p>
-            </div>
-            <div className="stories">
-              <div className="flex-column story story-5"></div>
-              <p>
-                <small>Mark Zuckerberg</small>
-              </p>
-            </div>
-            <div className="stories">
-              <div className="flex-column story story-6"></div>
-              <p>
-                <small>Jennie Kim</small>
-              </p>
-            </div>
-            <div className="stories">
-              <div className="flex-column story story-7"></div>
-              <p>
-                <small>Bae Suzy</small>
-              </p>
-            </div>
+            <Story
+              image={"https://random.imagecdn.app/500/156"}
+              name={"IINV"}
+            />
           </Stack>
           <div
             className="top-icon hover2 btn-prev"

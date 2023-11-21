@@ -55,11 +55,10 @@ const UserBox = styled(Box)(({ theme }) => ({
   marginBottom: "20px",
 }));
 
-const AddPost = () => {
+const AddPost = ({ post }) => {
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.appReducer.user);
   const [postElem, setpostElem] = useState("");
-  const dispatch = useDispatch();
 
   const createPost = async () => {
     if (postElem == "") {
@@ -72,6 +71,7 @@ const AddPost = () => {
         });
         setpostElem("");
         setOpen(false);
+        post();
         toast.success("Added Succesfully");
       } catch (error) {
         console.error(error);
@@ -164,6 +164,7 @@ const AddPost = () => {
         onClose={(e) => setOpen(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        disableAutoFocus={true}
       >
         <Box
           sx={{

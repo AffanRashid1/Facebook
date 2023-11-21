@@ -6,6 +6,10 @@ import {
   CardMedia,
   Typography,
   Avatar,
+  Modal,
+  Box,
+  ButtonGroup,
+  Button,
 } from "@mui/material";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -18,6 +22,8 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { useDispatch, useSelector } from "react-redux";
 import { addLike, removeLike } from "../store/store";
 import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 const Post = ({
   image,
@@ -29,13 +35,16 @@ const Post = ({
   shareCount,
   likes,
   comment,
+  updateData,
 }) => {
   // const posts = useSelector((state) => state.post.posts);
   const dispatch = useDispatch();
+  const [modal, setmodal] = useState(false);
 
   const handleLikeClick = async (postId, liked) => {
     try {
       await axios.post(`http://localhost:5000/posts/like/${postId}`);
+      updateData();
     } catch (error) {
       console.log(error);
     }
@@ -45,13 +54,32 @@ const Post = ({
     //   dispatch(addLike(postIndex));
     // }
   };
+
+  const deletepost = async () => {
+    try {
+      let response = await axios.delete(
+        `http://localhost:5000/posts/delete-post/${id}`
+      );
+      setmodal(false);
+      updateData();
+      toast.success(response?.data?.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const postSetting = () => {};
   return (
     <>
       <Card key={id} sx={{ marginBottom: "20px" }}>
         <CardHeader
           avatar={<Avatar sx={{ bgcolor: "red" }} src={icon} />}
           action={
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                setmodal(true);
+              }}
+            >
               <MoreHorizIcon />
               {/* <CloseIcon /> */}
             </IconButton>
@@ -75,7 +103,7 @@ const Post = ({
             onClick={() => handleLikeClick(id, likes)}
           >
             <Checkbox
-              label="236 likes"
+              // label="236 likes"
               icon={<ThumbUpOffAltIcon />}
               checkedIcon={<ThumbUpAltIcon />}
             />
@@ -106,6 +134,29 @@ const Post = ({
           </IconButton>
         </CardActions>
       </Card>
+      <Modal
+        open={modal}
+        onClose={() => {
+          setmodal(false);
+        }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            borderRadius: "8px",
+            boxShadow: 24,
+            p: 4,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Button onClick={deletepost}>Delete</Button>
+        </Box>
+      </Modal>
     </>
   );
 };
