@@ -21,7 +21,7 @@ import {
 import avatar from "../assets/avatar.jpg";
 import { Link } from "react-router-dom";
 
-const Sidebar = ({ setMode, mode }) => {
+const Sidebar = () => {
   const user = useSelector((state) => state.appReducer.user);
 
   return (
@@ -119,9 +119,9 @@ const Sidebar = ({ setMode, mode }) => {
               <ListItemIcon>
                 <Brightness4Icon sx={{ color: "#999", fontSize: "25px" }} />
               </ListItemIcon>
-              <Switch
+              {/* <Switch
                 onChange={(e) => setMode(mode === "light" ? "dark" : "light")}
-              />
+              /> */}
             </ListItemButton>
           </ListItem>
         </List>

@@ -44,8 +44,6 @@ const Profile = () => {
             alignItems: "center",
             gap: { xs: "10px", sm: "30px" },
             flexDirection: { xs: "column", sm: "row" },
-            // width: "200px",
-            // height: "200px",
             userSelect: "none",
           }}
         >
@@ -77,27 +75,30 @@ const Profile = () => {
           <AddPost post={() => myPosts()} />
         </Box>
         <Box>
-          {userPost
-            .map((post, i) => {
-              return (
-                <Post
-                  key={i}
-                  image={
-                    "https://imgs.search.brave.com/hC7u8Wt_rZAjDj0HSxS9T6h1NM8PAYHmLX2lg8UYmok/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC9yVXVrb3l4/LmpwZw"
-                  }
-                  date={post.createdAt}
-                  description={post.caption}
-                  name={user?.name}
-                  icon={user?.profile_photo}
-                  id={post._id}
-                  shareCount="32"
-                  likes={post.likes.length}
-                  comment="2"
-                  updateData={() => myPosts()}
-                />
-              );
-            })
-            .reverse()}
+          {userPost?.length == undefined || 0 ? (
+            <Typography textAlign={"center"}>No Post Yet</Typography>
+          ) : (
+            userPost
+              .map((post, i) => {
+                return (
+                  <Post
+                    key={i}
+                    image={post.imageUrl}
+                    date={post.createdAt}
+                    description={post.caption}
+                    name={user?.name}
+                    icon={user?.profile_photo}
+                    id={post._id}
+                    shareCount="32"
+                    likes={post.likes.length}
+                    comment="2"
+                    updateData={() => myPosts()}
+                    data={post}
+                  />
+                );
+              })
+              .reverse()
+          )}
         </Box>
       </Container>
     </>

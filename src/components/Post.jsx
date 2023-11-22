@@ -36,6 +36,7 @@ const Post = ({
   likes,
   comment,
   updateData,
+  data,
 }) => {
   // const posts = useSelector((state) => state.post.posts);
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ const Post = ({
     } catch (error) {
       console.log(error);
     }
+
     // if (liked) {
     //   dispatch(removeLike(postIndex));
     // } else {
@@ -98,19 +100,21 @@ const Post = ({
           disableSpacing
           sx={{ display: "flex", justifyContent: "space-around" }}
         >
-          <IconButton
+          <Button
             aria-label="add to favorites"
             onClick={() => handleLikeClick(id, likes)}
+            startIcon={<ThumbUpOffAltIcon />}
           >
-            <Checkbox
+            {/* <Checkbox
               // label="236 likes"
               icon={<ThumbUpOffAltIcon />}
               checkedIcon={<ThumbUpAltIcon />}
-            />
+            /> */}
             <Typography variant="small" sx={{ fontSize: "16px" }}>
               {likes} Likes
             </Typography>
-          </IconButton>
+          </Button>
+
           <IconButton
             aria-label="share"
             sx={{ display: "flex", alignItems: "center" }}

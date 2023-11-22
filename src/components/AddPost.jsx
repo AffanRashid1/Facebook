@@ -12,6 +12,7 @@ import {
   Stack,
   ButtonGroup,
   Button,
+  Input,
 } from "@mui/material";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import CollectionsIcon from "@mui/icons-material/Collections";
@@ -58,20 +59,34 @@ const UserBox = styled(Box)(({ theme }) => ({
 const AddPost = ({ post }) => {
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.appReducer.user);
-  const [postElem, setpostElem] = useState("");
+  const [caption, setCaption] = useState("");
+  const [file, setFile] = useState();
 
-  const createPost = async () => {
-    if (postElem == "") {
+  const createPost = async (e) => {
+    e.preventDefault();
+
+    if (caption == "") {
       toast.error("Must Fill The Field");
     } else {
       try {
+        let formData = new FormData();
+        formData.append("imageUrl", file);
+        formData.append("caption", caption);
+
         axios.defaults.withCredentials = true;
-        await axios.post(`http://localhost:5000/posts/create-post`, {
-          caption: postElem,
-        });
-        setpostElem("");
+        let res = await axios.post(
+          `http://localhost:5000/posts/create-post`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        setCaption("");
         setOpen(false);
         post();
+        console.log(file);
+        console.log(res);
         toast.success("Added Succesfully");
       } catch (error) {
         console.error(error);
@@ -81,164 +96,185 @@ const AddPost = ({ post }) => {
 
   return (
     <>
-      <Box mb={3}>
-        <Card pb={5} pt={5} sx={{ padding: "10px 0" }}>
-          <Search>
-            <Avatar
-              sx={{ width: "45px", height: "45px", marginRight: "15px" }}
-              src={user.profile_photo}
-            ></Avatar>
-            <InputBase
-              placeholder={`Whats on your mind ${user?.name}`}
+      <form>
+        <Box mb={3}>
+          <Card pb={5} pt={5} sx={{ padding: "10px 0" }}>
+            <Search>
+              <Avatar
+                src={user.profile_photo}
+                sx={{ width: "45px", height: "45px", marginRight: "15px" }}
+              ></Avatar>
+              <InputBase
+                placeholder={`Whats on your mind ${user?.name}`}
+                sx={{
+                  width: { xs: "50%", md: "100%", userSelect: "none" },
+                  color: "black",
+                }}
+                readOnly
+                onClick={(e) => setOpen(true)}
+              />
+            </Search>
+            <Divider variant="middle" />
+            <Box
               sx={{
-                width: { xs: "50%", md: "100%", userSelect: "none" },
-                color: "black",
+                maxWidth: "100%",
+                display: "flex",
+                justifyContent: "space-around",
+                margin: "10px 0",
               }}
-              readOnly
-              onClick={(e) => setOpen(true)}
-            />
-          </Search>
-          <Divider variant="middle" />
-          <Box
-            sx={{
-              maxWidth: "100%",
-              display: "flex",
-              justifyContent: "space-around",
-              margin: "10px 0",
-            }}
-          >
-            <IconButton
-              aria-label="share"
-              sx={{ display: "flex", alignItems: "center" }}
             >
-              <VideoCallIcon sx={{ color: "red", fontSize: "30px" }} />
-              <Typography
-                variant="small"
-                sx={{
-                  fontSize: "16px",
-                  marginLeft: "8px",
-                  display: { xs: "none", sm: "flex" },
-                }}
+              <IconButton
+                aria-label="share"
+                sx={{ display: "flex", alignItems: "center" }}
               >
-                Live video
-              </Typography>
-            </IconButton>
-            <IconButton
-              aria-label="share"
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              <CollectionsIcon sx={{ color: "green", fontSize: "25px" }} />
-              <Typography
-                variant="small"
-                sx={{
-                  fontSize: "16px",
-                  marginLeft: "8px",
-                  display: { xs: "none", sm: "flex" },
-                }}
+                <VideoCallIcon sx={{ color: "red", fontSize: "30px" }} />
+                <Typography
+                  variant="small"
+                  sx={{
+                    fontSize: "16px",
+                    marginLeft: "8px",
+                    display: { xs: "none", sm: "flex" },
+                  }}
+                >
+                  Live video
+                </Typography>
+              </IconButton>
+              <IconButton
+                aria-label="share"
+                sx={{ display: "flex", alignItems: "center" }}
               >
-                Photo/video
-              </Typography>
-            </IconButton>
-            <IconButton
-              aria-label="share"
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              <TagFacesIcon sx={{ color: "red", fontSize: "25px" }} />
-              <Typography
-                variant="small"
-                sx={{
-                  fontSize: "16px",
-                  marginLeft: "8px",
-                  display: { xs: "none", sm: "flex" },
-                }}
+                <CollectionsIcon sx={{ color: "green", fontSize: "25px" }} />
+                <Typography
+                  variant="small"
+                  sx={{
+                    fontSize: "16px",
+                    marginLeft: "8px",
+                    display: { xs: "none", sm: "flex" },
+                  }}
+                >
+                  Photo/video
+                </Typography>
+              </IconButton>
+              <IconButton
+                aria-label="share"
+                sx={{ display: "flex", alignItems: "center" }}
               >
-                Feeling/activity
-              </Typography>
-            </IconButton>
-          </Box>
-        </Card>
-      </Box>
-      {/* add post modal */}
-      <StyledModal
-        open={open}
-        onClose={(e) => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        disableAutoFocus={true}
-      >
-        <Box
-          sx={{
-            width: { sm: 400, xs: "60vw" },
-          }}
-          bgcolor={"background.default"}
-          color={"text.primary"}
-          borderRadius={5}
-          p={5}
-        >
-          <CloseIcon
-            sx={{
-              color: "black",
-              textAlign: "end",
-              width: "100%",
-              marginLeft: "45%",
-              color: "gray",
-            }}
-            onClick={(e) => setOpen(false)}
-          />
-
-          <Typography variant="h6" color="gray" textAlign={"center"}>
-            Create post
-          </Typography>
-          <UserBox>
-            <Avatar
-              sx={{ width: "35px", height: "35px" }}
-              src={user?.profile_photo}
-              onClick={(e) => setOpen(true)}
-            ></Avatar>
-            <Typography
-              variant="span"
-              fontWeight={500}
-              textTransform="capitalize"
-            >
-              {user?.name}
-            </Typography>
-          </UserBox>
-          <TextField
-            id="standard-multiline-static"
-            multiline
-            rows={3}
-            placeholder="What's on your mind?"
-            sx={{ width: "100%" }}
-            variant="standard"
-            value={postElem}
-            onChange={(e) => {
-              setpostElem(e.target.value);
-            }}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              margin: "15px 0",
-            }}
-          >
-            <CollectionsIcon color="success" />
-            <PersonAddAltIcon color="primary" />
-            {/* <TagFacesIcon color="success" /> */}
-            {/* <LocationOnIcon color="error" /> */}
-            <GifBoxIcon color="primary" />
-            <MoreHorizIcon color="error" />
-          </Box>
-          <ButtonGroup
-            fullWidth
-            variant="contained"
-            aria-label="outlined primary button group"
-            sx={{ margin: "5px 0" }}
-          >
-            <Button onClick={createPost}>Post</Button>
-          </ButtonGroup>
+                <TagFacesIcon sx={{ color: "red", fontSize: "25px" }} />
+                <Typography
+                  variant="small"
+                  sx={{
+                    fontSize: "16px",
+                    marginLeft: "8px",
+                    display: { xs: "none", sm: "flex" },
+                  }}
+                >
+                  Feeling/activity
+                </Typography>
+              </IconButton>
+            </Box>
+          </Card>
         </Box>
-      </StyledModal>
+        {/* add post modal */}
+        <StyledModal
+          open={open}
+          onClose={(e) => setOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          disableAutoFocus={true}
+        >
+          <Box
+            sx={{
+              width: { sm: 400, xs: "60vw" },
+            }}
+            bgcolor={"background.default"}
+            color={"text.primary"}
+            borderRadius={5}
+            p={5}
+          >
+            <CloseIcon
+              sx={{
+                color: "black",
+                textAlign: "end",
+                width: "100%",
+                marginLeft: "45%",
+                color: "gray",
+              }}
+              onClick={(e) => setOpen(false)}
+            />
+
+            <Typography variant="h6" color="gray" textAlign={"center"}>
+              Create post
+            </Typography>
+            <UserBox>
+              <Avatar
+                sx={{ width: "35px", height: "35px" }}
+                src={user?.profile_photo}
+                onClick={(e) => setOpen(true)}
+              ></Avatar>
+              <Typography
+                variant="span"
+                fontWeight={500}
+                textTransform="capitalize"
+              >
+                {user?.name}
+              </Typography>
+            </UserBox>
+            <TextField
+              id="standard-multiline-static"
+              multiline
+              rows={3}
+              placeholder="What's on your mind?"
+              sx={{ width: "100%" }}
+              variant="standard"
+              value={caption}
+              onChange={(e) => {
+                setCaption(e.target.value);
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                margin: "15px 0",
+              }}
+            >
+              <IconButton>
+                <CollectionsIcon color="success" />
+              </IconButton>
+              <IconButton>
+                <PersonAddAltIcon color="primary" />
+              </IconButton>
+              <IconButton>
+                <GifBoxIcon color="primary" />
+              </IconButton>
+              <IconButton>
+                <MoreHorizIcon color="error" />
+              </IconButton>
+              {/* <TagFacesIcon color="success" /> */}
+              {/* <LocationOnIcon color="error" /> */}
+            </Box>
+            <Box sx={{ margin: "10px 0", width: "100%" }}>
+              <Input
+                type="file"
+                disableUnderline
+                fullWidth
+                filename={file}
+                onChange={(e) => setFile(e.target.files[0])}
+                accept="image/*"
+              />
+            </Box>
+            <Button
+              fullWidth
+              variant="contained"
+              aria-label="outlined primary button group"
+              sx={{ margin: "5px 0" }}
+              onClick={createPost}
+            >
+              Post
+            </Button>
+          </Box>
+        </StyledModal>
+      </form>
     </>
   );
 };

@@ -10,13 +10,21 @@ import HOC from "./HOC";
 import Error from "./screens/Error";
 import Login from "./screens/Login";
 import { routes } from "./router";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 function App() {
   const dispatch = useDispatch();
   const isLogged = useSelector((state) => state.appReducer.isLogged);
   const [isLoading, setIsLoading] = useState(true);
+  const [mode, setMode] = useState("light");
 
-  const DataApi = async () => {
+  const darkTheme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
+
+  const userCall = async () => {
     try {
       axios.defaults.withCredentials = true;
       let response = await axios.get("http://localhost:5000/users/user");
@@ -31,35 +39,36 @@ function App() {
     }
   };
   useEffect(() => {
-    DataApi();
+    userCall();
   }, []);
-
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
-        <BrowserRouter>
-          <Routes>
-            {/* <Route path="/" element={<HOC childern={<Home />} />}></Route> */}
-            <Route path="*" element={<Error />}></Route>
-            {routes.map((e, i) => {
-              return (
-                <Route
-                  path={e.path}
-                  key={i}
-                  element={
-                    <HOC
-                      childern={e.element}
-                      isProtected={e.protected}
-                      isLogged={isLogged}
-                    />
-                  }
-                />
-              );
-            })}
-          </Routes>
-        </BrowserRouter>
+        <ThemeProvider theme={darkTheme}>
+          <BrowserRouter>
+            <Routes>
+              {/* <Route path="/" element={<HOC childern={<Home />} />}></Route> */}
+              <Route path="*" element={<Error />}></Route>
+              {routes.map((e, i) => {
+                return (
+                  <Route
+                    path={e.path}
+                    key={i}
+                    element={
+                      <HOC
+                        childern={e.element}
+                        isProtected={e.protected}
+                        isLogged={isLogged}
+                      />
+                    }
+                  />
+                );
+              })}
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
       )}
       <ToastContainer
         position="bottom-right"

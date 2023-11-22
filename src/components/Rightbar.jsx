@@ -27,7 +27,14 @@ const RightBox = styled(Box)({
 
 const Rightbar = () => {
   return (
-    <Box flex={1.5} p={2} mb={5} sx={{ display: { xs: "none", md: "flex" } }}>
+    <Box
+      flex={1.5}
+      p={2}
+      mb={5}
+      sx={{
+        display: { xs: "none", md: "flex" },
+      }}
+    >
       <Box
         className="rightScroll"
         sx={{

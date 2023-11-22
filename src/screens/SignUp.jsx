@@ -51,14 +51,12 @@ const SignUp = () => {
   return (
     <>
       <Container
+        maxWidth="100vw"
         sx={{
           background:
             "linear-gradient(to top, rgba(255,248,248,1) 0%, rgba(201,209,219,1) 100%, rgba(0,0,0,1) 100%)",
         }}
       >
-        <Link to="/">
-          <ArrowBackIosNewIcon sx={{ position: "absolute", top: "30px" }} />
-        </Link>
         <Box
           sx={{
             height: "100vh",
@@ -82,8 +80,8 @@ const SignUp = () => {
                 textAlign: "center",
                 fontSize: { xs: "1rem", sm: "1.5rem" },
                 userSelect: "none",
-                // textAlign: "left",
-                marginLeft: "25px",
+                textAlign: "left",
+                marginLeft: "10px",
               }}
             >
               Facebook helps you connect and <br /> share with the people in
