@@ -10,16 +10,22 @@ import {
   Box,
   ButtonGroup,
   Button,
+  Skeleton,
+  Divider,
+  TextField,
+  InputBase,
 } from "@mui/material";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ReplyIcon from "@mui/icons-material/Reply";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { Search } from "@mui/icons-material";
+import SendIcon from "@mui/icons-material/Send";
 
 const Post = ({
   image,
@@ -35,6 +41,8 @@ const Post = ({
   allPosts,
 }) => {
   const [modal, setmodal] = useState(false);
+  const [loading, setloading] = useState(true);
+  const user = useSelector((state) => state.appReducer.user);
 
   const handleProfileLikeClick = async (postId, liked) => {
     try {
@@ -67,6 +75,12 @@ const Post = ({
     }
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setloading(false);
+    }, 1000);
+  });
+
   return (
     <>
       <Card key={id} sx={{ marginBottom: "20px" }}>
@@ -90,7 +104,16 @@ const Post = ({
             {description}
           </Typography>
         </CardContent>
-        <CardMedia component="img" height="auto%" image={image} alt="Image" />
+        {loading ? (
+          <Skeleton
+            variant="rectangular"
+            width={"100%"}
+            height={450}
+            animation="wave"
+          />
+        ) : (
+          <CardMedia component="img" height="auto%" image={image} alt="Post" />
+        )}
         {/* Buttons */}
         <CardActions
           disableSpacing
@@ -133,7 +156,25 @@ const Post = ({
             </Typography>
           </IconButton>
         </CardActions>
+        <Divider />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "10px 15px",
+          }}
+        >
+          <Avatar src={user?.profile_photo} />
+          <InputBase
+            placeholder="Submit Your Comment"
+            fullWidth
+            sx={{ margin: "0 10px" }}
+          />
+          <SendIcon sx={{ color: "#1877F2" }} />
+        </Box>
       </Card>
+
       <Modal
         open={modal}
         onClose={() => {

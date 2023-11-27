@@ -4,7 +4,6 @@ import { TextField } from "@mui/material";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import logo from "../assets/facebook.svg";
 
 const SignUp = () => {
@@ -46,7 +45,7 @@ const SignUp = () => {
           password: "",
         });
       } catch (err) {
-        toast.error(err.response.data.message);
+        toast.error(err?.message);
       }
     }
   };

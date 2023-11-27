@@ -9,6 +9,13 @@ import {
   Typography,
   Menu,
   MenuItem,
+  Modal,
+  Button,
+  Stack,
+  Autocomplete,
+  TextField,
+  Input,
+  Skeleton,
 } from "@mui/material";
 import { Settings } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -18,7 +25,7 @@ import styled from "@emotion/styled";
 import MailIcon from "@mui/icons-material/Mail";
 import { Height, Notifications } from "@mui/icons-material";
 import avatar from "../assets/avatar.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
@@ -75,6 +82,23 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.appReducer.user);
   const [open, setOpen] = useState(false);
+  const [searchResult, setsearchResult] = useState([]);
+  const [searchField, setsearchField] = useState("");
+
+  const handleSearch = async () => {
+    try {
+      let res = await axios.get(`${process.env.REACT_APP_API_KEY}/users`);
+      // console.log(res?.data?.User);
+      setsearchResult(res?.data?.User);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleSearch();
+  }, []);
+
   const handleLogout = async () => {
     try {
       axios.defaults.withCredentials = true;
@@ -98,16 +122,66 @@ const Navbar = () => {
     >
       <StyledToolbar>
         <img src={logo} alt="" />
-        <Search>
+        <Stack spacing={2} sx={{ width: 500 }}>
+          <Autocomplete
+            freeSolo
+            disableClearable
+            id="free-solo-2-demo"
+            options={searchResult}
+            getOptionLabel={(option) => option.name}
+            autoHighlight
+            renderOption={(props, option) => (
+              <Box
+                component="li"
+                sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                {...props}
+              >
+                <Avatar
+                  sx={{ margin: "0 10px" }}
+                  loading="lazy"
+                  width="10"
+                  src={`${option?.profile_photo}`}
+                  alt=""
+                />
+
+                {option.name}
+              </Box>
+            )}
+            renderInput={(params) => (
+              <>
+                {/* <IconButton>
+                  <SearchIcon sx={{ color: "gray" }} />
+                </IconButton> */}
+                <TextField
+                  {...params}
+                  // label="Search input"
+                  InputProps={{
+                    ...params.InputProps,
+                    type: "search",
+                  }}
+                  onChange={(e) => {
+                    setsearchField(e.target.value);
+                  }}
+                  value={searchField}
+                />
+              </>
+            )}
+          />
+        </Stack>
+        {/* <Search>
           <IconButton>
             <SearchIcon sx={{ color: "gray" }} />
           </IconButton>
           <InputBase
             placeholder="Search Facebook..."
             sx={{ width: { xs: "50%", md: "100%", color: "black" } }}
+            onChange={(e) => {
+              setsearchField(e.target.value);
+              handleSearch();
+            }}
+            value={searchField}
           />
-        </Search>
-
+        </Search> */}
         <Icons>
           <IconsBorder>
             <Badge badgeContent={4} color="error">
@@ -129,14 +203,14 @@ const Navbar = () => {
             }}
             src={user?.profile_photo}
             onClick={(e) => setOpen(true)}
-          ></Avatar>
+          />
         </Icons>
         <UserBox>
           <Avatar
             sx={{ width: "35px", height: "35px" }}
             src={user?.profile_photo}
             onClick={(e) => setOpen(true)}
-          ></Avatar>
+          />
           <Typography variant="span">{user?.name}</Typography>
         </UserBox>
       </StyledToolbar>

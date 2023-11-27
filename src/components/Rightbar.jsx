@@ -72,7 +72,7 @@ const Rightbar = () => {
                       border: "3px solid #1DA1F2",
                     }}
                     src={contact.image}
-                  ></Avatar>
+                  />
                 </ListItemIcon>
                 <ListItemText primary={contact.name} />
               </ListItemButton>
