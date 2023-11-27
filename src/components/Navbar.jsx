@@ -78,7 +78,9 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       axios.defaults.withCredentials = true;
-      let response = await axios.get("http://localhost:5000/users/logout");
+      let response = await axios.get(
+        `${process.env.REACT_APP_API_KEY}/users/logout`
+      );
       toast.success(response?.data?.message);
       dispatch(setInitialLogged());
     } catch (err) {
@@ -180,11 +182,11 @@ const Navbar = () => {
           />
           <Typography>Settings</Typography>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={handleLogout}>
           <LogoutIcon
             sx={{ width: "20px", height: "20px", marginRight: "10px" }}
           />
-          <Typography onClick={handleLogout}>Logout</Typography>
+          <Typography>Logout</Typography>
         </MenuItem>
       </Menu>
     </AppBar>

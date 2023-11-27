@@ -27,7 +27,9 @@ function App() {
   const userCall = async () => {
     try {
       axios.defaults.withCredentials = true;
-      let response = await axios.get("http://localhost:5000/users/user");
+      let response = await axios.get(
+        `${process.env.REACT_APP_API_KEY}/users/user`
+      );
       dispatch(setLogged());
       dispatch(setUser(response?.data?.User));
       setTimeout(() => {

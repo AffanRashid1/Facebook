@@ -13,14 +13,10 @@ import {
 } from "@mui/material";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import CloseIcon from "@mui/icons-material/Close";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ReplyIcon from "@mui/icons-material/Reply";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import Checkbox from "@mui/material/Checkbox";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { useDispatch, useSelector } from "react-redux";
-import { addLike, removeLike } from "../store/store";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -35,17 +31,18 @@ const Post = ({
   shareCount,
   likes,
   comment,
-  updateData,
-  data,
+  updateProfileData,
+  allPosts,
 }) => {
-  // const posts = useSelector((state) => state.post.posts);
-  const dispatch = useDispatch();
   const [modal, setmodal] = useState(false);
 
-  const handleLikeClick = async (postId, liked) => {
+  const handleProfileLikeClick = async (postId, liked) => {
     try {
-      await axios.post(`http://localhost:5000/posts/like/${postId}`);
-      updateData();
+      let res = await axios.post(
+        `${process.env.REACT_APP_API_KEY}/posts/like/${postId}`
+      );
+      updateProfileData();
+      // let liker = allPosts.find((post) => post?.data?.likerId);
     } catch (error) {
       console.log(error);
     }
@@ -60,17 +57,16 @@ const Post = ({
   const deletepost = async () => {
     try {
       let response = await axios.delete(
-        `http://localhost:5000/posts/delete-post/${id}`
+        `${process.env.REACT_APP_API_KEY}/posts/delete-post/${id}`
       );
       setmodal(false);
-      updateData();
+      updateProfileData();
       toast.success(response?.data?.message);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const postSetting = () => {};
   return (
     <>
       <Card key={id} sx={{ marginBottom: "20px" }}>
@@ -102,7 +98,7 @@ const Post = ({
         >
           <Button
             aria-label="add to favorites"
-            onClick={() => handleLikeClick(id, likes)}
+            onClick={() => handleProfileLikeClick(id, likes)}
             startIcon={<ThumbUpOffAltIcon />}
           >
             {/* <Checkbox

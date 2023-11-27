@@ -75,7 +75,7 @@ const AddPost = ({ post }) => {
 
         axios.defaults.withCredentials = true;
         let res = await axios.post(
-          `http://localhost:5000/posts/create-post`,
+          `${process.env.REACT_APP_API_KEY}/posts/create-post`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -230,6 +230,7 @@ const AddPost = ({ post }) => {
               onChange={(e) => {
                 setCaption(e.target.value);
               }}
+              autoFocus
             />
             <Box
               sx={{

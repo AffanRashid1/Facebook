@@ -31,11 +31,14 @@ const SignUp = () => {
     } else {
       try {
         axios.defaults.withCredentials = true;
-        let resp = await axios.post("http://localhost:5000/users/register", {
-          name: formDetails.name,
-          email: formDetails.email,
-          password: formDetails.password,
-        });
+        let resp = await axios.post(
+          `${process.env.REACT_APP_API_KEY}/users/register`,
+          {
+            name: formDetails.name,
+            email: formDetails.email,
+            password: formDetails.password,
+          }
+        );
         toast.success(resp.data.message);
         setformDetails({
           name: "",
