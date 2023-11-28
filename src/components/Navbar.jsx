@@ -9,22 +9,16 @@ import {
   Typography,
   Menu,
   MenuItem,
-  Modal,
-  Button,
   Stack,
   Autocomplete,
-  TextField,
-  Input,
-  Skeleton,
 } from "@mui/material";
 import { Settings } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from "@mui/icons-material/Logout";
-import logo from "../assets/facebook.svg";
+import logo from "../assets/facebook.png";
 import styled from "@emotion/styled";
 import MailIcon from "@mui/icons-material/Mail";
-import { Height, Notifications } from "@mui/icons-material";
-import avatar from "../assets/avatar.jpg";
+import { Notifications } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -47,7 +41,7 @@ const Search = styled("div")(({ theme }) => ({
   backgroundColor: "#F0F0F0",
   padding: "0 8px",
   borderRadius: "25px",
-  width: "40%",
+  width: 250,
 }));
 
 // icons container box means div
@@ -121,19 +115,20 @@ const Navbar = () => {
       }}
     >
       <StyledToolbar>
-        <img src={logo} alt="" />
-        <Stack spacing={2} sx={{ width: 500 }}>
+        <Stack spacing={2} direction={"row"} sx={{ alignItems: "center" }}>
+          <img src={logo} alt="" width={40} height={40} />
           <Autocomplete
             freeSolo
             disableClearable
-            id="free-solo-2-demo"
             options={searchResult}
             getOptionLabel={(option) => option.name}
             autoHighlight
             renderOption={(props, option) => (
               <Box
                 component="li"
-                sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                sx={{
+                  "& > img": { mr: 2, flexShrink: 0 },
+                }}
                 {...props}
               >
                 <Avatar
@@ -147,25 +142,26 @@ const Navbar = () => {
                 {option.name}
               </Box>
             )}
-            renderInput={(params) => (
-              <>
-                {/* <IconButton>
-                  <SearchIcon sx={{ color: "gray" }} />
-                </IconButton> */}
-                <TextField
-                  {...params}
-                  // label="Search input"
-                  InputProps={{
-                    ...params.InputProps,
-                    type: "search",
-                  }}
-                  onChange={(e) => {
-                    setsearchField(e.target.value);
-                  }}
-                  value={searchField}
-                />
-              </>
-            )}
+            renderInput={(params) => {
+              const { InputLabelProps, InputProps, ...rest } = params;
+              return (
+                <Search>
+                  <IconButton>
+                    <SearchIcon sx={{ color: "gray" }} />
+                  </IconButton>
+                  <InputBase
+                    {...params.InputProps}
+                    {...rest}
+                    onChange={(e) => {
+                      setsearchField(e.target.value);
+                    }}
+                    value={searchField}
+                    placeholder="Search Facebook"
+                    fullWidth
+                  />
+                </Search>
+              );
+            }}
           />
         </Stack>
         {/* <Search>

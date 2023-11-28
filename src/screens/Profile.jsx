@@ -1,8 +1,6 @@
 import { Avatar, Box, Container, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import cover from "../assets/Post_1.jpg";
-import profile from "../assets/post.jpeg";
 import AddPost from "../components/AddPost";
 import Post from "../components/Post";
 import axios from "axios";
@@ -89,7 +87,7 @@ const Profile = () => {
           <AddPost post={() => myPosts()} />
         </Box>
         <Box>
-          {userPost?.length == undefined || 0 ? (
+          {userPost?.length === undefined || 0 ? (
             <Typography textAlign={"center"}>No Post Yet</Typography>
           ) : (
             userPost
@@ -105,7 +103,7 @@ const Profile = () => {
                     id={post._id}
                     shareCount="32"
                     likes={post.likes.length}
-                    comment="2"
+                    // comment={post.comments}
                     updateProfileData={() => myPosts()}
                     data={post}
                   />

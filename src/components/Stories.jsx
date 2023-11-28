@@ -134,7 +134,7 @@ export default function Stories() {
               </Box>
             </div>
             <Story
-              image={"https://random.imagecdn.app/500/156"}
+              // image={"https://random.imagecdn.app/500/156"}
               name={"IINV"}
             />
           </Stack>

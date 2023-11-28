@@ -8,14 +8,13 @@ import {
   Avatar,
   Modal,
   Box,
-  ButtonGroup,
   Button,
   Skeleton,
   Divider,
-  TextField,
   InputBase,
+  Stack,
 } from "@mui/material";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ReplyIcon from "@mui/icons-material/Reply";
@@ -24,12 +23,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { Search } from "@mui/icons-material";
 import SendIcon from "@mui/icons-material/Send";
+import moment from "moment";
 
 const Post = ({
   image,
-  date,
+  createdAt,
   description,
   name,
   icon,
@@ -43,23 +42,37 @@ const Post = ({
   const [modal, setmodal] = useState(false);
   const [loading, setloading] = useState(true);
   const user = useSelector((state) => state.appReducer.user);
+  const [commentInput, setcommentInput] = useState("");
+  const [timeAgo, setTimeAgo] = useState("");
 
   const handleProfileLikeClick = async (postId, liked) => {
     try {
       let res = await axios.post(
         `${process.env.REACT_APP_API_KEY}/posts/like/${postId}`
       );
-      updateProfileData();
-      // let liker = allPosts.find((post) => post?.data?.likerId);
+
+      // updateProfileData();
     } catch (error) {
       console.log(error);
     }
+  };
 
-    // if (liked) {
-    //   dispatch(removeLike(postIndex));
-    // } else {
-    //   dispatch(addLike(postIndex));
-    // }
+  const handleComment = async () => {
+    try {
+      if (commentInput != "") {
+        let res = await axios.post(
+          `${process.env.REACT_APP_API_KEY}/posts/comment`,
+          {
+            id: id,
+            comment: commentInput,
+          }
+        );
+        comment.push(res?.data?.newComment);
+        setcommentInput("");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const deletepost = async () => {
@@ -76,10 +89,27 @@ const Post = ({
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setloading(false);
-    }, 1000);
-  });
+    setloading(false);
+    const updateRelativeTime = () => {
+      const now = moment();
+      const postTime = moment(createdAt);
+      const diffInMinutes = now.diff(postTime, "minutes");
+
+      if (diffInMinutes < 1) {
+        setTimeAgo("Just Now");
+      } else if (diffInMinutes < 60) {
+        setTimeAgo(`${diffInMinutes} minutes ago`);
+      } else {
+        setTimeAgo(postTime.fromNow());
+      }
+    };
+
+    updateRelativeTime();
+
+    const intervalId = setInterval(updateRelativeTime, 60000);
+
+    return () => clearInterval(intervalId);
+  }, [createdAt]);
 
   return (
     <>
@@ -97,7 +127,7 @@ const Post = ({
             </IconButton>
           }
           title={name}
-          subheader={date}
+          subheader={timeAgo}
         />
         <CardContent>
           <Typography variant="body2" color="black">
@@ -143,7 +173,7 @@ const Post = ({
               variant="small"
               sx={{ fontSize: "16px", marginLeft: "8px" }}
             >
-              {comment} Comments
+              Comments
             </Typography>
           </IconButton>
           <IconButton aria-label="share">
@@ -156,6 +186,28 @@ const Post = ({
             </Typography>
           </IconButton>
         </CardActions>
+        <Divider />
+        {comment?.map((comment) => {
+          return (
+            <Stack
+              direction={"row"}
+              spacing={3}
+              alignItems={"center"}
+              margin={"8px 10px"}
+            >
+              <Avatar sx={{ height: "20px", width: "20px" }} />
+              <Box
+                sx={{
+                  backgroundColor: "#F0F2F6",
+                  borderRadius: "5px",
+                  padding: "5px 8px",
+                }}
+              >
+                <Typography fontSize={"14px"}>{comment?.comment}</Typography>
+              </Box>
+            </Stack>
+          );
+        })}
         <Divider />
         <Box
           sx={{
@@ -170,8 +222,15 @@ const Post = ({
             placeholder="Submit Your Comment"
             fullWidth
             sx={{ margin: "0 10px" }}
+            value={commentInput}
+            onChange={(e) => {
+              setcommentInput(e.target.value);
+            }}
+            error={true}
           />
-          <SendIcon sx={{ color: "#1877F2" }} />
+          <IconButton onClick={handleComment}>
+            <SendIcon sx={{ color: "#1877F2" }} />
+          </IconButton>
         </Box>
       </Card>
 

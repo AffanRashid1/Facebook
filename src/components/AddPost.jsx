@@ -86,7 +86,7 @@ const AddPost = ({ post }) => {
         setOpen(false);
         post();
         console.log(file);
-        console.log(res);
+        console.log(res?.imageUrl);
         toast.success("Added Succesfully");
       } catch (error) {
         console.error(error);
@@ -255,13 +255,14 @@ const AddPost = ({ post }) => {
               {/* <LocationOnIcon color="error" /> */}
             </Box>
             <Box sx={{ margin: "10px 0", width: "100%" }}>
-              <Input
+              <input
                 type="file"
-                disableUnderline
-                fullWidth
+                // disableUnderline
+                // fullWidth
                 filename={file}
                 onChange={(e) => setFile(e.target.files[0])}
                 accept="image/*"
+                multiple
               />
             </Box>
             <Button
