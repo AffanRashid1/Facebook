@@ -34,7 +34,7 @@ import axios from "axios";
 const Search = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  backgroundColor: "#F0F0F0",
+  backgroundColor: "#4E4F50",
   margin: "auto",
   marginBottom: "15px",
   borderRadius: "25px",
@@ -98,29 +98,39 @@ const AddPost = ({ post }) => {
     <>
       <form>
         <Box mb={3}>
-          <Card pb={5} pt={5} sx={{ padding: "10px 0" }}>
-            <Search>
+          <Card pb={5} pt={5} sx={{ padding: "10px 0", borderRadius: "10px" }}>
+            <Stack
+              direction={"row"}
+              spacing={2}
+              alignItems="center"
+              justifyContent="center"
+              mb={2}
+              mt={2}
+            >
               <Avatar
                 src={user.profile_photo}
                 sx={{ width: "45px", height: "45px", marginRight: "15px" }}
-              ></Avatar>
-              <InputBase
-                placeholder={`Whats on your mind ${user?.name}`}
-                sx={{
-                  width: { xs: "50%", md: "100%", userSelect: "none" },
-                  color: "black",
-                }}
-                readOnly
-                onClick={(e) => setOpen(true)}
               />
-            </Search>
+              <Search>
+                <InputBase
+                  placeholder={`Whats on your mind ${user?.name}`}
+                  fullWidth
+                  sx={{
+                    color: "text.primary",
+                    padding: "5px 10px",
+                  }}
+                  readOnly
+                  onClick={(e) => setOpen(true)}
+                />
+              </Search>
+            </Stack>
             <Divider variant="middle" />
             <Box
               sx={{
                 maxWidth: "100%",
                 display: "flex",
                 justifyContent: "space-around",
-                margin: "10px 0",
+                margin: "7px 0",
               }}
             >
               <IconButton

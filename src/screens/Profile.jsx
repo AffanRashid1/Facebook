@@ -25,7 +25,11 @@ const Profile = () => {
   }, []);
   return (
     <>
-      <Container>
+      <Container
+        sx={{
+          bgcolor: "background.paper",
+        }}
+      >
         <Box
           sx={{
             backgroundImage: `url(${"https://imgs.search.brave.com/J-yPqU2rCdwiuszegSxJSxM1S76_lPMFiMab7LLaMDI/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDE4Mjg5/MzEuanBn"})`,

@@ -5,7 +5,7 @@ import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import AppsIcon from "@mui/icons-material/Apps";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import GroupsIcon from "@mui/icons-material/Groups";
-import { Divider } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import {
   Box,
@@ -59,7 +59,9 @@ const Sidebar = () => {
                     src={user.profile_photo}
                   ></Avatar>
                 </ListItemIcon>
-                <ListItemText primary={user?.name} />
+                <Typography sx={{ color: "text.primary" }}>
+                  {user?.name}
+                </Typography>
               </ListItemButton>
             </ListItem>
           </Link>

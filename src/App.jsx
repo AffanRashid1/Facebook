@@ -16,7 +16,7 @@ function App() {
   const dispatch = useDispatch();
   const isLogged = useSelector((state) => state.appReducer.isLogged);
   const [isLoading, setIsLoading] = useState(true);
-  const [mode, setMode] = useState("light");
+  const [mode, setMode] = useState("dark");
 
   const darkTheme = createTheme({
     palette: {

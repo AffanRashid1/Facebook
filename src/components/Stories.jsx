@@ -72,7 +72,7 @@ export default function Stories() {
     <>
       <Stack direction={"column"} className="newsfeed stories-wrapper">
         {/* header */}
-        <ul className="stories-header" style={{ display: "flex" }}>
+        {/* <ul className="stories-header" style={{ display: "flex" }}>
           <li>
             <a href="#!">Stories</a>
             <div className="border-blue"></div>
@@ -85,10 +85,11 @@ export default function Stories() {
           <li className="hover2">
             <a href="#!" color="text.primary">
               Rooms
-            </a>
+            </a>  
           </li>
-        </ul>
+        </ul> */}
         {/* stories */}
+
         <div
           className="stories-scroll"
           ref={container}
