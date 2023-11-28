@@ -6,5 +6,4 @@
 
 - React JS
 - Redux Toolkit
-- Tailwind CSS
 - Material UI
