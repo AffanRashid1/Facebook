@@ -115,7 +115,7 @@ const Post = ({
     <>
       <Card key={id} sx={{ marginBottom: "20px", borderRadius: "10px" }}>
         <CardHeader
-          avatar={<Avatar sx={{ bgcolor: "red" }} src={icon} />}
+          avatar={<Avatar sx={{ bgcolor: "gray" }} src={icon} />}
           action={
             <IconButton
               onClick={() => {

@@ -31,15 +31,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const Search = styled("div")(({ theme }) => ({
+const addInputStyle = {
   display: "flex",
   alignItems: "center",
-  backgroundColor: "action.selected",
   margin: "auto",
   marginBottom: "15px",
   borderRadius: "25px",
   width: "80%",
-}));
+  backgroundColor: "action.selected",
+};
 
 // custom modal
 const StyledModal = styled(Modal)({
@@ -111,18 +111,17 @@ const AddPost = ({ post }) => {
                 src={user.profile_photo}
                 sx={{ width: "45px", height: "45px", marginRight: "15px" }}
               />
-              <Search>
+              <Box sx={addInputStyle}>
                 <InputBase
                   placeholder={`Whats on your mind ${user?.name}`}
                   fullWidth
                   sx={{
-                    color: "text.primary",
                     padding: "5px 10px",
                   }}
                   readOnly
                   onClick={(e) => setOpen(true)}
                 />
-              </Search>
+              </Box>
             </Stack>
             <Divider variant="middle" />
             <Box
@@ -195,6 +194,7 @@ const AddPost = ({ post }) => {
           <Box
             sx={{
               width: { sm: 400, xs: "60vw" },
+              bgcolor: "background.paper",
             }}
             bgcolor={"background.default"}
             color={"text.primary"}

@@ -29,6 +29,9 @@ function App() {
         default: "#18191A",
         paper: "#242526",
       },
+      action: {
+        selected: "rgba(255, 255, 255, 0.16)",
+      },
     },
   });
 

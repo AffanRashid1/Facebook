@@ -61,7 +61,7 @@ const Profile = () => {
               border: "5px solid grey",
               outline: "3px solid white",
             }}
-            src={user?.profile_photo}
+            src={user?.profile_photo[user?.profile_photo.length - 1]}
           />
           {/* <img
             src={user?.profile_photo}
@@ -107,7 +107,7 @@ const Profile = () => {
                     id={post._id}
                     shareCount="32"
                     likes={post.likes.length}
-                    // comment={post.comments}
+                    comment={post.comments}
                     updateProfileData={() => myPosts()}
                     data={post}
                   />
