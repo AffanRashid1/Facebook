@@ -15,7 +15,7 @@ import {
 import { Settings } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from "@mui/icons-material/Logout";
-import logo from "../assets/facebook.png";
+import logo from "../assets/logo.png";
 import styled from "@emotion/styled";
 import MailIcon from "@mui/icons-material/Mail";
 import { Notifications } from "@mui/icons-material";
