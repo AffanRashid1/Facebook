@@ -78,7 +78,7 @@ const Profile = () => {
           /> */}
           <Typography
             sx={{
-              color: "black",
+              color: "text.primary",
               fontSize: { xs: "25px", sm: "35px" },
               textTransform: "capitalize",
               fontWeight: "bold",

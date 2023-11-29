@@ -1,4 +1,14 @@
-import { Box, Button, Container, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  FormControl,
+  IconButton,
+  Input,
+  InputBase,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { TextField } from "@mui/material";
 import axios from "axios";
@@ -16,6 +26,15 @@ const Login = () => {
   const user = useSelector((state) => state.appReducer.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  let inputStyle = {
+    color: "black",
+    border: "1px solid grey",
+    borderRadius: "5px",
+    padding: "8px 15px",
+    margin: "15px 0",
+    width: "300px",
+  };
 
   const [loginInput, setloginInput] = useState({
     email: "",
@@ -58,7 +77,7 @@ const Login = () => {
   };
   return (
     <>
-      <Container maxWidth="100vw">
+      <Container maxWidth="100vw" sx={{ bgcolor: "white" }}>
         <Box
           sx={{
             height: "100vh",
@@ -79,55 +98,71 @@ const Login = () => {
                 userSelect: "none",
                 textAlign: "left",
                 marginLeft: "25px",
+                color: "black",
               }}
             >
               Facebook helps you connect and <br /> share with the people in
               your life.
             </Typography>
           </Box>
-          <Box
+          <FormControl
             sx={{
               display: "flex",
               flexDirection: "column",
-              gap: "30px",
-              padding: "60px 30px",
+              padding: "50px 30px",
               borderRadius: "10px",
               boxShadow:
                 "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
             }}
           >
-            <Typography
+            {/* <Typography
               textAlign={"center"}
               fontSize={"20px"}
               fontWeight={"bold"}
             >
               Login
-            </Typography>
-            <TextField
-              label="Email"
+            </Typography> */}
+            <InputBase
               placeholder="Enter Email"
               color="primary"
               focused
               value={loginInput.email}
               onChange={handleInputChange}
               name="email"
+              sx={inputStyle}
             />
-            <TextField
-              label="Password"
+            <InputBase
               placeholder="Enter Password"
               color="primary"
               focused
               value={loginInput.password}
               onChange={handleInputChange}
               name="password"
+              sx={inputStyle}
             />
-            <Button variant="contained" size="medium" onClick={handleLogin}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleLogin}
+              sx={{ bgcolor: "#1877F2", color: "white", margin: "10px 0" }}
+            >
               Login
             </Button>
-            <Typography>
-              Does'nt have a account ?<Link to="/register">Sign Up</Link>
-            </Typography>
-          </Box>
+            <hr
+              style={{ bgcolor: "grey", width: "80%", margin: "10px auto" }}
+            />
+            <Button
+              variant="contained"
+              size="large"
+              color="success"
+              onClick={() => {
+                navigate("/register");
+              }}
+              sx={{ bgcolor: "#42B72A", color: "white", margin: "10px 0" }}
+            >
+              Create New Account
+            </Button>
+          </FormControl>
         </Box>
       </Container>
     </>

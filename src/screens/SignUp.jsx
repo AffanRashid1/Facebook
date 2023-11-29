@@ -52,13 +52,7 @@ const SignUp = () => {
 
   return (
     <>
-      <Container
-        maxWidth="100vw"
-        sx={{
-          background:
-            "linear-gradient(to top, rgba(255,248,248,1) 0%, rgba(201,209,219,1) 100%, rgba(0,0,0,1) 100%)",
-        }}
-      >
+      <Container maxWidth="100vw" sx={{ bgcolor: "background.default" }}>
         <Box
           sx={{
             height: "100vh",
@@ -84,6 +78,7 @@ const SignUp = () => {
                 userSelect: "none",
                 textAlign: "left",
                 marginLeft: "10px",
+                color: "text.primary",
               }}
             >
               Facebook helps you connect and <br /> share with the people in

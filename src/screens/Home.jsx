@@ -11,7 +11,11 @@ const Home = () => {
       <Box bgcolor={"background.default"} color={"text.primary"}>
         {/* navbar */}
         <Navbar />
-        <Stack direction="row" spacing={2} justifyContent={"space-between"}>
+        <Stack
+          direction="row"
+          // spacing={2}
+          justifyContent={"space-between"}
+        >
           <Sidebar />
           <Feed />
           <Rightbar />

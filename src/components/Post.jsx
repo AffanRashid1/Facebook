@@ -113,7 +113,7 @@ const Post = ({
 
   return (
     <>
-      <Card key={id} sx={{ marginBottom: "20px" }}>
+      <Card key={id} sx={{ marginBottom: "20px", borderRadius: "10px" }}>
         <CardHeader
           avatar={<Avatar sx={{ bgcolor: "red" }} src={icon} />}
           action={
@@ -130,7 +130,7 @@ const Post = ({
           subheader={timeAgo}
         />
         <CardContent>
-          <Typography variant="body2" color="black">
+          <Typography variant="body2" color="text.primary">
             {description}
           </Typography>
         </CardContent>
@@ -198,7 +198,8 @@ const Post = ({
               <Avatar sx={{ height: "20px", width: "20px" }} />
               <Box
                 sx={{
-                  backgroundColor: "#F0F2F6",
+                  // backgroundColor: "#F0F2F6",
+                  bgcolor: "action.selected",
                   borderRadius: "5px",
                   padding: "5px 8px",
                 }}

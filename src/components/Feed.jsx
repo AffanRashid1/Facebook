@@ -24,7 +24,7 @@ const Feed = () => {
   }, []);
 
   return (
-    <Box flex={2} p={2} sx={{ paddingTop: "84px" }}>
+    <Box flex={1.5} p={2} sx={{ paddingTop: "84px" }}>
       <Stories />
       <AddPost />
       {allPosts?.length == undefined || 0 ? (

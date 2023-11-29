@@ -24,11 +24,12 @@ import { useState } from "react";
 
 const Sidebar = () => {
   const user = useSelector((state) => state.appReducer.user);
-  const [mode, setMode] = useState("light");
+
+  let iconStyle = { color: "#1DA1F2", fontSize: "27px" };
 
   return (
     <Box
-      flex={1.5}
+      flex={1.2}
       p={2}
       sx={{ display: { xs: "none", sm: "block" }, paddingTop: "84px" }}
     >
@@ -37,7 +38,7 @@ const Sidebar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#home">
               <ListItemIcon>
-                <Home sx={{ color: "#1DA1F2", fontSize: "25px" }} />
+                <Home sx={iconStyle} />
               </ListItemIcon>
               <ListItemText primary="Home" />
             </ListItemButton>
@@ -65,11 +66,11 @@ const Sidebar = () => {
               </ListItemButton>
             </ListItem>
           </Link>
-          <Divider variant="fullWidth" />
+          <Divider variant="fullWidth" sx={{ margin: "10px 0" }} />
           <ListItem disablePadding>
             <ListItemButton component="a" href="#video">
               <ListItemIcon>
-                <LiveTvIcon sx={{ color: "#1DA1F2", fontSize: "25px" }} />
+                <LiveTvIcon sx={iconStyle} />
               </ListItemIcon>
               <ListItemText primary="Video" />
             </ListItemButton>
@@ -77,7 +78,7 @@ const Sidebar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#marketPlace">
               <ListItemIcon>
-                <StorefrontIcon sx={{ color: "#1DA1F2", fontSize: "25px" }} />
+                <StorefrontIcon sx={iconStyle} />
               </ListItemIcon>
               <ListItemText primary="Marketplace" />
             </ListItemButton>
@@ -85,9 +86,7 @@ const Sidebar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#gaming">
               <ListItemIcon>
-                <SportsEsportsIcon
-                  sx={{ color: "#1DA1F2", fontSize: "25px" }}
-                />
+                <SportsEsportsIcon sx={iconStyle} />
               </ListItemIcon>
               <ListItemText primary="Gaming" />
             </ListItemButton>
@@ -95,7 +94,7 @@ const Sidebar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#settings">
               <ListItemIcon>
-                <Settings sx={{ color: "#1DA1F2", fontSize: "25px" }} />
+                <Settings sx={iconStyle} />
               </ListItemIcon>
               <ListItemText primary="Settings" />
             </ListItemButton>
@@ -103,7 +102,7 @@ const Sidebar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#groups">
               <ListItemIcon>
-                <GroupsIcon sx={{ color: "#1DA1F2", fontSize: "25px" }} />
+                <GroupsIcon sx={iconStyle} />
               </ListItemIcon>
               <ListItemText primary="Groups" />
             </ListItemButton>
@@ -117,17 +116,17 @@ const Sidebar = () => {
             </ListItemButton>
           </ListItem>
 
-          <Divider variant="fullWidth" />
-          <ListItem disablePadding>
+          <Divider variant="fullWidth" sx={{ margin: "10px 0" }} />
+          {/* <ListItem disablePadding>
             <ListItemButton component="a" href="#home">
               <ListItemIcon>
                 <Brightness4Icon sx={{ color: "#999", fontSize: "25px" }} />
               </ListItemIcon>
               <Switch
                 onChange={(e) => setMode(mode === "light" ? "dark" : "light")}
-              />
+              /> 
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </List>
       </Box>
     </Box>

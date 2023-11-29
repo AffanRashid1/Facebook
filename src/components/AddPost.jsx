@@ -34,7 +34,7 @@ import axios from "axios";
 const Search = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  backgroundColor: "#4E4F50",
+  backgroundColor: "action.selected",
   margin: "auto",
   marginBottom: "15px",
   borderRadius: "25px",
@@ -137,7 +137,7 @@ const AddPost = ({ post }) => {
                 aria-label="share"
                 sx={{ display: "flex", alignItems: "center" }}
               >
-                <VideoCallIcon sx={{ color: "red", fontSize: "30px" }} />
+                <VideoCallIcon sx={{ color: "#F23E5C", fontSize: "30px" }} />
                 <Typography
                   variant="small"
                   sx={{
@@ -153,7 +153,7 @@ const AddPost = ({ post }) => {
                 aria-label="share"
                 sx={{ display: "flex", alignItems: "center" }}
               >
-                <CollectionsIcon sx={{ color: "green", fontSize: "25px" }} />
+                <CollectionsIcon sx={{ color: "#58C472", fontSize: "25px" }} />
                 <Typography
                   variant="small"
                   sx={{
@@ -169,7 +169,7 @@ const AddPost = ({ post }) => {
                 aria-label="share"
                 sx={{ display: "flex", alignItems: "center" }}
               >
-                <TagFacesIcon sx={{ color: "red", fontSize: "25px" }} />
+                <TagFacesIcon sx={{ color: "#F5BE3E", fontSize: "25px" }} />
                 <Typography
                   variant="small"
                   sx={{

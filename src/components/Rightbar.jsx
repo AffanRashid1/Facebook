@@ -28,7 +28,7 @@ const RightBox = styled(Box)({
 const Rightbar = () => {
   return (
     <Box
-      flex={1.5}
+      flex={1}
       p={2}
       mb={5}
       sx={{

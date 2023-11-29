@@ -4,11 +4,9 @@ import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import { setLogged, setUser } from "./store/reducer";
 import { useSelector, useDispatch } from "react-redux";
-import Home from "./screens/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HOC from "./HOC";
 import Error from "./screens/Error";
-import Login from "./screens/Login";
 import { routes } from "./router";
 import { createTheme, ThemeProvider } from "@mui/material";
 
@@ -21,6 +19,16 @@ function App() {
   const darkTheme = createTheme({
     palette: {
       mode: mode,
+      primary: {
+        main: "#2196f3",
+      },
+      secondary: {
+        main: "#ff4081",
+      },
+      background: {
+        default: "#18191A",
+        paper: "#242526",
+      },
     },
   });
 

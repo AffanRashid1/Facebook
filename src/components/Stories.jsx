@@ -1,4 +1,4 @@
-import { Box, Fab, Stack } from "@mui/material";
+import { Box, Fab, Stack, Typography } from "@mui/material";
 import { useRef, useState, useEffect } from "react";
 import arrow from "../assets/arrow.png";
 import AddIcon from "@mui/icons-material/Add";
@@ -32,36 +32,36 @@ export default function Stories() {
 
   // handle function will be executed during the initial mounting and depends on the scrollLeft property of the container
   // it will decide which button to be shown (either prev of next)
-  // useEffect(() => {
-  //   function handleScroll() {
-  //     const currentScrollWidth = container.current.scrollLeft;
-  //     //show prev button if scroll width is greater than 200
-  //     if (currentScrollWidth > 200) {
-  //       btnNext.current.classList.add("active");
-  //       btnPrev.current.classList.remove("active");
-  //       if (btnPrev.current.classList.contains("active")) {
-  //         btnPrev.current.style.display = "block";
-  //       }
-  //       // else show the next button
-  //     } else {
-  //       //removing prev button initially  (active will make display none)
-  //       btnPrev.current.classList.add("active");
-  //       if (btnNext.current.classList.contains("active")) {
-  //         btnNext.current.classList.remove("active");
-  //       }
-  //     }
-  //   }
+  useEffect(() => {
+    function handleScroll() {
+      const currentScrollWidth = container.current.scrollLeft;
+      //show prev button if scroll width is greater than 200
+      if (currentScrollWidth > 200) {
+        btnNext.current.classList.add("active");
+        btnPrev.current.classList.remove("active");
+        if (btnPrev.current.classList.contains("active")) {
+          btnPrev.current.style.display = "block";
+        }
+        // else show the next button
+      } else {
+        //removing prev button initially  (active will make display none)
+        btnPrev.current.classList.add("active");
+        if (btnNext.current.classList.contains("active")) {
+          btnNext.current.classList.remove("active");
+        }
+      }
+    }
 
-  //   // continuously calling the handleScroll function, on scroll event
-  //   container.current.addEventListener("scroll", handleScroll);
+    // continuously calling the handleScroll function, on scroll event
+    container.current.addEventListener("scroll", handleScroll);
 
-  //   // clean up function
-  //   return () => {
-  //     container.current.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
+    // clean up function
+    // return () => {
+    //   container.current.removeEventListener("scroll", handleScroll);
+    // };
+  }, []);
 
-  //On clicking the prev or next buttons this function will be called and it will change
+  // On clicking the prev or next buttons this function will be called and it will change
   // isScrolled state and further calling the function inside first useEffect.
   function scroll() {
     // mode call back contain the current value of the state (isScrollEnd)
@@ -119,24 +119,33 @@ export default function Stories() {
                   </Fab>
                 </div>
                 <p>
-                  <small
+                  <Typography
                     id="create-story-text"
-                    style={{
+                    sx={{
                       position: "absolute",
                       top: "90%",
                       left: "50%",
                       transform: "translate(-50%, -50%)",
                       zIndex: "2",
+                      fontSize: "12px",
                     }}
                   >
                     Create story
-                  </small>
+                  </Typography>
                 </p>
               </Box>
             </div>
             <Story
-              // image={"https://random.imagecdn.app/500/156"}
-              name={"IINV"}
+              image={
+                "https://ca.slack-edge.com/T0323TS4AK0-U04HT5FHHP0-a6da41fb65c4-5126"
+              }
+              name={"Ahad Ilyas"}
+            />
+            <Story
+              image={
+                "https://ca.slack-edge.com/T0323TS4AK0-U04HT575P2S-6cb8f52fb4eb-512"
+              }
+              name={"Yasir Ustad"}
             />
           </Stack>
           <div
