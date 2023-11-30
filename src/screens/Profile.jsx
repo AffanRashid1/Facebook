@@ -1,4 +1,11 @@
-import { Avatar, Box, Container, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Container,
+  Divider,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import AddPost from "../components/AddPost";
@@ -90,32 +97,62 @@ const Profile = () => {
         <Box sx={{ marginTop: { md: "20%", sm: "20%", xs: "30%" } }}>
           <AddPost post={() => myPosts()} />
         </Box>
-        <Box>
-          {userPost?.length === undefined || 0 ? (
-            <Typography textAlign={"center"}>No Post Yet</Typography>
-          ) : (
-            userPost
-              .map((post, i) => {
-                return (
-                  <Post
-                    key={i}
-                    image={post.imageUrl}
-                    date={post.createdAt}
-                    description={post.caption}
-                    name={user?.name}
-                    icon={user?.profile_photo}
-                    id={post._id}
-                    shareCount="32"
-                    likes={post.likes.length}
-                    comment={post.comments}
-                    updateProfileData={() => myPosts()}
-                    data={post}
-                  />
-                );
-              })
-              .reverse()
-          )}
-        </Box>
+        <Stack direction="row" justifyContent="space-between">
+          <Box
+            sx={{
+              bgcolor: "background.gray",
+              maxHeight: "70vh",
+              borderRadius: "10px",
+              padding: "20px",
+              position: "sticky",
+              top: "0",
+            }}
+            width={"29%"}
+          >
+            <Typography
+              color="typography.dark"
+              fontWeight="bold"
+              fontSize="25px"
+              letterSpacing="4"
+            >
+              Intro
+            </Typography>
+            <Typography
+              textAlign="center"
+              color="typography.dark"
+              margin="15px 0"
+            >
+              Growing one experience at a time ⏲️ Capturing moments 📸
+            </Typography>
+            <Divider />
+          </Box>
+          <Box width={"67%"}>
+            {userPost?.length === undefined || 0 ? (
+              <Typography textAlign={"center"}>No Post Yet</Typography>
+            ) : (
+              userPost
+                .map((post, i) => {
+                  return (
+                    <Post
+                      key={i}
+                      image={post.imageUrl}
+                      date={post.createdAt}
+                      description={post.caption}
+                      name={user?.name}
+                      icon={user?.profile_photo}
+                      id={post._id}
+                      shareCount="32"
+                      // likes={post.likes.length}
+                      comment={post.comments}
+                      updateProfileData={() => myPosts()}
+                      data={post}
+                    />
+                  );
+                })
+                .reverse()
+            )}
+          </Box>
+        </Stack>
       </Container>
     </>
   );

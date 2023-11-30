@@ -28,9 +28,14 @@ function App() {
       background: {
         default: "#18191A",
         paper: "#242526",
+        gray: "#2F3031",
       },
       action: {
         selected: "rgba(255, 255, 255, 0.16)",
+      },
+      typography: {
+        light: "#A2A4A8",
+        dark: "#E4E6EB",
       },
     },
   });

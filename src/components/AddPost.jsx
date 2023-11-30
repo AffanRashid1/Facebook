@@ -56,7 +56,7 @@ const UserBox = styled(Box)(({ theme }) => ({
   marginBottom: "20px",
 }));
 
-const AddPost = ({ post }) => {
+const AddPost = ({ post, feedPosts }) => {
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.appReducer.user);
   const [caption, setCaption] = useState("");
@@ -65,7 +65,7 @@ const AddPost = ({ post }) => {
   const createPost = async (e) => {
     e.preventDefault();
 
-    if (caption == "") {
+    if (caption === "") {
       toast.error("Must Fill The Field");
     } else {
       try {
@@ -81,10 +81,10 @@ const AddPost = ({ post }) => {
             headers: { "Content-Type": "multipart/form-data" },
           }
         );
-
+        post();
+        feedPosts();
         setCaption("");
         setOpen(false);
-        post();
         console.log(file);
         console.log(res?.imageUrl);
         toast.success("Added Succesfully");

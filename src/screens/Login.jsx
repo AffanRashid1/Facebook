@@ -33,7 +33,6 @@ const Login = () => {
     borderRadius: "5px",
     padding: "8px 15px",
     margin: "15px 0",
-    width: "300px",
   };
 
   const [loginInput, setloginInput] = useState({

@@ -12,8 +12,8 @@ const Feed = () => {
 
   const feedPosts = async () => {
     try {
-      let resp = await axios.get(`${process.env.REACT_APP_API_KEY}/posts`);
-      setallPosts(resp?.data?.Posts);
+      let res = await axios.get(`${process.env.REACT_APP_API_KEY}/posts`);
+      setallPosts(res?.data?.Posts);
     } catch (err) {
       console.log(err);
     }
@@ -26,7 +26,11 @@ const Feed = () => {
   return (
     <Box flex={1.5} p={2} sx={{ paddingTop: "84px" }}>
       <Stories />
-      <AddPost />
+      <AddPost
+        feedPosts={() => {
+          feedPosts();
+        }}
+      />
       {allPosts?.length == undefined || 0 ? (
         <Typography textAlign={"center"}>No Post Yet</Typography>
       ) : (
@@ -35,16 +39,18 @@ const Feed = () => {
             return (
               <Post
                 key={i}
-                image={post.imageUrl}
-                createdAt={post.createdAt}
-                description={post.caption}
+                image={post?.imageUrl}
+                createdAt={post?.createdAt}
+                description={post?.caption}
                 name={post?.owner?.name}
                 icon={post?.owner?.profile_photo}
-                id={post._id}
+                id={post?._id}
                 shareCount="32"
-                likes={post.likes.length}
+                likes={post.likes}
                 comment={post.comments}
-                allPosts={allPosts}
+                feedPosts={() => {
+                  feedPosts();
+                }}
               />
             );
           })
