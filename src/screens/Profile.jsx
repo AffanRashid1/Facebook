@@ -1,6 +1,8 @@
 import {
   Avatar,
   Box,
+  Card,
+  CardContent,
   Container,
   Divider,
   Stack,
@@ -11,6 +13,7 @@ import { useSelector } from "react-redux";
 import AddPost from "../components/AddPost";
 import Post from "../components/Post";
 import axios from "axios";
+import HouseIcon from "@mui/icons-material/House";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);
@@ -98,16 +101,15 @@ const Profile = () => {
           <AddPost post={() => myPosts()} />
         </Box>
         <Stack direction="row" justifyContent="space-between">
-          <Box
+          <Card
             sx={{
-              bgcolor: "background.gray",
-              maxHeight: "70vh",
               borderRadius: "10px",
               padding: "20px",
               position: "sticky",
-              top: "0",
+              top: "10px",
+              width: "29%",
+              maxHeight: "70vh",
             }}
-            width={"29%"}
           >
             <Typography
               color="typography.dark"
@@ -125,7 +127,11 @@ const Profile = () => {
               Growing one experience at a time ⏲️ Capturing moments 📸
             </Typography>
             <Divider />
-          </Box>
+            <Stack direction="row" spacing={3} margin="10px 0">
+              <HouseIcon sx={{ color: "typography.dark" }} />
+              <Typography>Lives in Miami</Typography>
+            </Stack>
+          </Card>
           <Box width={"67%"}>
             {userPost?.length === undefined || 0 ? (
               <Typography textAlign={"center"}>No Post Yet</Typography>

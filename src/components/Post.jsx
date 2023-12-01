@@ -14,6 +14,7 @@ import {
   InputBase,
   Stack,
   FormControlLabel,
+  Backdrop,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -50,6 +51,7 @@ const Post = ({
   const [timeAgo, setTimeAgo] = useState("");
   const [liked, setLiked] = useState(false);
   const [commentBox, setcommentBox] = useState(false);
+  const [likeModal, setlikeModal] = useState(false);
 
   const handleProfileLikeClick = async (postId, liked) => {
     try {
@@ -160,14 +162,20 @@ const Post = ({
           justifyContent="space-between"
           padding="3px 10px"
         >
-          <Stack direction="row" spacing={0.5}>
+          <Stack
+            direction="row"
+            spacing={0.5}
+            onClick={() => {
+              setlikeModal(true);
+            }}
+          >
             <img src={likeSvg} alt="svg" width="18" />
             <Typography color="typography.light" fontSize={14}>
-              13
+              {likes?.length}
             </Typography>
           </Stack>
           <Typography color="typography.light" fontSize={14}>
-            13 comments
+            {comment?.length} comments
           </Typography>
         </Stack>
         <Divider />
@@ -187,7 +195,7 @@ const Post = ({
                 color="primary"
               />
             }
-            label={"23"}
+            label={"Like"}
           />
 
           <IconButton
@@ -301,6 +309,76 @@ const Post = ({
           }}
         >
           <Button onClick={deletepost}>Delete</Button>
+        </Box>
+      </Modal>
+
+      {/* Like Modal */}
+      <Modal
+        open={likeModal}
+        onClose={() => {
+          setlikeModal(false);
+        }}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+        disableAutoFocus
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            borderRadius: "10px",
+            boxShadow: 24,
+            pt: 2,
+            px: 4,
+            pb: 3,
+          }}
+        >
+          {likes.length === 0 ? (
+            <Typography>No likes</Typography>
+          ) : (
+            likes.map((liker) => {
+              return (
+                <>
+                  <Stack mb={3} direction="row" spacing={2} alignItems="center">
+                    <img src={likeSvg} alt="logo" width={25} />
+                    <Typography color="typography.dark">
+                      {likes?.length}
+                    </Typography>
+                  </Stack>
+
+                  <Divider />
+                  <Stack
+                    direction="row"
+                    spacing={3}
+                    alignItems="center"
+                    margin="10px 0"
+                  >
+                    <Avatar
+                      src={liker?.profile_photo}
+                      sx={{
+                        border: "2px solid transparent",
+                        outline: "2px solid grey",
+                      }}
+                    />
+                    <Typography color="typography.dark" fontSize={"20px"}>
+                      {liker?.name}
+                    </Typography>
+                  </Stack>
+                </>
+              );
+            })
+          )}
         </Box>
       </Modal>
     </>

@@ -30,6 +30,7 @@ import { Close } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { FileTypeIcon } from "@mui/icons-material";
 
 const addInputStyle = {
   display: "flex",
@@ -55,17 +56,28 @@ const UserBox = styled(Box)(({ theme }) => ({
   gap: "10px",
   marginBottom: "20px",
 }));
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
 const AddPost = ({ post, feedPosts }) => {
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.appReducer.user);
   const [caption, setCaption] = useState("");
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
 
   const createPost = async (e) => {
     e.preventDefault();
 
-    if (caption === "") {
+    if (caption === "" && file === null) {
       toast.error("Must Fill The Field");
     } else {
       try {
@@ -81,8 +93,8 @@ const AddPost = ({ post, feedPosts }) => {
             headers: { "Content-Type": "multipart/form-data" },
           }
         );
-        post();
         feedPosts();
+        // post();
         setCaption("");
         setOpen(false);
         console.log(file);
@@ -108,7 +120,7 @@ const AddPost = ({ post, feedPosts }) => {
               mt={2}
             >
               <Avatar
-                src={user.profile_photo}
+                src={user?.profile_photo}
                 sx={{ width: "45px", height: "45px", marginRight: "15px" }}
               />
               <Box sx={addInputStyle}>
@@ -135,6 +147,7 @@ const AddPost = ({ post, feedPosts }) => {
               <IconButton
                 aria-label="share"
                 sx={{ display: "flex", alignItems: "center" }}
+                onClick={(e) => setOpen(true)}
               >
                 <VideoCallIcon sx={{ color: "#F23E5C", fontSize: "30px" }} />
                 <Typography
@@ -151,6 +164,7 @@ const AddPost = ({ post, feedPosts }) => {
               <IconButton
                 aria-label="share"
                 sx={{ display: "flex", alignItems: "center" }}
+                onClick={(e) => setOpen(true)}
               >
                 <CollectionsIcon sx={{ color: "#58C472", fontSize: "25px" }} />
                 <Typography
@@ -164,9 +178,11 @@ const AddPost = ({ post, feedPosts }) => {
                   Photo/video
                 </Typography>
               </IconButton>
+
               <IconButton
                 aria-label="share"
                 sx={{ display: "flex", alignItems: "center" }}
+                onClick={(e) => setOpen(true)}
               >
                 <TagFacesIcon sx={{ color: "#F5BE3E", fontSize: "25px" }} />
                 <Typography
@@ -249,8 +265,15 @@ const AddPost = ({ post, feedPosts }) => {
                 margin: "15px 0",
               }}
             >
-              <IconButton>
-                <CollectionsIcon color="success" />
+              <IconButton component="label" variant="contained">
+                <CollectionsIcon sx={{ color: "#58C472", fontSize: "25px" }} />
+                <VisuallyHiddenInput
+                  type="file"
+                  filename={file}
+                  onChange={(e) => setFile(e.target.files[0])}
+                  accept="image/*"
+                  multiple
+                />
               </IconButton>
               <IconButton>
                 <PersonAddAltIcon color="primary" />
@@ -265,7 +288,7 @@ const AddPost = ({ post, feedPosts }) => {
               {/* <LocationOnIcon color="error" /> */}
             </Box>
             <Box sx={{ margin: "10px 0", width: "100%" }}>
-              <input
+              {/* <input
                 type="file"
                 // disableUnderline
                 // fullWidth
@@ -273,7 +296,7 @@ const AddPost = ({ post, feedPosts }) => {
                 onChange={(e) => setFile(e.target.files[0])}
                 accept="image/*"
                 multiple
-              />
+              /> */}
             </Box>
             <Button
               fullWidth
