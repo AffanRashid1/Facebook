@@ -47,13 +47,9 @@ function App() {
         method: "get",
         path: `${process.env.REACT_APP_API_KEY}/users/user`,
       });
-      // axios.defaults.withCredentials = true;
-      // let response = await axios.get(
-      //   `${process.env.REACT_APP_API_KEY}/users/user`
-      // );
 
       dispatch(setLogged());
-      dispatch(setUser(response?.data?.User));
+      dispatch(setUser(response?.payload?.user));
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);

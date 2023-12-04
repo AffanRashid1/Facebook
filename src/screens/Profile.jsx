@@ -14,6 +14,7 @@ import AddPost from "../components/AddPost";
 import Post from "../components/Post";
 import axios from "axios";
 import HouseIcon from "@mui/icons-material/House";
+import apiManager from "../Helper/ApiManager";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);
@@ -22,10 +23,12 @@ const Profile = () => {
 
   const myPosts = async () => {
     try {
-      let response = await axios.get(
-        `${process.env.REACT_APP_API_KEY}/posts/user-post`
-      );
-      setuserPost(response?.data?.Posts);
+      let response = await apiManager({
+        method: "get",
+        path: `${process.env.REACT_APP_API_KEY}/posts/user-post`,
+      });
+
+      setuserPost(response?.payload);
     } catch (error) {
       console.log(error);
     }
@@ -38,6 +41,7 @@ const Profile = () => {
       <Container
         sx={{
           bgcolor: "background.paper",
+          minHeight: "100vh",
         }}
       >
         <Box

@@ -45,13 +45,14 @@ const Login = () => {
             withCredentials: true,
           }
         );
-        localStorage.setItem("token", resp?.data?.token);
+
+        localStorage.setItem("token", resp?.data?.payload?.token);
         setloginInput({
           email: "",
           password: "",
         });
         dispatch(setLogged());
-        dispatch(setUser(resp?.data?.user));
+        dispatch(setUser(resp?.data?.payload?.user));
 
         toast.success(resp?.data?.message);
         navigate("/");

@@ -31,6 +31,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { FileTypeIcon } from "@mui/icons-material";
+import apiManager from "../Helper/ApiManager";
 
 const addInputStyle = {
   display: "flex",
@@ -85,12 +86,14 @@ const AddPost = ({ post, feedPosts }) => {
         formData.append("imageUrl", file);
         formData.append("caption", caption);
 
-        axios.defaults.withCredentials = true;
         let res = await axios.post(
           `${process.env.REACT_APP_API_KEY}/posts/create-post`,
           formData,
           {
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
         feedPosts();

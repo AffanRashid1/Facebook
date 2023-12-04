@@ -3,8 +3,8 @@ import Post from "./Post";
 import AddPost from "./AddPost";
 import Stories from "./Stories";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useSelector } from "react-redux";
+import apiManager from "../Helper/ApiManager";
 
 const Feed = () => {
   const user = useSelector((state) => state.appReducer.user);
@@ -12,8 +12,13 @@ const Feed = () => {
 
   const feedPosts = async () => {
     try {
-      let res = await axios.get(`${process.env.REACT_APP_API_KEY}/posts`);
-      setallPosts(res?.data?.Posts);
+      const response = await apiManager({
+        method: "get",
+        path: `${process.env.REACT_APP_API_KEY}/posts`,
+      });
+      console.log("🚀 ~ file: Feed.jsx:19 ~ feedPosts ~ response:");
+
+      setallPosts(response?.payload);
     } catch (err) {
       console.log(err);
     }

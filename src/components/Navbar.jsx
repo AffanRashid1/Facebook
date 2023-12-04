@@ -25,6 +25,8 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { setInitialLogged } from "../store/reducer";
 import { Link } from "react-router-dom";
+import apiManager from "../Helper/ApiManager";
+import Messenger from "./Messenger";
 
 // Toolbar to hold logo search and icons
 const StyledToolbar = styled(Toolbar)({
@@ -57,8 +59,8 @@ const Icons = styled(Box)(({ theme }) => ({
 
 // border for icons
 const IconsBorder = styled(Box)({
-  backgroundColor: "background.paper",
-  padding: "10px",
+  bgcolor: "red",
+  padding: "8px",
   borderRadius: "50%",
 });
 
@@ -78,13 +80,21 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [searchResult, setsearchResult] = useState([]);
   const [searchField, setsearchField] = useState("");
+  const [messengerOpen, setMessengerOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const openMessenger = Boolean(anchorEl);
+  const id = openMessenger ? "simple-popover" : undefined;
+
   let iconColor = "#2374e1";
 
   const handleSearch = async () => {
     try {
-      let res = await axios.get(`${process.env.REACT_APP_API_KEY}/users`);
-      // console.log(res?.data?.User);
-      setsearchResult(res?.data?.User);
+      let res = await apiManager({
+        method: "get",
+        path: `${process.env.REACT_APP_API_KEY}/users`,
+      });
+      setsearchResult(res?.payload);
     } catch (error) {
       console.log(error);
     }
@@ -96,11 +106,12 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      axios.defaults.withCredentials = true;
-      let response = await axios.get(
-        `${process.env.REACT_APP_API_KEY}/users/logout`
-      );
-      toast.success(response?.data?.message);
+      // let response = await apiManager({
+      //   method: "get",
+      //   path: `${process.env.REACT_APP_API_KEY}/users/logout`,
+      // });
+      localStorage.removeItem("token");
+      toast.success("Logout Successfully");
       dispatch(setInitialLogged());
     } catch (err) {
       console.log("🚀 ~ file: Navbar.jsx:26 ~ logoutHandler ~ err:", err);
@@ -216,24 +227,33 @@ const Navbar = () => {
           </IconButton>
         </Stack>
         <Icons>
-          <IconsBorder>
-            <Badge badgeContent={4} color="error">
-              <MailIcon
-                sx={{
-                  color: "text.secondary",
-                }}
-              />
-            </Badge>
-          </IconsBorder>
-          <IconsBorder>
-            <Badge badgeContent={9} color="error">
-              <Notifications
-                sx={{
-                  color: "text.secondary",
-                }}
-              />
-            </Badge>
-          </IconsBorder>
+          <IconButton
+            onClick={(event) => {
+              setAnchorEl(event.currentTarget);
+            }}
+            aria-describedby={id}
+          >
+            <IconsBorder>
+              <Badge badgeContent={4} color="error">
+                <MailIcon
+                  sx={{
+                    color: "text.secondary",
+                  }}
+                />
+              </Badge>
+            </IconsBorder>
+          </IconButton>
+          <IconButton>
+            <IconsBorder>
+              <Badge badgeContent={9} color="error">
+                <Notifications
+                  sx={{
+                    color: "text.secondary",
+                  }}
+                />
+              </Badge>
+            </IconsBorder>
+          </IconButton>
 
           <Avatar
             sx={{
@@ -306,6 +326,14 @@ const Navbar = () => {
           <Typography>Logout</Typography>
         </MenuItem>
       </Menu>
+      <Messenger
+        openMessenger={openMessenger}
+        setAnchorEl={() => {
+          setAnchorEl();
+        }}
+        id={id}
+        anchorEl={anchorEl}
+      />
     </AppBar>
   );
 };

@@ -30,6 +30,7 @@ import SendIcon from "@mui/icons-material/Send";
 import moment from "moment";
 import Checkbox from "@mui/material/Checkbox";
 import likeSvg from "../assets/facebook-like.svg";
+import apiManager from "../Helper/ApiManager";
 
 const Post = ({
   image,
@@ -55,9 +56,13 @@ const Post = ({
 
   const handleProfileLikeClick = async (postId, liked) => {
     try {
-      let res = await axios.post(
-        `${process.env.REACT_APP_API_KEY}/posts/like/${postId}`
-      );
+      let response = await apiManager({
+        method: "post",
+        path: `${process.env.REACT_APP_API_KEY}/posts/like/${postId}`,
+      });
+      // let res = await axios.post(
+      //   `${process.env.REACT_APP_API_KEY}/posts/like/${postId}`
+      // );
       setLiked((prevLiked) => !prevLiked);
 
       // likes.push(res?.data?.likerId);
@@ -70,13 +75,14 @@ const Post = ({
   const handleComment = async () => {
     try {
       if (commentInput?.trim()) {
-        let res = await axios.post(
-          `${process.env.REACT_APP_API_KEY}/posts/comment`,
-          {
+        let res = await apiManager({
+          method: "post",
+          path: `${process.env.REACT_APP_API_KEY}/posts/comment`,
+          params: {
             id,
             comment: commentInput,
-          }
-        );
+          },
+        });
         comment.push(res?.data?.newComment);
         setcommentInput("");
       }
@@ -87,9 +93,10 @@ const Post = ({
 
   const deletepost = async () => {
     try {
-      let response = await axios.delete(
-        `${process.env.REACT_APP_API_KEY}/posts/delete-post/${id}`
-      );
+      let response = await apiManager({
+        method: "get",
+        path: `${process.env.REACT_APP_API_KEY}/posts/delete-post/${id}`,
+      });
       setmodal(false);
       feedPosts();
       updateProfileData();
