@@ -44,9 +44,9 @@ const Post = ({
   updateProfileData,
   feedPosts,
 }) => {
+  const user = useSelector((state) => state.appReducer.user);
   const [modal, setmodal] = useState(false);
   const [loading, setloading] = useState(true);
-  const user = useSelector((state) => state.appReducer.user);
   const [commentInput, setcommentInput] = useState("");
   const [timeAgo, setTimeAgo] = useState("");
   const [liked, setLiked] = useState(false);
@@ -69,11 +69,11 @@ const Post = ({
 
   const handleComment = async () => {
     try {
-      if (commentInput != "") {
+      if (commentInput?.trim()) {
         let res = await axios.post(
           `${process.env.REACT_APP_API_KEY}/posts/comment`,
           {
-            id: id,
+            id,
             comment: commentInput,
           }
         );
@@ -190,14 +190,14 @@ const Post = ({
               <Checkbox
                 icon={<ThumbUpOutlinedIcon />}
                 checkedIcon={<ThumbUpIcon />}
-                checked={liked}
+                // checked={() => likes?.find(({ _id }) => _id == user?._id)}
+                checked={likes?.find(({ _id }) => _id == user?._id)}
                 onChange={() => handleProfileLikeClick(id, likes)}
                 color="primary"
               />
             }
             label={"Like"}
           />
-
           <IconButton
             aria-label="share"
             sx={{ display: "flex", alignItems: "center" }}
@@ -225,13 +225,14 @@ const Post = ({
         </CardActions>
         <Divider />
         <Box sx={{ display: commentBox ? "block" : "none" }}>
-          {comment?.map((comment) => {
+          {comment?.map((comment, i) => {
             return (
               <Stack
                 direction={"row"}
                 spacing={3}
                 alignItems={"center"}
                 margin={"8px 10px"}
+                key={i}
               >
                 <Avatar
                   sx={{ height: "22px", width: "22px" }}
@@ -318,6 +319,7 @@ const Post = ({
         onClose={() => {
           setlikeModal(false);
         }}
+        disableAutoFocus
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
         closeAfterTransition
@@ -327,7 +329,6 @@ const Post = ({
             timeout: 500,
           },
         }}
-        disableAutoFocus
       >
         <Box
           sx={{
@@ -344,12 +345,14 @@ const Post = ({
             pb: 3,
           }}
         >
-          {likes.length === 0 ? (
-            <Typography>No likes</Typography>
+          {likes?.length == undefined || 0 ? (
+            <Typography color="typography.dark" textAlign="center">
+              No likes
+            </Typography>
           ) : (
-            likes.map((liker) => {
+            likes.map((liker, i) => {
               return (
-                <>
+                <Box key={i}>
                   <Stack mb={3} direction="row" spacing={2} alignItems="center">
                     <img src={likeSvg} alt="logo" width={25} />
                     <Typography color="typography.dark">
@@ -375,7 +378,7 @@ const Post = ({
                       {liker?.name}
                     </Typography>
                   </Stack>
-                </>
+                </Box>
               );
             })
           )}
