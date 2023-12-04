@@ -60,7 +60,7 @@ const Post = ({
       );
       setLiked((prevLiked) => !prevLiked);
 
-      // likes.push(res?.data);
+      // likes.push(res?.data?.likerId);
       // updateProfileData();
     } catch (error) {
       console.log(error);
@@ -240,7 +240,6 @@ const Post = ({
                 />
                 <Box
                   sx={{
-                    // backgroundColor: "#F0F2F6",
                     bgcolor: "action.selected",
                     borderRadius: "6px",
                     padding: "5px 8px",

@@ -184,7 +184,7 @@ const Navbar = () => {
           <IconButton>
             <svg
               viewBox="0 0 28 28"
-              class="b6ax4al1 m4pnbp5e somyomsx ahndzqod gnhxmgs4"
+              className="b6ax4al1 m4pnbp5e somyomsx ahndzqod gnhxmgs4"
               fill="currentColor"
               height="28"
               width="28"
@@ -195,7 +195,7 @@ const Navbar = () => {
           <IconButton>
             <svg
               viewBox="0 0 28 28"
-              class="b6ax4al1 m4pnbp5e somyomsx ahndzqod gnhxmgs4"
+              className="b6ax4al1 m4pnbp5e somyomsx ahndzqod gnhxmgs4"
               fill="currentColor"
               height="28"
               width="28"
@@ -206,7 +206,7 @@ const Navbar = () => {
           <IconButton>
             <svg
               viewBox="0 0 28 28"
-              class="b6ax4al1 m4pnbp5e somyomsx ahndzqod gnhxmgs4"
+              className="b6ax4al1 m4pnbp5e somyomsx ahndzqod gnhxmgs4"
               fill="currentColor"
               height="28"
               width="28"

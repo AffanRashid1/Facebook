@@ -9,11 +9,12 @@ import HOC from "./HOC";
 import Error from "./screens/Error";
 import { routes } from "./router";
 import { createTheme, ThemeProvider } from "@mui/material";
+import apiManager from "./Helper/ApiManager";
 
 function App() {
   const dispatch = useDispatch();
   const isLogged = useSelector((state) => state.appReducer.isLogged);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState("dark");
 
   const darkTheme = createTheme({
@@ -42,10 +43,15 @@ function App() {
 
   const userCall = async () => {
     try {
-      axios.defaults.withCredentials = true;
-      let response = await axios.get(
-        `${process.env.REACT_APP_API_KEY}/users/user`
-      );
+      const response = await apiManager({
+        method: "get",
+        path: `${process.env.REACT_APP_API_KEY}/users/user`,
+      });
+      // axios.defaults.withCredentials = true;
+      // let response = await axios.get(
+      //   `${process.env.REACT_APP_API_KEY}/users/user`
+      // );
+
       dispatch(setLogged());
       dispatch(setUser(response?.data?.User));
       setTimeout(() => {

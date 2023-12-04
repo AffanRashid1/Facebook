@@ -1,29 +1,14 @@
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  FormControl,
-  IconButton,
-  Input,
-  InputBase,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, InputBase, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { TextField } from "@mui/material";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setLogged, setUser } from "../store/reducer";
 import loginsvg from "../assets/loginsvg.svg";
 
 const Login = () => {
-  const isLogged = useSelector((state) => state.appReducer.isLogged);
-  const user = useSelector((state) => state.appReducer.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -60,6 +45,7 @@ const Login = () => {
             withCredentials: true,
           }
         );
+        localStorage.setItem("token", resp?.data?.token);
         setloginInput({
           email: "",
           password: "",
@@ -81,18 +67,16 @@ const Login = () => {
           sx={{
             height: "100vh",
             display: "flex",
-            flexDirection: "column",
             justifyContent: "space-evenly",
             flexDirection: { xs: "column", sm: "row" },
             alignItems: "center",
           }}
         >
           <Box>
-            <img src={loginsvg} width={300} />
+            <img src={loginsvg} width={300} alt="svg" />
             <Typography
               sx={{
                 fontFamily: "monospace",
-                textAlign: "center",
                 fontSize: { xs: "1rem", sm: "1.5rem" },
                 userSelect: "none",
                 textAlign: "left",
@@ -104,7 +88,7 @@ const Login = () => {
               your life.
             </Typography>
           </Box>
-          <FormControl
+          <Box
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -161,7 +145,7 @@ const Login = () => {
             >
               Create New Account
             </Button>
-          </FormControl>
+          </Box>
         </Box>
       </Container>
     </>
