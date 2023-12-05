@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -14,6 +14,7 @@ import {
   Button,
   Input,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import TagFacesIcon from "@mui/icons-material/TagFaces";
@@ -74,40 +75,49 @@ const AddPost = ({ post, feedPosts }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [caption, setCaption] = useState("");
   const [file, setFile] = useState(null);
+  const [imgUrl, setimgUrl] = useState(null);
+  const [loadingBtn, setloadingBtn] = useState(false);
 
   const createPost = async (e) => {
     e.preventDefault();
-
     if (caption === "" && file === null) {
       toast.error("Must Fill The Field");
     } else {
       try {
+        setloadingBtn(true);
         let formData = new FormData();
         formData.append("imageUrl", file);
         formData.append("caption", caption);
 
-        let res = await axios.post(
-          `${process.env.REACT_APP_API_KEY}/posts/create-post`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        let res = await apiManager({
+          method: "post",
+          path: `/posts/create-post`,
+          params: formData,
+          header: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
         feedPosts();
         // post();
         setCaption("");
         setOpen(false);
-        console.log(file);
-        console.log(res?.imageUrl);
         toast.success("Added Succesfully");
+        setimgUrl(null);
       } catch (error) {
-        console.error(error);
+        toast.error(error);
+        setOpen(false);
+      } finally {
+        setloadingBtn(false);
       }
     }
   };
+
+  useEffect(() => {
+    if (file) {
+      setimgUrl(URL.createObjectURL(file));
+    }
+  }, [file]);
 
   return (
     <>
@@ -205,7 +215,10 @@ const AddPost = ({ post, feedPosts }) => {
         {/* add post modal */}
         <StyledModal
           open={open}
-          onClose={(e) => setOpen(false)}
+          onClose={(e) => {
+            setOpen(false);
+            setCaption("");
+          }}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
           disableAutoFocus={true}
@@ -253,7 +266,7 @@ const AddPost = ({ post, feedPosts }) => {
               multiline
               rows={3}
               placeholder="What's on your mind?"
-              sx={{ width: "100%" }}
+              sx={{ width: "100%", margin: "10px 0" }}
               variant="standard"
               value={caption}
               onChange={(e) => {
@@ -261,6 +274,21 @@ const AddPost = ({ post, feedPosts }) => {
               }}
               autoFocus
             />
+            {imgUrl !== null ? (
+              <Box
+                sx={{
+                  width: "100%",
+                }}
+              >
+                <img
+                  src={imgUrl}
+                  alt=""
+                  style={{ width: "100%", borderRadius: "10px" }}
+                />
+              </Box>
+            ) : (
+              ""
+            )}
             <Box
               sx={{
                 display: "flex",
@@ -290,26 +318,24 @@ const AddPost = ({ post, feedPosts }) => {
               {/* <TagFacesIcon color="success" /> */}
               {/* <LocationOnIcon color="error" /> */}
             </Box>
-            <Box sx={{ margin: "10px 0", width: "100%" }}>
-              {/* <input
-                type="file"
-                // disableUnderline
-                // fullWidth
-                filename={file}
-                onChange={(e) => setFile(e.target.files[0])}
-                accept="image/*"
-                multiple
-              /> */}
-            </Box>
-            <Button
-              fullWidth
+
+            <LoadingButton
+              loading={loadingBtn}
               variant="contained"
-              aria-label="outlined primary button group"
-              sx={{ margin: "5px 0" }}
+              fullWidth
               onClick={createPost}
             >
               Post
-            </Button>
+            </LoadingButton>
+            {/* <Button
+              fullWidth
+              variant="contained"
+              aria-label="outlined primary button group"
+              sx={{ margin: "10px 0" }}
+              onClick={createPost}
+            >
+              Post
+            </Button> */}
           </Box>
         </StyledModal>
       </form>

@@ -25,10 +25,9 @@ const Profile = () => {
     try {
       let response = await apiManager({
         method: "get",
-        path: `${process.env.REACT_APP_API_KEY}/posts/user-post`,
+        path: `/posts/user-post`,
       });
-
-      setuserPost(response?.payload);
+      setuserPost(response?.data?.payload);
     } catch (error) {
       console.log(error);
     }

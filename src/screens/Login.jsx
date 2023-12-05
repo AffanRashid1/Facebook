@@ -1,16 +1,27 @@
-import { Box, Button, Container, InputBase, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputBase,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogged, setUser } from "../store/reducer";
 import loginsvg from "../assets/loginsvg.svg";
+import apiManager from "../Helper/ApiManager";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setshowPassword] = useState(false);
 
   let inputStyle = {
     color: "black",
@@ -31,22 +42,25 @@ const Login = () => {
     });
   };
   const handleLogin = async () => {
-    if (loginInput.email == "" || loginInput.password == "") {
+    if (loginInput.email === "" || loginInput.password === "") {
       toast.error("Must Fill the Field");
     } else {
       try {
-        let resp = await axios.post(
-          `${process.env.REACT_APP_API_KEY}/users/login`,
-          {
+        let resp = await apiManager({
+          method: "post",
+          path: `/users/login`,
+          params: {
             email: loginInput.email,
             password: loginInput.password,
           },
-          {
-            withCredentials: true,
-          }
+        });
+        console.log(
+          "🚀 ~ file: Login.jsx:54 ~ handleLogin ~ resp:",
+          resp?.data?.payload?.user
         );
 
         localStorage.setItem("token", resp?.data?.payload?.token);
+
         setloginInput({
           email: "",
           password: "",
@@ -89,7 +103,7 @@ const Login = () => {
               your life.
             </Typography>
           </Box>
-          <Box
+          <FormControl
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -99,13 +113,6 @@ const Login = () => {
                 "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
             }}
           >
-            {/* <Typography
-              textAlign={"center"}
-              fontSize={"20px"}
-              fontWeight={"bold"}
-            >
-              Login
-            </Typography> */}
             <InputBase
               placeholder="Enter Email"
               color="primary"
@@ -114,15 +121,29 @@ const Login = () => {
               onChange={handleInputChange}
               name="email"
               sx={inputStyle}
+              type="email"
             />
             <InputBase
               placeholder="Enter Password"
-              color="primary"
               focused
               value={loginInput.password}
               onChange={handleInputChange}
               name="password"
               sx={inputStyle}
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => {
+                      setshowPassword(!showPassword);
+                    }}
+                    sx={{ color: "black" }}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
             />
             <Button
               variant="contained"
@@ -146,7 +167,7 @@ const Login = () => {
             >
               Create New Account
             </Button>
-          </Box>
+          </FormControl>
         </Box>
       </Container>
     </>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Loader from "./components/Loader";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { setLogged, setUser } from "./store/reducer";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,7 +14,7 @@ import apiManager from "./Helper/ApiManager";
 function App() {
   const dispatch = useDispatch();
   const isLogged = useSelector((state) => state.appReducer.isLogged);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [mode, setMode] = useState("dark");
 
   const darkTheme = createTheme({
@@ -45,16 +45,14 @@ function App() {
     try {
       const response = await apiManager({
         method: "get",
-        path: `${process.env.REACT_APP_API_KEY}/users/user`,
+        path: `/users/user`,
       });
 
       dispatch(setLogged());
-      dispatch(setUser(response?.payload?.user));
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+      dispatch(setUser(response?.data?.payload?.user));
+      setIsLoading(false);
     } catch (err) {
-      console.log(err);
+      toast.error(err);
       setIsLoading(false);
     }
   };

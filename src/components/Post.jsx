@@ -15,6 +15,8 @@ import {
   Stack,
   FormControlLabel,
   Backdrop,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -22,7 +24,6 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ReplyIcon from "@mui/icons-material/Reply";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -46,26 +47,23 @@ const Post = ({
   feedPosts,
 }) => {
   const user = useSelector((state) => state.appReducer.user);
-  const [modal, setmodal] = useState(false);
   const [loading, setloading] = useState(true);
   const [commentInput, setcommentInput] = useState("");
   const [timeAgo, setTimeAgo] = useState("");
-  const [liked, setLiked] = useState(false);
   const [commentBox, setcommentBox] = useState(false);
   const [likeModal, setlikeModal] = useState(false);
+  const [moreIconMenu, setmoreIconMenu] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   const handleProfileLikeClick = async (postId, liked) => {
     try {
       let response = await apiManager({
         method: "post",
-        path: `${process.env.REACT_APP_API_KEY}/posts/like/${postId}`,
+        path: `/posts/like/${postId}`,
       });
-      // let res = await axios.post(
-      //   `${process.env.REACT_APP_API_KEY}/posts/like/${postId}`
-      // );
-      setLiked((prevLiked) => !prevLiked);
 
-      // likes.push(res?.data?.likerId);
+      likes.push(response?.data?.likerId);
       // updateProfileData();
     } catch (error) {
       console.log(error);
@@ -77,7 +75,7 @@ const Post = ({
       if (commentInput?.trim()) {
         let res = await apiManager({
           method: "post",
-          path: `${process.env.REACT_APP_API_KEY}/posts/comment`,
+          path: `/posts/comment`,
           params: {
             id,
             comment: commentInput,
@@ -95,9 +93,8 @@ const Post = ({
     try {
       let response = await apiManager({
         method: "get",
-        path: `${process.env.REACT_APP_API_KEY}/posts/delete-post/${id}`,
+        path: `/posts/delete-post/${id}`,
       });
-      setmodal(false);
       feedPosts();
       updateProfileData();
       toast.success(response?.data?.message);
@@ -140,14 +137,29 @@ const Post = ({
         <CardHeader
           avatar={<Avatar sx={{ bgcolor: "gray" }} src={icon} />}
           action={
-            <IconButton
-              onClick={() => {
-                setmodal(true);
-              }}
-            >
-              <MoreHorizIcon />
-              {/* <CloseIcon /> */}
-            </IconButton>
+            <>
+              <IconButton
+                onClick={(event) => {
+                  setAnchorEl(event.currentTarget);
+                }}
+                aria-label="more"
+                id="long-button"
+                aria-controls={open ? "long-menu" : undefined}
+                aria-expanded={open ? "true" : undefined}
+                aria-haspopup="true"
+              >
+                <MoreHorizIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={() => {
+                  setAnchorEl(null);
+                }}
+              >
+                <MenuItem>Report</MenuItem>
+              </Menu>
+            </>
           }
           title={name}
           subheader={timeAgo}
@@ -197,7 +209,6 @@ const Post = ({
               <Checkbox
                 icon={<ThumbUpOutlinedIcon />}
                 checkedIcon={<ThumbUpIcon />}
-                // checked={() => likes?.find(({ _id }) => _id == user?._id)}
                 checked={likes?.find(({ _id }) => _id == user?._id)}
                 onChange={() => handleProfileLikeClick(id, likes)}
                 color="primary"
@@ -295,30 +306,6 @@ const Post = ({
         </Box>
       </Card>
 
-      <Modal
-        open={modal}
-        onClose={() => {
-          setmodal(false);
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            borderRadius: "8px",
-            boxShadow: 24,
-            p: 4,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Button onClick={deletepost}>Delete</Button>
-        </Box>
-      </Modal>
-
       {/* Like Modal */}
       <Modal
         open={likeModal}
@@ -351,6 +338,11 @@ const Post = ({
             pb: 3,
           }}
         >
+          <Stack spacing={1} direction="row" mb={2}>
+            <img src={likeSvg} alt="logo" width={25} />
+            <Typography color="typography.dark">{likes?.length}</Typography>
+          </Stack>
+          <Divider />
           {likes?.length == undefined || 0 ? (
             <Typography color="typography.dark" textAlign="center">
               No likes
@@ -359,14 +351,6 @@ const Post = ({
             likes.map((liker, i) => {
               return (
                 <Box key={i}>
-                  <Stack mb={3} direction="row" spacing={2} alignItems="center">
-                    <img src={likeSvg} alt="logo" width={25} />
-                    <Typography color="typography.dark">
-                      {likes?.length}
-                    </Typography>
-                  </Stack>
-
-                  <Divider />
                   <Stack
                     direction="row"
                     spacing={3}

@@ -1,10 +1,19 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  IconButton,
+  InputAdornment,
+  InputBase,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { TextField } from "@mui/material";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../assets/facebook.svg";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignUp = () => {
   const [formDetails, setformDetails] = useState({
@@ -12,6 +21,7 @@ const SignUp = () => {
     email: "",
     password: "",
   });
+  const [showPassword, setshowPassword] = useState(false);
 
   function handleInputChange(e) {
     setformDetails({
@@ -19,6 +29,14 @@ const SignUp = () => {
       [e.target.name]: e.target.value,
     });
   }
+
+  let inputStyle = {
+    color: "black",
+    border: "1px solid grey",
+    borderRadius: "5px",
+    padding: "8px 15px",
+    margin: "8px 0",
+  };
 
   const registerHandler = async () => {
     if (
@@ -52,7 +70,7 @@ const SignUp = () => {
 
   return (
     <>
-      <Container maxWidth="100vw" sx={{ bgcolor: "background.default" }}>
+      <Container maxWidth="100vw" sx={{ bgcolor: "white" }}>
         <Box
           sx={{
             height: "100vh",
@@ -78,7 +96,7 @@ const SignUp = () => {
                 userSelect: "none",
                 textAlign: "left",
                 marginLeft: "10px",
-                color: "text.primary",
+                color: "black",
               }}
             >
               Facebook helps you connect and <br /> share with the people in
@@ -103,7 +121,7 @@ const SignUp = () => {
             >
               Sign Up
             </Typography>
-            <TextField
+            <InputBase
               label="Name"
               placeholder="Enter Name"
               color="primary"
@@ -111,8 +129,9 @@ const SignUp = () => {
               name="name"
               onChange={handleInputChange}
               value={formDetails.name}
+              sx={inputStyle}
             />
-            <TextField
+            <InputBase
               label="Email"
               placeholder="Enter Email"
               color="primary"
@@ -121,8 +140,9 @@ const SignUp = () => {
               onChange={handleInputChange}
               type="email"
               value={formDetails.email}
+              sx={inputStyle}
             />
-            <TextField
+            <InputBase
               label="Password"
               placeholder="Enter Password"
               color="primary"
@@ -130,6 +150,21 @@ const SignUp = () => {
               name="password"
               onChange={handleInputChange}
               value={formDetails.password}
+              sx={inputStyle}
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => {
+                      setshowPassword(!showPassword);
+                    }}
+                    sx={{ color: "black" }}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
             />
             <Button variant="contained" size="medium" onClick={registerHandler}>
               Sign Up

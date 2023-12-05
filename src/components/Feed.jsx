@@ -14,11 +14,10 @@ const Feed = () => {
     try {
       const response = await apiManager({
         method: "get",
-        path: `${process.env.REACT_APP_API_KEY}/posts`,
+        path: `/posts`,
       });
-      console.log("🚀 ~ file: Feed.jsx:19 ~ feedPosts ~ response:");
 
-      setallPosts(response?.payload);
+      setallPosts(response?.data?.payload);
     } catch (err) {
       console.log(err);
     }

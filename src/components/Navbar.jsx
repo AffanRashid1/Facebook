@@ -80,11 +80,6 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [searchResult, setsearchResult] = useState([]);
   const [searchField, setsearchField] = useState("");
-  const [messengerOpen, setMessengerOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const openMessenger = Boolean(anchorEl);
-  const id = openMessenger ? "simple-popover" : undefined;
 
   let iconColor = "#2374e1";
 
@@ -92,9 +87,9 @@ const Navbar = () => {
     try {
       let res = await apiManager({
         method: "get",
-        path: `${process.env.REACT_APP_API_KEY}/users`,
+        path: `/users`,
       });
-      setsearchResult(res?.payload);
+      setsearchResult(res?.data?.payload);
     } catch (error) {
       console.log(error);
     }
@@ -227,12 +222,7 @@ const Navbar = () => {
           </IconButton>
         </Stack>
         <Icons>
-          <IconButton
-            onClick={(event) => {
-              setAnchorEl(event.currentTarget);
-            }}
-            aria-describedby={id}
-          >
+          <IconButton>
             <IconsBorder>
               <Badge badgeContent={4} color="error">
                 <MailIcon
@@ -326,14 +316,7 @@ const Navbar = () => {
           <Typography>Logout</Typography>
         </MenuItem>
       </Menu>
-      <Messenger
-        openMessenger={openMessenger}
-        setAnchorEl={() => {
-          setAnchorEl();
-        }}
-        id={id}
-        anchorEl={anchorEl}
-      />
+      <Messenger />
     </AppBar>
   );
 };
