@@ -10,28 +10,19 @@ import {
   Modal,
   TextField,
   Stack,
-  ButtonGroup,
-  Button,
-  Input,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import TagFacesIcon from "@mui/icons-material/TagFaces";
-import avatar from "../assets/avatar.jpg";
 import styled from "@emotion/styled";
 import { useState } from "react";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import GifBoxIcon from "@mui/icons-material/GifBox";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import DateRangeIcon from "@mui/icons-material/DateRange";
 import CloseIcon from "@mui/icons-material/Close";
-import { Close } from "@mui/icons-material";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import axios from "axios";
-import { FileTypeIcon } from "@mui/icons-material";
 import apiManager from "../Helper/ApiManager";
 
 const addInputStyle = {
@@ -70,7 +61,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const AddPost = ({ post, feedPosts }) => {
+const AddPost = ({ post, feedPosts, isProfile }) => {
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.appReducer.user);
   const [caption, setCaption] = useState("");
@@ -98,15 +89,15 @@ const AddPost = ({ post, feedPosts }) => {
           },
         });
 
-        feedPosts();
-        // post();
+        isProfile ? post() : feedPosts();
         setCaption("");
         setOpen(false);
-        toast.success("Added Succesfully");
         setimgUrl(null);
+        toast.success(res?.data?.message);
       } catch (error) {
-        toast.error(error);
+        setimgUrl(null);
         setOpen(false);
+        toast.error(error?.message);
       } finally {
         setloadingBtn(false);
       }
@@ -218,6 +209,7 @@ const AddPost = ({ post, feedPosts }) => {
           onClose={(e) => {
             setOpen(false);
             setCaption("");
+            setimgUrl(null);
           }}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -283,7 +275,10 @@ const AddPost = ({ post, feedPosts }) => {
                 <img
                   src={imgUrl}
                   alt=""
-                  style={{ width: "100%", borderRadius: "10px" }}
+                  style={{
+                    width: "100%",
+                    borderRadius: "10px",
+                  }}
                 />
               </Box>
             ) : (
@@ -327,15 +322,6 @@ const AddPost = ({ post, feedPosts }) => {
             >
               Post
             </LoadingButton>
-            {/* <Button
-              fullWidth
-              variant="contained"
-              aria-label="outlined primary button group"
-              sx={{ margin: "10px 0" }}
-              onClick={createPost}
-            >
-              Post
-            </Button> */}
           </Box>
         </StyledModal>
       </form>

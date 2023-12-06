@@ -20,7 +20,6 @@ import styled from "@emotion/styled";
 import MailIcon from "@mui/icons-material/Mail";
 import { Notifications } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { setInitialLogged } from "../store/reducer";
@@ -101,15 +100,11 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      // let response = await apiManager({
-      //   method: "get",
-      //   path: `${process.env.REACT_APP_API_KEY}/users/logout`,
-      // });
       localStorage.removeItem("token");
       toast.success("Logout Successfully");
       dispatch(setInitialLogged());
     } catch (err) {
-      console.log("🚀 ~ file: Navbar.jsx:26 ~ logoutHandler ~ err:", err);
+      toast.error(err?.message);
     }
   };
   return (
@@ -256,14 +251,14 @@ const Navbar = () => {
             onClick={(e) => setOpen(true)}
           />
         </Icons>
-        {/* <UserBox>
+        <UserBox>
           <Avatar
             sx={{ width: "35px", height: "35px" }}
             src={user?.profile_photo}
             onClick={(e) => setOpen(true)}
           />
           <Typography variant="span">{user?.name}</Typography>
-        </UserBox> */}
+        </UserBox>
       </StyledToolbar>
       <Menu
         id="demo-positioned-menu"

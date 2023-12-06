@@ -3,11 +3,9 @@ import Post from "./Post";
 import AddPost from "./AddPost";
 import Stories from "./Stories";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import apiManager from "../Helper/ApiManager";
 
 const Feed = () => {
-  const user = useSelector((state) => state.appReducer.user);
   const [allPosts, setallPosts] = useState([]);
 
   const feedPosts = async () => {

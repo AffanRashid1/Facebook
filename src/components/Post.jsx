@@ -8,7 +8,6 @@ import {
   Avatar,
   Modal,
   Box,
-  Button,
   Skeleton,
   Divider,
   InputBase,
@@ -45,6 +44,7 @@ const Post = ({
   comment,
   updateProfileData,
   feedPosts,
+  isProfile,
 }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [loading, setloading] = useState(true);
@@ -52,11 +52,10 @@ const Post = ({
   const [timeAgo, setTimeAgo] = useState("");
   const [commentBox, setcommentBox] = useState(false);
   const [likeModal, setlikeModal] = useState(false);
-  const [moreIconMenu, setmoreIconMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleProfileLikeClick = async (postId, liked) => {
+  const handleProfileLikeClick = async (postId) => {
     try {
       let response = await apiManager({
         method: "post",
@@ -64,7 +63,7 @@ const Post = ({
       });
 
       likes.push(response?.data?.likerId);
-      // updateProfileData();
+      isProfile ? updateProfileData() : feedPosts();
     } catch (error) {
       console.log(error);
     }
@@ -89,15 +88,14 @@ const Post = ({
     }
   };
 
-  const deletepost = async () => {
+  const deletePost = async () => {
     try {
       let response = await apiManager({
-        method: "get",
+        method: "delete",
         path: `/posts/delete-post/${id}`,
       });
-      feedPosts();
-      updateProfileData();
       toast.success(response?.data?.message);
+      updateProfileData();
     } catch (error) {
       console.log(error);
     }
@@ -157,6 +155,9 @@ const Post = ({
                   setAnchorEl(null);
                 }}
               >
+                {isProfile ? (
+                  <MenuItem onClick={deletePost}>Delete</MenuItem>
+                ) : null}
                 <MenuItem>Report</MenuItem>
               </Menu>
             </>
@@ -242,6 +243,9 @@ const Post = ({
           </IconButton>
         </CardActions>
         <Divider />
+
+        {/* Comment Section */}
+
         <Box sx={{ display: commentBox ? "block" : "none" }}>
           {comment?.map((comment, i) => {
             return (
@@ -251,6 +255,7 @@ const Post = ({
                 alignItems={"center"}
                 margin={"8px 10px"}
                 key={i}
+                width="400px"
               >
                 <Avatar
                   sx={{ height: "22px", width: "22px" }}
@@ -261,6 +266,7 @@ const Post = ({
                     bgcolor: "action.selected",
                     borderRadius: "6px",
                     padding: "5px 8px",
+                    width: "50%",
                   }}
                 >
                   <Typography
@@ -270,7 +276,12 @@ const Post = ({
                   >
                     {comment?.owner?.name}
                   </Typography>
-                  <Typography fontSize={"15px"}>{comment?.comment}</Typography>
+                  <Typography
+                    fontSize={"15px"}
+                    sx={{ overflowWrap: "break-word" }}
+                  >
+                    {comment?.comment}
+                  </Typography>
                 </Box>
               </Stack>
             );
