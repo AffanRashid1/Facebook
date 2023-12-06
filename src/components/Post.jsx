@@ -45,6 +45,7 @@ const Post = ({
   updateProfileData,
   feedPosts,
   isProfile,
+  ownerId,
 }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [loading, setloading] = useState(true);
@@ -95,7 +96,7 @@ const Post = ({
         path: `/posts/delete-post/${id}`,
       });
       toast.success(response?.data?.message);
-      updateProfileData();
+      isProfile ? updateProfileData() : feedPosts();
     } catch (error) {
       console.log(error);
     }
@@ -155,7 +156,7 @@ const Post = ({
                   setAnchorEl(null);
                 }}
               >
-                {isProfile ? (
+                {ownerId == user?._id ? (
                   <MenuItem onClick={deletePost}>Delete</MenuItem>
                 ) : null}
                 <MenuItem>Report</MenuItem>

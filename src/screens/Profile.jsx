@@ -64,7 +64,7 @@ const Profile = () => {
       });
       setimgPreview(null);
       setshowUpdateModal(false);
-      console.log(response);
+
       toast.success(response?.data?.message);
     } catch (error) {
       toast.error(error?.message);
@@ -142,6 +142,8 @@ const Profile = () => {
             variant="contained"
             onClick={() => {
               setshowUpdateModal(true);
+              setupdateNameInput(user?.name);
+              setupdateEmailInput(user?.email);
             }}
           >
             <EditIcon />
@@ -203,6 +205,7 @@ const Profile = () => {
                       comment={post.comments}
                       updateProfileData={() => myPosts()}
                       isProfile={isProfile}
+                      ownerId={post?.owner?._id}
                     />
                   );
                 })
