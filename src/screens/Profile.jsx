@@ -21,6 +21,7 @@ import apiManager from "../Helper/ApiManager";
 import CameraIcon from "@mui/icons-material/Camera";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
+import Navbar from "../components/Navbar";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);
@@ -84,6 +85,7 @@ const Profile = () => {
   }, []);
   return (
     <>
+      <Navbar />
       <Container
         sx={{
           bgcolor: "background.paper",
@@ -107,7 +109,7 @@ const Profile = () => {
             display: "flex",
             alignItems: "center",
             padding: "0 20px",
-            gap: { xs: "10px", sm: "500px" },
+            gap: { xs: "10px", sm: "250px" },
             flexDirection: { xs: "column", sm: "row" },
             userSelect: "none",
           }}

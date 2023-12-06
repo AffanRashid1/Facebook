@@ -33,7 +33,7 @@ const Feed = () => {
           feedPosts();
         }}
       />
-      {allPosts?.length == undefined || 0 ? (
+      {!allPosts?.length ? (
         <Typography textAlign={"center"}>No Post Yet</Typography>
       ) : (
         allPosts
@@ -56,7 +56,7 @@ const Feed = () => {
               />
             );
           })
-          .reverse()
+          
       )}
     </Box>
   );

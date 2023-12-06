@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Container,
+  FormControl,
   IconButton,
   InputAdornment,
   InputBase,
@@ -10,7 +11,7 @@ import {
 import React, { useState } from "react";
 import { TextField } from "@mui/material";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../assets/facebook.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -22,6 +23,7 @@ const SignUp = () => {
     password: "",
   });
   const [showPassword, setshowPassword] = useState(false);
+  const navigate = useNavigate();
 
   function handleInputChange(e) {
     setformDetails({
@@ -38,13 +40,22 @@ const SignUp = () => {
     margin: "8px 0",
   };
 
-  const registerHandler = async () => {
+  const registerHandler = async (e) => {
+    e.preventDefault();
     if (
       formDetails.email === "" ||
       formDetails.name === "" ||
       formDetails.password === ""
     ) {
       toast.error("Fill Form");
+    } else if (formDetails.password.length < 6) {
+      toast.error("Password length must be longer than 6");
+    } else if (formDetails.password.length > 20) {
+      toast.error("Password length must be shorter than 20");
+    } else if (formDetails.name.length < 3) {
+      toast.error("Name is too short");
+    } else if (formDetails.name.length > 20) {
+      toast.error("Name is too long");
     } else {
       try {
         axios.defaults.withCredentials = true;
@@ -57,13 +68,14 @@ const SignUp = () => {
           }
         );
         toast.success(resp.data.message);
+        navigate("/login");
         setformDetails({
           name: "",
           email: "",
           password: "",
         });
       } catch (err) {
-        toast.error(err?.message);
+        toast.error(err?.response?.data?.message);
       }
     }
   };
@@ -103,8 +115,9 @@ const SignUp = () => {
               your life.
             </Typography>
           </Box>
-          <Box
-            sx={{
+          <form
+            onSubmit={registerHandler}
+            style={{
               display: "flex",
               flexDirection: "column",
               gap: "30px",
@@ -130,8 +143,10 @@ const SignUp = () => {
               onChange={handleInputChange}
               value={formDetails.name}
               sx={inputStyle}
+              required
             />
             <InputBase
+              required
               label="Email"
               placeholder="Enter Email"
               color="primary"
@@ -166,13 +181,13 @@ const SignUp = () => {
                 </InputAdornment>
               }
             />
-            <Button variant="contained" size="medium" onClick={registerHandler}>
+            <Button variant="contained" size="medium" type="submit">
               Sign Up
             </Button>
             <Typography>
               Already have an account ?<Link to="/login">Login</Link>
             </Typography>
-          </Box>
+          </form>
         </Box>
       </Container>
     </>

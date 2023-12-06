@@ -41,7 +41,8 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     if (loginInput.email === "" || loginInput.password === "") {
       toast.error("Must Fill the Field");
     } else {
@@ -103,8 +104,8 @@ const Login = () => {
               your life.
             </Typography>
           </Box>
-          <FormControl
-            sx={{
+          <form
+            style={{
               display: "flex",
               flexDirection: "column",
               padding: "50px 30px",
@@ -112,6 +113,7 @@ const Login = () => {
               boxShadow:
                 "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
             }}
+            onSubmit={handleLogin}
           >
             <InputBase
               placeholder="Enter Email"
@@ -122,6 +124,7 @@ const Login = () => {
               name="email"
               sx={inputStyle}
               type="email"
+              required
             />
             <InputBase
               placeholder="Enter Password"
@@ -131,6 +134,7 @@ const Login = () => {
               name="password"
               sx={inputStyle}
               type={showPassword ? "text" : "password"}
+              required
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -148,7 +152,7 @@ const Login = () => {
             <Button
               variant="contained"
               size="large"
-              onClick={handleLogin}
+              type="submit"
               sx={{ bgcolor: "#1877F2", color: "white", margin: "10px 0" }}
             >
               Login
@@ -167,7 +171,7 @@ const Login = () => {
             >
               Create New Account
             </Button>
-          </FormControl>
+          </form>
         </Box>
       </Container>
     </>
