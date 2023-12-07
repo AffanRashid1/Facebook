@@ -203,6 +203,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
             </Box>
           </Card>
         </Box>
+
         {/* add post modal */}
         <StyledModal
           open={open}
@@ -217,111 +218,134 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
         >
           <Box
             sx={{
-              width: { sm: 400, xs: "60vw" },
+              width: { sm: 400 },
               bgcolor: "background.paper",
+              padding: "0 20px",
             }}
             bgcolor={"background.default"}
             color={"text.primary"}
             borderRadius={5}
-            p={5}
           >
-            <CloseIcon
-              sx={{
-                color: "black",
-                textAlign: "end",
-                width: "100%",
-                marginLeft: "45%",
-                color: "gray",
-              }}
-              onClick={(e) => setOpen(false)}
-            />
-
-            <Typography variant="h6" color="gray" textAlign={"center"}>
-              Create post
-            </Typography>
-            <UserBox>
-              <Avatar
-                sx={{ width: "35px", height: "35px" }}
-                src={user?.profile_photo}
-                onClick={(e) => setOpen(true)}
-              ></Avatar>
-              <Typography
-                variant="span"
-                fontWeight={500}
-                textTransform="capitalize"
-              >
-                {user?.name}
-              </Typography>
-            </UserBox>
-            <TextField
-              id="standard-multiline-static"
-              multiline
-              rows={3}
-              placeholder="What's on your mind?"
-              sx={{ width: "100%", margin: "10px 0" }}
-              variant="standard"
-              value={caption}
-              onChange={(e) => {
-                setCaption(e.target.value);
-              }}
-              autoFocus
-            />
-            {imgUrl !== null ? (
-              <Box
-                sx={{
-                  width: "100%",
-                }}
-              >
-                <img
-                  src={imgUrl}
-                  alt=""
-                  style={{
-                    width: "100%",
-                    borderRadius: "10px",
-                  }}
-                />
-              </Box>
-            ) : (
-              ""
-            )}
             <Box
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                margin: "15px 0",
+                position: "sticky",
+                top: "0",
+                bgcolor: "background.paper",
+                zIndex: "4",
+                padding: "10px 0",
               }}
             >
-              <IconButton component="label" variant="contained">
-                <CollectionsIcon sx={{ color: "#58C472", fontSize: "25px" }} />
-                <VisuallyHiddenInput
-                  type="file"
-                  filename={file}
-                  onChange={(e) => setFile(e.target.files[0])}
-                  accept="image/*"
-                  multiple
-                />
-              </IconButton>
-              <IconButton>
-                <PersonAddAltIcon color="primary" />
-              </IconButton>
-              <IconButton>
-                <GifBoxIcon color="primary" />
-              </IconButton>
-              <IconButton>
-                <MoreHorizIcon color="error" />
-              </IconButton>
-              {/* <TagFacesIcon color="success" /> */}
-              {/* <LocationOnIcon color="error" /> */}
-            </Box>
+              <CloseIcon
+                sx={{
+                  color: "black",
+                  textAlign: "end",
+                  width: "100%",
+                  marginLeft: "45%",
+                  color: "gray",
+                }}
+                onClick={(e) => setOpen(false)}
+              />
 
-            <LoadingButton
-              loading={loadingBtn}
-              variant="contained"
-              fullWidth
-              onClick={createPost}
+              <Typography variant="h6" color="gray" textAlign={"center"}>
+                Create post
+              </Typography>
+              <UserBox>
+                <Avatar
+                  sx={{ width: "35px", height: "35px" }}
+                  src={user?.profile_photo}
+                  onClick={(e) => setOpen(true)}
+                ></Avatar>
+                <Typography
+                  variant="span"
+                  fontWeight={500}
+                  textTransform="capitalize"
+                >
+                  {user?.name}
+                </Typography>
+              </UserBox>
+            </Box>
+            <Box sx={{ overflowY: "scroll", maxHeight: "30vh" }}>
+              <TextField
+                id="standard-multiline-static"
+                multiline
+                rows={3}
+                placeholder="What's on your mind?"
+                sx={{ width: "100%", margin: "10px 0" }}
+                variant="standard"
+                value={caption}
+                onChange={(e) => {
+                  setCaption(e.target.value);
+                }}
+                autoFocus
+              />
+              {imgUrl !== null ? (
+                <Box
+                  sx={{
+                    width: "100%",
+                  }}
+                >
+                  <img
+                    src={imgUrl}
+                    alt=""
+                    style={{
+                      width: "100%",
+                      borderRadius: "10px",
+                    }}
+                  />
+                </Box>
+              ) : (
+                ""
+              )}
+            </Box>
+            <Box
+              sx={{
+                position: "sticky",
+                bottom: "0px",
+                bgcolor: "background.paper",
+                paddingBottom: "20px",
+              }}
             >
-              Post
-            </LoadingButton>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  margin: "15px 0",
+                }}
+              >
+                <IconButton component="label" variant="contained">
+                  <CollectionsIcon
+                    sx={{ color: "#58C472", fontSize: "25px" }}
+                  />
+                  <VisuallyHiddenInput
+                    type="file"
+                    filename={file}
+                    onChange={(e) => setFile(e.target.files[0])}
+                    accept="image/*"
+                    multiple
+                  />
+                </IconButton>
+                <IconButton>
+                  <PersonAddAltIcon color="primary" />
+                </IconButton>
+                <IconButton>
+                  <GifBoxIcon color="primary" />
+                </IconButton>
+                <IconButton>
+                  <MoreHorizIcon color="error" />
+                </IconButton>
+                {/* <TagFacesIcon color="success" /> */}
+                {/* <LocationOnIcon color="error" /> */}
+              </Box>
+
+              <LoadingButton
+                loading={loadingBtn}
+                variant="contained"
+                fullWidth
+                onClick={createPost}
+              >
+                Post
+              </LoadingButton>
+            </Box>
           </Box>
         </StyledModal>
       </form>

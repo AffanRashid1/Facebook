@@ -62,6 +62,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
       });
       isProfile ? updateProfileData() : feedPosts();
       toast.success(response?.data?.message);
+      setAnchorEl(null);
     } catch (error) {
       console.log(error);
     }

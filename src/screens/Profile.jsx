@@ -189,18 +189,16 @@ const Profile = () => {
             {userPost?.length === undefined || 0 ? (
               <Typography textAlign={"center"}>No Post Yet</Typography>
             ) : (
-              userPost
-                .map((post, i) => {
-                  return (
-                    <Post
-                      key={i}
-                      data={post}
-                      updateProfileData={() => myPosts()}
-                      isProfile={isProfile}
-                    />
-                  );
-                })
-                .reverse()
+              userPost.map((post, i) => {
+                return (
+                  <Post
+                    key={i}
+                    data={post}
+                    updateProfileData={() => myPosts()}
+                    isProfile={isProfile}
+                  />
+                );
+              })
             )}
           </Box>
         </Stack>

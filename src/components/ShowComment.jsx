@@ -20,7 +20,6 @@ const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
 
   const handleDelComment = async (id) => {
     try {
-      console.log(id);
       let response = await apiManager({
         method: "delete",
         path: `/posts/delete-comment/${id}`,
@@ -84,7 +83,7 @@ const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
             Delete
           </MenuItem>
         ) : null}
-        <MenuItem>Static</MenuItem>
+        <MenuItem>Hide Comment</MenuItem>
       </Menu>
     </Stack>
   );
