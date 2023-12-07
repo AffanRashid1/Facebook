@@ -10,7 +10,6 @@ import {
   Box,
   Skeleton,
   Divider,
-  InputBase,
   Stack,
   FormControlLabel,
   Backdrop,
@@ -26,22 +25,19 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import SendIcon from "@mui/icons-material/Send";
 import moment from "moment";
 import Checkbox from "@mui/material/Checkbox";
 import likeSvg from "../assets/facebook-like.svg";
 import apiManager from "../Helper/ApiManager";
+import Comment from "./Comment";
 
 const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [loading, setloading] = useState(true);
-  const [commentInput, setcommentInput] = useState("");
   const [timeAgo, setTimeAgo] = useState("");
-  const [commentBox, setcommentBox] = useState(false);
   const [likeModal, setlikeModal] = useState(false);
-  const [menuComment, setmenuComment] = useState(null);
-  const menuOpen = Boolean(menuComment);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [commentBox, setcommentBox] = useState(false);
   const open = Boolean(anchorEl);
 
   const handleProfileLikeClick = async (postId) => {
@@ -55,38 +51,6 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
       isProfile ? updateProfileData() : feedPosts();
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const handleComment = async () => {
-    try {
-      if (commentInput?.trim()) {
-        let res = await apiManager({
-          method: "post",
-          path: `/posts/comment`,
-          params: {
-            id: data?._id,
-            comment: commentInput,
-          },
-        });
-
-        let commentData = {
-          _id: res?.data?.payload?.newComment._id,
-          postid: res?.data?.payload?.newComment.postid,
-          owner: {
-            _id: res?.data?.payload?.Commenter?._id,
-            name: res?.data?.payload?.Commenter?.name,
-            profile_photo: res?.data?.payload?.Commenter?.profile_photo,
-          },
-          comment: res?.data?.payload?.newComment?.comment,
-          createdAt: res?.data?.payload?.Commenter?.createdAt,
-        };
-
-        data?.comments.push(commentData);
-        setcommentInput("");
-      }
-    } catch (err) {
-      console.log(err);
     }
   };
 
@@ -254,93 +218,13 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
         <Divider />
 
         {/* Comment Section */}
-
-        <Box sx={{ display: commentBox ? "block" : "none" }}>
-          {data?.comments?.map((comment, i) => {
-            return (
-              <Stack
-                direction={"row"}
-                spacing={3}
-                alignItems={"center"}
-                margin={"8px 10px"}
-                key={i}
-                width="400px"
-                id="commentBox"
-              >
-                <Avatar
-                  sx={{ height: "22px", width: "22px" }}
-                  src={comment?.owner?.profile_photo}
-                />
-                <Box
-                  sx={{
-                    bgcolor: "action.selected",
-                    borderRadius: "6px",
-                    padding: "5px 8px",
-                    width: "50%",
-                  }}
-                >
-                  <Typography
-                    fontWeight="bold"
-                    fontSize="14px"
-                    letterSpacing="1px"
-                  >
-                    {comment?.owner?.name}
-                  </Typography>
-                  <Typography
-                    fontSize={"15px"}
-                    sx={{ overflowWrap: "break-word" }}
-                  >
-                    {comment?.comment}
-                  </Typography>
-                </Box>
-                <IconButton
-                  onClick={(event) => {
-                    setmenuComment(event.currentTarget);
-                  }}
-                >
-                  <MoreHorizIcon sx={{ color: "typography.light" }} />
-                </IconButton>
-                <Menu
-                  anchorEl={menuComment}
-                  open={menuOpen}
-                  onClose={() => {
-                    setmenuComment(null);
-                  }}
-                >
-                  <MenuItem>Report</MenuItem>
-                </Menu>
-              </Stack>
-            );
-          })}
-          <Divider />
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "10px 15px",
-            }}
-          >
-            <Avatar src={user?.profile_photo} />
-            <InputBase
-              placeholder="Submit Your Comment"
-              fullWidth
-              sx={{ margin: "0 10px" }}
-              value={commentInput}
-              onChange={(e) => {
-                setcommentInput(e.target.value);
-              }}
-              onKeyUp={(e) => {
-                if (e.code === "Enter") {
-                  handleComment();
-                }
-              }}
-            />
-            <IconButton onClick={handleComment}>
-              <SendIcon sx={{ color: "#1877F2" }} />
-            </IconButton>
-          </Box>
-        </Box>
+        <Comment
+          data={data}
+          commentBox={commentBox}
+          isProfile={isProfile}
+          updateProfileData={updateProfileData}
+          feedPosts={feedPosts}
+        />
       </Card>
 
       {/* Like Modal */}
