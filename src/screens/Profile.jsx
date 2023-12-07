@@ -194,18 +194,9 @@ const Profile = () => {
                   return (
                     <Post
                       key={i}
-                      image={post.imageUrl}
-                      date={post.createdAt}
-                      description={post.caption}
-                      name={user?.name}
-                      icon={user?.profile_photo}
-                      id={post._id}
-                      shareCount="32"
-                      likes={post.likes}
-                      comment={post.comments}
+                      data={post}
                       updateProfileData={() => myPosts()}
                       isProfile={isProfile}
-                      ownerId={post?.owner?._id}
                     />
                   );
                 })

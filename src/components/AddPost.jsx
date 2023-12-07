@@ -73,7 +73,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
     e.preventDefault();
     if (caption === "" && file === null) {
       toast.error("Must Fill The Field");
-    } else {
+    } else if (caption.trim()) {
       try {
         setloadingBtn(true);
         let formData = new FormData();

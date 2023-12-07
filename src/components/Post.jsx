@@ -32,27 +32,15 @@ import Checkbox from "@mui/material/Checkbox";
 import likeSvg from "../assets/facebook-like.svg";
 import apiManager from "../Helper/ApiManager";
 
-const Post = ({
-  image,
-  createdAt,
-  description,
-  name,
-  icon,
-  id,
-  shareCount,
-  likes,
-  comment,
-  updateProfileData,
-  feedPosts,
-  isProfile,
-  ownerId,
-}) => {
+const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [loading, setloading] = useState(true);
   const [commentInput, setcommentInput] = useState("");
   const [timeAgo, setTimeAgo] = useState("");
   const [commentBox, setcommentBox] = useState(false);
   const [likeModal, setlikeModal] = useState(false);
+  const [menuComment, setmenuComment] = useState(null);
+  const menuOpen = Boolean(menuComment);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -63,7 +51,7 @@ const Post = ({
         path: `/posts/like/${postId}`,
       });
 
-      likes.push(response?.data?.likerId);
+      data?.likes.push(response?.data?.likerId);
       isProfile ? updateProfileData() : feedPosts();
     } catch (error) {
       console.log(error);
@@ -77,11 +65,24 @@ const Post = ({
           method: "post",
           path: `/posts/comment`,
           params: {
-            id,
+            id: data?._id,
             comment: commentInput,
           },
         });
-        comment.push(res?.data?.newComment);
+
+        let commentData = {
+          _id: res?.data?.payload?.newComment._id,
+          postid: res?.data?.payload?.newComment.postid,
+          owner: {
+            _id: res?.data?.payload?.Commenter?._id,
+            name: res?.data?.payload?.Commenter?.name,
+            profile_photo: res?.data?.payload?.Commenter?.profile_photo,
+          },
+          comment: res?.data?.payload?.newComment?.comment,
+          createdAt: res?.data?.payload?.Commenter?.createdAt,
+        };
+
+        data?.comments.push(commentData);
         setcommentInput("");
       }
     } catch (err) {
@@ -93,10 +94,10 @@ const Post = ({
     try {
       let response = await apiManager({
         method: "delete",
-        path: `/posts/delete-post/${id}`,
+        path: `/posts/delete-post/${data?._id}`,
       });
-      toast.success(response?.data?.message);
       isProfile ? updateProfileData() : feedPosts();
+      toast.success(response?.data?.message);
     } catch (error) {
       console.log(error);
     }
@@ -105,7 +106,7 @@ const Post = ({
   useEffect(() => {
     const updateRelativeTime = () => {
       const now = moment();
-      const postTime = moment(createdAt);
+      const postTime = moment(data?.createdAt);
       const diffInMinutes = now.diff(postTime, "minutes");
 
       if (diffInMinutes < 1) {
@@ -121,20 +122,22 @@ const Post = ({
     const intervalId = setInterval(updateRelativeTime, 60000);
 
     const imageObj = new Image();
-    imageObj.src = image;
+    imageObj.src = data?.imageUrl;
 
     imageObj.onload = () => {
       setloading(false);
     };
 
     return () => clearInterval(intervalId);
-  }, [createdAt]);
+  }, [data?.createdAt]);
 
   return (
     <>
-      <Card key={id} sx={{ marginBottom: "20px", borderRadius: "10px" }}>
+      <Card key={data?._id} sx={{ marginBottom: "20px", borderRadius: "10px" }}>
         <CardHeader
-          avatar={<Avatar sx={{ bgcolor: "gray" }} src={icon} />}
+          avatar={
+            <Avatar sx={{ bgcolor: "gray" }} src={data?.owner?.profile_photo} />
+          }
           action={
             <>
               <IconButton
@@ -156,26 +159,31 @@ const Post = ({
                   setAnchorEl(null);
                 }}
               >
-                {ownerId == user?._id ? (
+                {data?.owner?._id == user?._id ? (
                   <MenuItem onClick={deletePost}>Delete</MenuItem>
                 ) : null}
                 <MenuItem>Report</MenuItem>
               </Menu>
             </>
           }
-          title={name}
+          title={data?.owner?.name}
           subheader={timeAgo}
         />
         <CardContent>
           <Typography variant="body2" color="text.primary">
-            {description}
+            {data?.caption}
           </Typography>
         </CardContent>
 
-        {image.length === 0 ? null : loading ? (
-          <Skeleton variant="rectangular" height={500} animation="wave" />
+        {data?.imageUrl.length === 0 ? null : loading ? (
+          <Skeleton variant="rectangular" height={400} animation="wave" />
         ) : (
-          <CardMedia component="img" height="auto%" image={image} alt="Post" />
+          <CardMedia
+            component="img"
+            height="auto%"
+            image={data?.imageUrl[0]}
+            alt="Post"
+          />
         )}
         <Divider />
         <Stack
@@ -192,11 +200,11 @@ const Post = ({
           >
             <img src={likeSvg} alt="svg" width="18" />
             <Typography color="typography.light" fontSize={14}>
-              {likes?.length}
+              {data?.likes?.length}
             </Typography>
           </Stack>
           <Typography color="typography.light" fontSize={14}>
-            {comment?.length} comments
+            {data?.comments?.length} comments
           </Typography>
         </Stack>
         <Divider />
@@ -211,8 +219,8 @@ const Post = ({
               <Checkbox
                 icon={<ThumbUpOutlinedIcon />}
                 checkedIcon={<ThumbUpIcon />}
-                checked={likes?.find(({ _id }) => _id == user?._id)}
-                onChange={() => handleProfileLikeClick(id, likes)}
+                checked={data?.likes?.find(({ _id }) => _id == user?._id)}
+                onChange={() => handleProfileLikeClick(data?._id)}
                 color="primary"
               />
             }
@@ -248,7 +256,7 @@ const Post = ({
         {/* Comment Section */}
 
         <Box sx={{ display: commentBox ? "block" : "none" }}>
-          {comment?.map((comment, i) => {
+          {data?.comments?.map((comment, i) => {
             return (
               <Stack
                 direction={"row"}
@@ -257,6 +265,7 @@ const Post = ({
                 margin={"8px 10px"}
                 key={i}
                 width="400px"
+                id="commentBox"
               >
                 <Avatar
                   sx={{ height: "22px", width: "22px" }}
@@ -284,6 +293,22 @@ const Post = ({
                     {comment?.comment}
                   </Typography>
                 </Box>
+                <IconButton
+                  onClick={(event) => {
+                    setmenuComment(event.currentTarget);
+                  }}
+                >
+                  <MoreHorizIcon sx={{ color: "typography.light" }} />
+                </IconButton>
+                <Menu
+                  anchorEl={menuComment}
+                  open={menuOpen}
+                  onClose={() => {
+                    setmenuComment(null);
+                  }}
+                >
+                  <MenuItem>Report</MenuItem>
+                </Menu>
               </Stack>
             );
           })}
@@ -352,15 +377,17 @@ const Post = ({
         >
           <Stack spacing={1} direction="row" mb={2}>
             <img src={likeSvg} alt="logo" width={25} />
-            <Typography color="typography.dark">{likes?.length}</Typography>
+            <Typography color="typography.dark">
+              {data?.likes?.length}
+            </Typography>
           </Stack>
           <Divider />
-          {likes?.length == undefined || 0 ? (
+          {data?.likes?.length == undefined || 0 ? (
             <Typography color="typography.dark" textAlign="center">
               No likes
             </Typography>
           ) : (
-            likes.map((liker, i) => {
+            data?.likes.map((liker, i) => {
               return (
                 <Box key={i}>
                   <Stack

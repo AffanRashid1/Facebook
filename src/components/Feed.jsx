@@ -40,19 +40,10 @@ const Feed = () => {
           return (
             <Post
               key={i}
-              image={post?.imageUrl}
-              createdAt={post?.createdAt}
-              description={post?.caption}
-              name={post?.owner?.name}
-              icon={post?.owner?.profile_photo}
-              id={post?._id}
-              shareCount="32"
-              likes={post.likes}
-              comment={post.comments}
+              data={post}
               feedPosts={() => {
                 feedPosts();
               }}
-              ownerId={post?.owner?._id}
             />
           );
         })
