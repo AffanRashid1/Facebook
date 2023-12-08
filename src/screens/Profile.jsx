@@ -57,7 +57,7 @@ const Profile = () => {
 
       let response = await apiManager({
         method: "put",
-        path: `/users/update-user`,
+        path: `/users/updateUser`,
         params: formData,
         header: {
           "Content-Type": "multipart/form-data",
@@ -103,7 +103,7 @@ const Profile = () => {
               width: "100%",
               backgroundSize: "cover",
               backgroundPosition: "center",
-              height: "30vh",
+              height: "25vh",
             }}
             mb={{ xs: 30, md: 20 }}
           >
@@ -114,7 +114,7 @@ const Profile = () => {
               justifyContent="space-between"
               sx={{
                 position: "relative",
-                bottom: { xs: "-150px", md: "-200px" },
+                top: "19vh",
                 padding: "0 20px",
                 zIndex: 5,
               }}
@@ -147,70 +147,10 @@ const Profile = () => {
                   {user?.name}
                 </Typography>
               </Stack>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setshowUpdateModal(true);
-                  setupdateNameInput(user?.name);
-                  setupdateEmailInput(user?.email);
-                }}
-              >
-                <EditIcon />
-                Edit Profile
-              </Button>
             </Stack>
           </Box>
         </Box>
-        {/* <Box
-          sx={{
-            position: "absolute",
-            top: { xs: "13vh", sm: "20vh", md: "22vh" },
-            marginLeft: { xs: 0, sm: "60px" },
-            display: "flex",
-            alignItems: "center",
-            padding: "0 20px",
-            gap: { xs: "10px", sm: "250px" },
-            flexDirection: { xs: "column", sm: "row" },
-            userSelect: "none",
-          }}
-        >
-          <Stack direction="row" alignItems="center" spacing={4}>
-            <Avatar
-              sx={{
-                width: "200px",
-                height: "200px",
-                padding: 0,
-                margin: 0,
-                borderRadius: "50%",
-                border: "5px solid grey",
-                outline: "3px solid white",
-              }}
-              src={user?.profile_photo[user?.profile_photo.length - 1]}
-            />
-            <Typography
-              sx={{
-                color: "text.primary",
-                fontSize: { xs: "25px", sm: "35px" },
-                textTransform: "capitalize",
-                fontWeight: "bold",
-              }}
-            >
-              {user?.name}
-            </Typography>
-          </Stack>
-          <Button
-            variant="contained"
-            onClick={() => {
-              setshowUpdateModal(true);
-              setupdateNameInput(user?.name);
-              setupdateEmailInput(user?.email);
-            }}
-          >
-            <EditIcon />
-            Edit Profile
-          </Button>
-        </Box> */}
-        {/* <Box sx={{ marginTop: { md: "20%", sm: "20%", xs: "30%" } }}></Box> */}
+
         <Grid container spacing={2} xs={12} mt={2}>
           <Grid item xs={12} md={6}>
             <Card
@@ -235,13 +175,28 @@ const Profile = () => {
                 color="typography.dark"
                 margin="15px 0"
               >
-                Growing one experience at a time ⏲️ Capturing moments 📸
+                Growing one experience at a time ⏲️ <br /> Capturing moments 📸
               </Typography>
               <Divider />
               <Stack direction="row" spacing={3} margin="10px 0">
                 <HouseIcon sx={{ color: "typography.dark" }} />
                 <Typography>Lives in Miami</Typography>
               </Stack>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => {
+                  setshowUpdateModal(true);
+                  setupdateNameInput(user?.name);
+                  setupdateEmailInput(user?.email);
+                }}
+                sx={{
+                  bgcolor: "action.selected",
+                }}
+              >
+                <EditIcon />
+                Edit Profile
+              </Button>
             </Card>
           </Grid>
           <Grid item xs={12} md={6}>

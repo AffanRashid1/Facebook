@@ -105,7 +105,6 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
         setimgUrl(null);
         toast.success(res?.data?.message);
       } catch (error) {
-        console.log(file + "ERROR");
         setCaption("");
         setFile(null);
         setimgUrl(null);
@@ -355,7 +354,6 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                     filename={file}
                     onChange={(e) => setFile(e.target.files[0])}
                     // accept="image/*"
-                    multiple
                   />
                 </IconButton>
                 <IconButton>

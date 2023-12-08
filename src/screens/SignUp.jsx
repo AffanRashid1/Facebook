@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../assets/facebook.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import apiManager from "../Helper/ApiManager";
 
 const SignUp = () => {
   const [formDetails, setformDetails] = useState({
@@ -56,16 +57,24 @@ const SignUp = () => {
       toast.error("Name is too long");
     } else {
       try {
-        axios.defaults.withCredentials = true;
-        let resp = await axios.post(
-          `${process.env.REACT_APP_API_KEY}/users/register`,
-          {
+        let response = await apiManager({
+          method: "post",
+          path: `/users/register`,
+          params: {
             name: formDetails.name,
             email: formDetails.email,
             password: formDetails.password,
-          }
-        );
-        toast.success(resp.data.message);
+          },
+        });
+        // let resp = await axios.post(
+        //   `${process.env.REACT_APP_API_KEY}/users/register`,
+        //   {
+        //     name: formDetails.name,
+        //     email: formDetails.email,
+        //     password: formDetails.password,
+        //   }
+        // );
+        toast.success(response?.data?.message);
         navigate("/login");
         setformDetails({
           name: "",

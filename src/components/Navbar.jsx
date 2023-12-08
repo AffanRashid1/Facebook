@@ -103,7 +103,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       let response = await apiManager({
-        method: "get",
+        method: "post",
         path: `/users/logout`,
       });
       localStorage.removeItem("token");
@@ -124,7 +124,9 @@ const Navbar = () => {
     >
       <StyledToolbar>
         <Stack spacing={3} direction={"row"} sx={{ alignItems: "center" }}>
-          <img src={logo} alt="" width={40} height={40} />
+          <Link to="/">
+            <img src={logo} alt="" width={40} height={40} />
+          </Link>
           <Autocomplete
             freeSolo
             disableClearable
@@ -153,7 +155,17 @@ const Navbar = () => {
             renderInput={(params) => {
               const { InputLabelProps, InputProps, ...rest } = params;
               return (
-                <Search>
+                <Search
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    backgroundColor: "#4E4F50",
+                    padding: "5px 7px",
+                    borderRadius: "25px",
+                    width: { xs: 0, sm: "250px" },
+                  }}
+                >
                   <SearchIcon sx={{ color: "gray" }} />
                   <InputBase
                     {...params.InputProps}
@@ -175,6 +187,7 @@ const Navbar = () => {
           alignItems={"center"}
           justifyContent="space-between"
           width="40%"
+          sx={{ display: { xs: "none", md: "flex" } }}
         >
           <Link to="/">
             <IconButton>
