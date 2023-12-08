@@ -73,9 +73,17 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
     e.preventDefault();
     if (caption === "" && file === null) {
       toast.error("Must Fill The Field");
-    } else if (caption.trim()) {
+      setCaption("");
+      setimgUrl(null);
+      setFile(null);
+    } else if (file && file.type && !file.type.startsWith("image/")) {
+      setCaption("");
+      setimgUrl(null);
+      toast.error("Please select a valid image file");
+    } else {
       try {
         setloadingBtn(true);
+
         let formData = new FormData();
         formData.append("imageUrl", file);
         formData.append("caption", caption);
@@ -89,12 +97,17 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
           },
         });
 
+        console.log(file);
         isProfile ? post() : feedPosts();
         setCaption("");
+        setFile(null);
         setOpen(false);
         setimgUrl(null);
         toast.success(res?.data?.message);
       } catch (error) {
+        console.log(file + "ERROR");
+        setCaption("");
+        setFile(null);
         setimgUrl(null);
         setOpen(false);
         toast.error(error?.message);
@@ -265,7 +278,13 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 </Typography>
               </UserBox>
             </Box>
-            <Box sx={{ overflowY: "scroll", maxHeight: "45vh" }}>
+            <Box
+              sx={{
+                overflowY: "scroll",
+                maxHeight: "45vh",
+                overflowX: "hidden",
+              }}
+            >
               <TextField
                 id="standard-multiline-static"
                 multiline
@@ -285,6 +304,20 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                     width: "100%",
                   }}
                 >
+                  <IconButton
+                    sx={{
+                      position: "relative",
+                      top: "50px",
+                      right: "-90%",
+                      bgcolor: "background.paper",
+                    }}
+                    onClick={() => {
+                      setimgUrl(null);
+                      setFile(null);
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
                   <img
                     src={imgUrl}
                     alt=""
@@ -321,7 +354,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                     type="file"
                     filename={file}
                     onChange={(e) => setFile(e.target.files[0])}
-                    accept="image/*"
+                    // accept="image/*"
                     multiple
                   />
                 </IconButton>

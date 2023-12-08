@@ -4,6 +4,7 @@ export const reducer = createSlice({
   initialState: {
     isLogged: false,
     user: {},
+    allUsers: [],
   },
 
   reducers: {
@@ -16,8 +17,12 @@ export const reducer = createSlice({
     setUser(state, action) {
       state.user = action.payload;
     },
+    setAllUser: (state, action) => {
+      state.allUsers = action.payload;
+    },
   },
 });
-export const { setLogged, setUser, setInitialLogged } = reducer.actions;
+export const { setLogged, setUser, setInitialLogged, setAllUser } =
+  reducer.actions;
 
 export default reducer.reducer;

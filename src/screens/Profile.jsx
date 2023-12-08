@@ -6,6 +6,7 @@ import {
   Container,
   Divider,
   FormControl,
+  Grid,
   Modal,
   Stack,
   TextField,
@@ -13,15 +14,15 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import AddPost from "../Components/AddPost";
-import Post from "../Components/Post";
+import AddPost from "../components/AddPost";
+import Post from "../components/Post";
 import EditIcon from "@mui/icons-material/Edit";
 import HouseIcon from "@mui/icons-material/House";
 import apiManager from "../Helper/ApiManager";
 import CameraIcon from "@mui/icons-material/Camera";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
-import Navbar from "../Components/Navbar";
+import Navbar from "../components/Navbar";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);
@@ -85,23 +86,82 @@ const Profile = () => {
   }, []);
   return (
     <>
-      <Navbar />
       <Container
         sx={{
           bgcolor: "background.paper",
           minHeight: "100vh",
         }}
       >
-        <Box
-          sx={{
-            backgroundImage: `url(${"https://imgs.search.brave.com/J-yPqU2rCdwiuszegSxJSxM1S76_lPMFiMab7LLaMDI/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDE4Mjg5/MzEuanBn"})`,
-            backgroundRepeat: "no-repeat",
-            width: "100%",
-            backgroundSize: "cover",
-            height: { xs: "20vh", sm: "30vh" },
-          }}
-        ></Box>
-        <Box
+        <Box mb={8}>
+          <Navbar />
+        </Box>
+        <Box>
+          <Box
+            sx={{
+              backgroundImage: `url(${"https://scontent.flhe20-1.fna.fbcdn.net/v/t39.30808-6/391705295_122106304346078044_9091400103311535031_n.png?_nc_cat=102&ccb=1-7&_nc_sid=783fdb&_nc_eui2=AeE1xXErnoP1TjqRaZpQ9P_n7uYIOHBBnRHu5gg4cEGdEXFsxHQHLVbRYAlHvBrxX3mli96IaWaima5TU6joR07-&_nc_ohc=XGnXbACBIXEAX-b4GC5&_nc_oc=AQlgGeqOaDb9ZJHiSrdgxJJ6lYpJ5vbUu6ezy356Jh1mSh4jB0s7ARWIC4l6kuTyBqo&_nc_ht=scontent.flhe20-1.fna&oh=00_AfAAmHRw9lEDUQH8MZRqFEq6LTM-YVAd5TJ8gat7ErOMxw&oe=6578F62E"})`,
+              backgroundRepeat: "no-repeat",
+              width: "100%",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: "30vh",
+            }}
+            mb={{ xs: 30, md: 20 }}
+          >
+            <Stack
+              direction={{ xs: "column", md: "row" }}
+              alignItems="center"
+              spacing={5}
+              justifyContent="space-between"
+              sx={{
+                position: "relative",
+                bottom: { xs: "-150px", md: "-200px" },
+                padding: "0 20px",
+                zIndex: 5,
+              }}
+            >
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                alignItems="center"
+                spacing={3}
+              >
+                <Avatar
+                  sx={{
+                    width: "200px",
+                    height: "200px",
+                    padding: 0,
+                    margin: 0,
+                    borderRadius: "50%",
+                    border: "5px solid grey",
+                    outline: "3px solid white",
+                  }}
+                  src={user?.profile_photo[user?.profile_photo.length - 1]}
+                />
+                <Typography
+                  sx={{
+                    color: "text.primary",
+                    fontSize: { xs: "30px", sm: "35px" },
+                    textTransform: "capitalize",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {user?.name}
+                </Typography>
+              </Stack>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setshowUpdateModal(true);
+                  setupdateNameInput(user?.name);
+                  setupdateEmailInput(user?.email);
+                }}
+              >
+                <EditIcon />
+                Edit Profile
+              </Button>
+            </Stack>
+          </Box>
+        </Box>
+        {/* <Box
           sx={{
             position: "absolute",
             top: { xs: "13vh", sm: "20vh", md: "22vh" },
@@ -149,59 +209,61 @@ const Profile = () => {
             <EditIcon />
             Edit Profile
           </Button>
-        </Box>
-        <Box sx={{ marginTop: { md: "20%", sm: "20%", xs: "30%" } }}>
-          <AddPost post={() => myPosts()} isProfile={isProfile} />
-        </Box>
-        <Stack direction="row" justifyContent="space-between">
-          <Card
-            sx={{
-              borderRadius: "10px",
-              padding: "20px",
-              position: "sticky",
-              top: "10px",
-              width: "29%",
-              maxHeight: "70vh",
-            }}
-          >
-            <Typography
-              color="typography.dark"
-              fontWeight="bold"
-              fontSize="25px"
-              letterSpacing="4"
+        </Box> */}
+        {/* <Box sx={{ marginTop: { md: "20%", sm: "20%", xs: "30%" } }}></Box> */}
+        <Grid container spacing={2} xs={12} mt={2}>
+          <Grid item xs={12} md={6}>
+            <Card
+              sx={{
+                borderRadius: "10px",
+                padding: "20px",
+                position: "sticky",
+                top: "70px",
+                maxHeight: "70vh",
+              }}
             >
-              Intro
-            </Typography>
-            <Typography
-              textAlign="center"
-              color="typography.dark"
-              margin="15px 0"
-            >
-              Growing one experience at a time ⏲️ Capturing moments 📸
-            </Typography>
-            <Divider />
-            <Stack direction="row" spacing={3} margin="10px 0">
-              <HouseIcon sx={{ color: "typography.dark" }} />
-              <Typography>Lives in Miami</Typography>
-            </Stack>
-          </Card>
-          <Box width={"67%"}>
-            {userPost?.length === undefined || 0 ? (
-              <Typography textAlign={"center"}>No Post Yet</Typography>
-            ) : (
-              userPost.map((post, i) => {
-                return (
-                  <Post
-                    key={i}
-                    data={post}
-                    updateProfileData={() => myPosts()}
-                    isProfile={isProfile}
-                  />
-                );
-              })
-            )}
-          </Box>
-        </Stack>
+              <Typography
+                color="typography.dark"
+                fontWeight="bold"
+                fontSize="25px"
+                letterSpacing="4"
+              >
+                Intro
+              </Typography>
+              <Typography
+                textAlign="center"
+                color="typography.dark"
+                margin="15px 0"
+              >
+                Growing one experience at a time ⏲️ Capturing moments 📸
+              </Typography>
+              <Divider />
+              <Stack direction="row" spacing={3} margin="10px 0">
+                <HouseIcon sx={{ color: "typography.dark" }} />
+                <Typography>Lives in Miami</Typography>
+              </Stack>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <AddPost post={() => myPosts()} isProfile={isProfile} />
+            <Box>
+              {userPost?.length === undefined || 0 ? (
+                <Typography textAlign={"center"}>No Post Yet</Typography>
+              ) : (
+                userPost.map((post, i) => {
+                  return (
+                    <Post
+                      key={i}
+                      data={post}
+                      updateProfileData={() => myPosts()}
+                      isProfile={isProfile}
+                    />
+                  );
+                })
+              )}
+            </Box>
+          </Grid>
+        </Grid>
       </Container>
 
       {/* Update Modal */}

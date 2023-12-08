@@ -9,6 +9,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Stack,
   Typography,
 } from "@mui/material";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
@@ -16,6 +17,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { contacts } from "../Data/data";
+import { useSelector } from "react-redux";
 
 const RightBox = styled(Box)({
   marginTop: "20px",
@@ -26,6 +28,8 @@ const RightBox = styled(Box)({
 });
 
 const Rightbar = () => {
+  const allUsers = useSelector((state) => state.appReducer.allUsers);
+
   return (
     <Box
       flex={1}
@@ -45,40 +49,44 @@ const Rightbar = () => {
         }}
       >
         <RightBox>
-          <Typography variant="p" fontWeight={500} mt={2} mb={2}>
-            Contacts
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-around",
-              gap: "1rem",
-            }}
+          <Stack
+            width="100%"
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            padding="0 8px"
           >
-            <VideoCallIcon sx={{ color: "#999", fontSize: "25px" }} />
-            <SearchIcon sx={{ color: "#999", fontSize: "25px" }} />
-            <MoreHorizIcon sx={{ color: "#999", fontSize: "25px" }} />
-          </Box>
+            <Typography variant="p" fontWeight={500} mt={2} mb={2}>
+              Contacts
+            </Typography>
+            <Box>
+              <VideoCallIcon sx={{ color: "#999", fontSize: "25px" }} />
+              <SearchIcon sx={{ color: "#999", fontSize: "25px" }} />
+              <MoreHorizIcon sx={{ color: "#999", fontSize: "25px" }} />
+            </Box>
+          </Stack>
         </RightBox>
-        {contacts.map((contact, index) => {
+        {allUsers.map((user, i) => {
           return (
-            <ListItem disablePadding key={contact.id}>
+            <ListItem disablePadding key={i}>
               <ListItemButton component="a" href="#home">
                 <ListItemIcon>
                   <Avatar
                     sx={{
                       width: "25px",
                       height: "25px",
-                      border: "3px solid #1DA1F2",
+                      border: "2px solid transparent",
+                      outline: "2px solid grey",
                     }}
-                    src={contact.image}
+                    src={user?.profile_photo}
                   />
                 </ListItemIcon>
-                <ListItemText primary={contact.name} />
+                <ListItemText primary={user?.name} />
               </ListItemButton>
             </ListItem>
           );
         })}
+
         <Box sx={{ marginTop: "20px" }}>
           <Typography variant="div" fontWeight={500} mt={2} mb={2}>
             Group Conversations

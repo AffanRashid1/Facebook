@@ -26,6 +26,7 @@ import { setInitialLogged } from "../store/reducer";
 import { Link } from "react-router-dom";
 import apiManager from "../Helper/ApiManager";
 import Messenger from "./Messenger";
+import { setAllUser } from "../store/reducer";
 
 // Toolbar to hold logo search and icons
 const StyledToolbar = styled(Toolbar)({
@@ -39,8 +40,9 @@ const StyledToolbar = styled(Toolbar)({
 const Search = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
+  justifyContent: "space-between",
   backgroundColor: "#4E4F50",
-  padding: "0 8px",
+  padding: "5px 7px",
   borderRadius: "25px",
   width: 250,
 }));
@@ -48,7 +50,6 @@ const Search = styled("div")(({ theme }) => ({
 // icons container box means div
 const Icons = styled(Box)(({ theme }) => ({
   display: "none",
-  justifyContent: "space-between",
   alignItems: "center",
   gap: "20px",
   [theme.breakpoints.up("sm")]: {
@@ -88,6 +89,7 @@ const Navbar = () => {
         method: "get",
         path: `/users`,
       });
+      dispatch(setAllUser(res?.data?.payload));
       setsearchResult(res?.data?.payload);
     } catch (error) {
       console.log(error);
@@ -121,7 +123,7 @@ const Navbar = () => {
       }}
     >
       <StyledToolbar>
-        <Stack spacing={2} direction={"row"} sx={{ alignItems: "center" }}>
+        <Stack spacing={3} direction={"row"} sx={{ alignItems: "center" }}>
           <img src={logo} alt="" width={40} height={40} />
           <Autocomplete
             freeSolo
@@ -152,9 +154,7 @@ const Navbar = () => {
               const { InputLabelProps, InputProps, ...rest } = params;
               return (
                 <Search>
-                  <IconButton>
-                    <SearchIcon sx={{ color: "gray" }} />
-                  </IconButton>
+                  <SearchIcon sx={{ color: "gray" }} />
                   <InputBase
                     {...params.InputProps}
                     {...rest}

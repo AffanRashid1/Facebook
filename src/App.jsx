@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Loader from "./Components/Loader";
+import Loader from "./components/Loader";
 import { ToastContainer, toast } from "react-toastify";
-import axios from "axios";
 import { setLogged, setUser } from "./store/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
