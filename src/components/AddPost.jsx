@@ -157,7 +157,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 <Typography
                   variant="small"
                   sx={{
-                    fontSize: "16px",
+                    fontSize: { sm: "13px", lg: "16px" },
                     marginLeft: "8px",
                     display: { xs: "none", sm: "flex" },
                   }}
@@ -174,7 +174,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 <Typography
                   variant="small"
                   sx={{
-                    fontSize: "16px",
+                    fontSize: { sm: "13px", lg: "16px" },
                     marginLeft: "8px",
                     display: { xs: "none", sm: "flex" },
                   }}
@@ -192,7 +192,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 <Typography
                   variant="small"
                   sx={{
-                    fontSize: "16px",
+                    fontSize: { sm: "13px", lg: "16px" },
                     marginLeft: "8px",
                     display: { xs: "none", sm: "flex" },
                   }}
@@ -218,9 +218,10 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
         >
           <Box
             sx={{
-              width: { sm: 400 },
+              width: "40vw",
               bgcolor: "background.paper",
               padding: "0 20px",
+              outline: "none",
             }}
             bgcolor={"background.default"}
             color={"text.primary"}
@@ -264,7 +265,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 </Typography>
               </UserBox>
             </Box>
-            <Box sx={{ overflowY: "scroll", maxHeight: "30vh" }}>
+            <Box sx={{ overflowY: "scroll", maxHeight: "45vh" }}>
               <TextField
                 id="standard-multiline-static"
                 multiline

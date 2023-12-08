@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Loader from "./components/Loader";
+import Loader from "./Components/Loader";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { setLogged, setUser } from "./store/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HOC from "./HOC";
-import Error from "./screens/Error";
+import Error from "./Screens/Error";
 import { routes } from "./router";
 import { createTheme, ThemeProvider } from "@mui/material";
 import apiManager from "./Helper/ApiManager";

@@ -13,15 +13,15 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import AddPost from "../components/AddPost";
-import Post from "../components/Post";
+import AddPost from "../Components/AddPost";
+import Post from "../Components/Post";
 import EditIcon from "@mui/icons-material/Edit";
 import HouseIcon from "@mui/icons-material/House";
 import apiManager from "../Helper/ApiManager";
 import CameraIcon from "@mui/icons-material/Camera";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
-import Navbar from "../components/Navbar";
+import Navbar from "../Components/Navbar";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);

@@ -1,13 +1,13 @@
-import Login from "./screens/Login";
-import SignUp from "./screens/SignUp";
-import Profile from "./screens/Profile";
-import Home from "./screens/Home";
+import Login from "./Screens/Login";
+import SignUp from "./Screens/SignUp";
+import Profile from "./Screens/Profile";
+import Home from "./Screens/Home";
 
 const routes = [
   {
     path: "/",
-    element: <Home/>,
-    protected: true
+    element: <Home />,
+    protected: true,
   },
   {
     path: "/login",
