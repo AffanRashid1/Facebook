@@ -8,6 +8,7 @@ import {
   FormControl,
   Grid,
   Modal,
+  Skeleton,
   Stack,
   TextField,
   Typography,
@@ -34,16 +35,20 @@ const Profile = () => {
   const [updateEmailInput, setupdateEmailInput] = useState("");
   const [imgPreview, setimgPreview] = useState(null);
   const [loadingUpdateBtn, setloadingUpdateBtn] = useState(false);
+  const [postLoading, setpostLoading] = useState(false);
 
   const myPosts = async () => {
+    setpostLoading(true);
     try {
       let response = await apiManager({
         method: "get",
         path: `/posts/user-post`,
       });
       setuserPost(response?.data?.payload);
+      setpostLoading(false);
     } catch (error) {
       console.log(error);
+      setpostLoading(false);
     }
   };
 
@@ -206,7 +211,15 @@ const Profile = () => {
                 <Typography textAlign={"center"}>No Post Yet</Typography>
               ) : (
                 userPost.map((post, i) => {
-                  return (
+                  return postLoading ? (
+                    <Box sx={{ marginBottom: "15px" }}>
+                      <Skeleton
+                        variant="rectangular"
+                        height="50vh"
+                        animation="wave"
+                      />
+                    </Box>
+                  ) : (
                     <Post
                       key={i}
                       data={post}

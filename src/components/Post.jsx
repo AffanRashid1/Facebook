@@ -15,6 +15,7 @@ import {
   Backdrop,
   Menu,
   MenuItem,
+  CircularProgress,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -30,10 +31,12 @@ import Checkbox from "@mui/material/Checkbox";
 import likeSvg from "../assets/facebook-like.svg";
 import apiManager from "../Helper/ApiManager";
 import Comment from "./Comment";
+import { LoadingButton } from "@mui/lab";
 
 const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
   const user = useSelector((state) => state.appReducer.user);
-  const [loading, setloading] = useState(true);
+  const [imgLoading, setimgLoading] = useState(true);
+  const [delLoading, setdelLoading] = useState(false);
   const [timeAgo, setTimeAgo] = useState("");
   const [likeModal, setlikeModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -55,15 +58,18 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
   };
 
   const deletePost = async () => {
+    setdelLoading(true);
     try {
       let response = await apiManager({
         method: "delete",
         path: `/posts/delete-post/${data?._id}`,
       });
       isProfile ? updateProfileData() : feedPosts();
+      setdelLoading(false);
       toast.success(response?.data?.message);
       setAnchorEl(null);
     } catch (error) {
+      setdelLoading(false);
       console.log(error);
     }
   };
@@ -90,7 +96,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
     imageObj.src = data?.imageUrl;
 
     imageObj.onload = () => {
-      setloading(false);
+      setimgLoading(false);
     };
 
     return () => clearInterval(intervalId);
@@ -125,7 +131,10 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
                 }}
               >
                 {data?.owner?._id == user?._id ? (
-                  <MenuItem onClick={deletePost}>Delete</MenuItem>
+                  <MenuItem onClick={deletePost}>
+                    Delete
+                    <LoadingButton variant="text" loading={delLoading} />
+                  </MenuItem>
                 ) : null}
                 <MenuItem>Report</MenuItem>
               </Menu>
@@ -140,7 +149,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
           </Typography>
         </CardContent>
 
-        {data?.imageUrl.length === 0 ? null : loading ? (
+        {data?.imageUrl.length === 0 ? null : imgLoading ? (
           <Skeleton variant="rectangular" height={400} animation="wave" />
         ) : (
           <CardMedia

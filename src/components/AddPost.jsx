@@ -97,7 +97,6 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
           },
         });
 
-        console.log(file);
         isProfile ? post() : feedPosts();
         setCaption("");
         setFile(null);

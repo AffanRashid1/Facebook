@@ -12,13 +12,16 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import apiManager from "../Helper/ApiManager";
+import { LoadingButton } from "@mui/lab";
 
 const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [menuComment, setmenuComment] = useState(null);
+  const [delLoading, setdelLoading] = useState(false);
   const menuOpen = Boolean(menuComment);
 
   const handleDelComment = async (id) => {
+    setdelLoading(true);
     try {
       let response = await apiManager({
         method: "delete",
@@ -26,8 +29,10 @@ const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
       });
       isProfile ? updateProfileData() : feedPosts();
       setmenuComment(null);
+      setdelLoading(false);
       toast.success(response?.data?.message);
     } catch (error) {
+      setdelLoading(false);
       console.log(error);
     }
   };
@@ -81,6 +86,7 @@ const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
             }}
           >
             Delete
+            <LoadingButton variant="text" loading={delLoading} />
           </MenuItem>
         ) : null}
         <MenuItem>Hide Comment</MenuItem>

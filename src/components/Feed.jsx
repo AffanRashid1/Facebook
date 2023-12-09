@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import Post from "./Post";
 import AddPost from "./AddPost";
 import Stories from "./Stories";
@@ -7,16 +7,19 @@ import apiManager from "../Helper/ApiManager";
 
 const Feed = () => {
   const [allPosts, setallPosts] = useState([]);
+  const [postLoading, setpostLoading] = useState(false);
 
   const feedPosts = async () => {
+    setpostLoading(true);
     try {
       const response = await apiManager({
         method: "get",
         path: `/posts`,
       });
-
       setallPosts(response?.data?.payload);
+      setpostLoading(true);
     } catch (err) {
+      setpostLoading(true);
       console.log(err);
     }
   };
@@ -37,7 +40,11 @@ const Feed = () => {
         <Typography textAlign={"center"}>No Post Yet</Typography>
       ) : (
         allPosts.map((post, i) => {
-          return (
+          return postLoading ? (
+            <Box sx={{ marginBottom: "15px" }}>
+              <Skeleton variant="rectangular" height="50vh" animation="wave" />
+            </Box>
+          ) : (
             <Post
               key={i}
               data={post}

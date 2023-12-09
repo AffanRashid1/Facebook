@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import apiManager from "../Helper/ApiManager";
 import { toast } from "react-toastify";
 import ShowComment from "./ShowComment";
+import { LoadingButton } from "@mui/lab";
 
 const Comment = ({
   data,
@@ -25,8 +26,10 @@ const Comment = ({
 }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [commentInput, setcommentInput] = useState("");
+  const [isLoading, setisLoading] = useState(false);
 
   const handleComment = async () => {
+    setisLoading(true);
     try {
       if (commentInput?.trim()) {
         let res = await apiManager({
@@ -52,8 +55,10 @@ const Comment = ({
 
         data?.comments.push(commentData);
         setcommentInput("");
+        setisLoading(false);
       }
     } catch (err) {
+      setisLoading(false);
       console.log(err);
     }
   };
@@ -96,9 +101,13 @@ const Comment = ({
               }
             }}
           />
-          <IconButton onClick={handleComment}>
-            <SendIcon sx={{ color: "#1877F2" }} />
-          </IconButton>
+          {isLoading ? (
+            <LoadingButton loading={isLoading} />
+          ) : (
+            <IconButton onClick={handleComment}>
+              <SendIcon sx={{ color: "#1877F2" }} />
+            </IconButton>
+          )}
         </Box>
       </Box>
     </>
