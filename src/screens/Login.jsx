@@ -55,10 +55,6 @@ const Login = () => {
             password: loginInput.password,
           },
         });
-        console.log(
-          "🚀 ~ file: Login.jsx:54 ~ handleLogin ~ resp:",
-          resp?.data?.payload?.user
-        );
 
         localStorage.setItem("token", resp?.data?.payload?.token);
 
@@ -84,7 +80,7 @@ const Login = () => {
             height: "100vh",
             display: "flex",
             justifyContent: "space-evenly",
-            flexDirection: { xs: "column", sm: "row" },
+            flexDirection: { xs: "column", sm: "column", md: "row" },
             alignItems: "center",
           }}
         >
@@ -98,80 +94,106 @@ const Login = () => {
                 textAlign: "left",
                 marginLeft: "25px",
                 color: "black",
+                display: { xs: "none", sm: "none", md: "block" },
               }}
             >
               Facebook helps you connect and <br /> share with the people in
               your life.
             </Typography>
           </Box>
-          <form
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              padding: "50px 30px",
+          <Box
+            sx={{
+              boxShadow: {
+                xs: "unset",
+                sm: "unset",
+                md: "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+              },
               borderRadius: "10px",
-              boxShadow:
-                "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+              padding: { xs: "0", sm: "0", md: "60px 30px" },
             }}
-            onSubmit={handleLogin}
           >
-            <InputBase
-              placeholder="Enter Email"
-              color="primary"
-              focused
-              value={loginInput.email}
-              onChange={handleInputChange}
-              name="email"
-              sx={inputStyle}
-              type="email"
-              required
-            />
-            <InputBase
-              placeholder="Enter Password"
-              focused
-              value={loginInput.password}
-              onChange={handleInputChange}
-              name="password"
-              sx={inputStyle}
-              type={showPassword ? "text" : "password"}
-              required
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => {
-                      setshowPassword(!showPassword);
-                    }}
-                    sx={{ color: "black" }}
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <Button
-              variant="contained"
-              size="large"
-              type="submit"
-              sx={{ bgcolor: "#1877F2", color: "white", margin: "10px 0" }}
-            >
-              Login
-            </Button>
-            <hr
-              style={{ bgcolor: "grey", width: "80%", margin: "10px auto" }}
-            />
-            <Button
-              variant="contained"
-              size="large"
-              color="success"
-              onClick={() => {
-                navigate("/register");
+            <form
+              style={{
+                display: "flex",
+                flexDirection: "column",
               }}
-              sx={{ bgcolor: "#42B72A", color: "white", margin: "10px 0" }}
+              onSubmit={handleLogin}
             >
-              Create New Account
-            </Button>
-          </form>
+              <Typography
+                textAlign="center"
+                fontSize="26px"
+                fontWeight="bold"
+                margin="10px 0"
+              >
+                Welcome Back!
+              </Typography>
+              <Typography
+                textAlign="center"
+                fontSize="17px"
+                fontWeight="light"
+                color="typography.light"
+                margin="10px 0"
+              >
+                Login to your Account
+              </Typography>
+              <InputBase
+                placeholder="Enter Email"
+                color="primary"
+                focused
+                value={loginInput.email}
+                onChange={handleInputChange}
+                name="email"
+                sx={inputStyle}
+                type="email"
+                required
+              />
+              <InputBase
+                placeholder="Enter Password"
+                focused
+                value={loginInput.password}
+                onChange={handleInputChange}
+                name="password"
+                sx={inputStyle}
+                type={showPassword ? "text" : "password"}
+                required
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => {
+                        setshowPassword(!showPassword);
+                      }}
+                      sx={{ color: "black" }}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              <Button
+                variant="contained"
+                size="large"
+                type="submit"
+                sx={{ bgcolor: "#1877F2", color: "white", margin: "10px 0" }}
+              >
+                Login
+              </Button>
+              <hr
+                style={{ bgcolor: "grey", width: "80%", margin: "10px auto" }}
+              />
+              <Button
+                variant="contained"
+                size="large"
+                color="success"
+                onClick={() => {
+                  navigate("/register");
+                }}
+                sx={{ bgcolor: "#42B72A", color: "white", margin: "10px 0" }}
+              >
+                Create New Account
+              </Button>
+            </form>
+          </Box>
         </Box>
       </Container>
     </>

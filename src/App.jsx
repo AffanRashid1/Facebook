@@ -49,10 +49,14 @@ function App() {
 
       dispatch(setLogged());
       dispatch(setUser(response?.data?.payload?.user));
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     } catch (err) {
       toast.error(err);
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
   };
   useEffect(() => {

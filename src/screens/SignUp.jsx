@@ -106,11 +106,7 @@ const SignUp = () => {
               alignItems: { xs: "center", sm: "center", md: "flex-start" },
             }}
           >
-            <img
-              src={logo}
-              width={200}
-              alt="logo"
-            />
+            <img src={logo} width={200} alt="logo" />
             <Typography
               sx={{
                 fontFamily: "monospace",
@@ -126,76 +122,93 @@ const SignUp = () => {
               your life.
             </Typography>
           </Box>
-          <Box sx={{ boxShadow: {xs: "unset" , sm : "unset" , md : 
-                "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px"},
-                borderRadius: "10px",
-                padding: {xs : "0" , sm: "0" , md : "60px 30px"},
-                }}>
-          <form
-            onSubmit={registerHandler}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "20px",
-              
+          <Box
+            sx={{
+              boxShadow: {
+                xs: "unset",
+                sm: "unset",
+                md: "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+              },
+              borderRadius: "10px",
+              padding: { xs: "0", sm: "0", md: "60px 30px" },
             }}
           >
-            <Typography textAlign="center" fontSize="26px" fontWeight="bold">Lets Get Started</Typography>
-            <Typography textAlign="center" fontSize="17px" fontWeight="light" color="typography.light">Create an account</Typography>
-            <InputBase
-              label="Name"
-              placeholder="Enter Name"
-              color="primary"
-              focused
-              name="name"
-              onChange={handleInputChange}
-              value={formDetails.name}
-              sx={inputStyle}
-              required
-            />
-            <InputBase
-              required
-              label="Email"
-              placeholder="Enter Email"
-              color="primary"
-              focused
-              name="email"
-              onChange={handleInputChange}
-              type="email"
-              value={formDetails.email}
-              sx={inputStyle}
-            />
-            <InputBase
-              label="Password"
-              placeholder="Enter Password"
-              color="primary"
-              focused
-              name="password"
-              onChange={handleInputChange}
-              value={formDetails.password}
-              sx={inputStyle}
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => {
-                      setshowPassword(!showPassword);
-                    }}
-                    sx={{ color: "black" }}
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <Button variant="contained" size="medium" type="submit">
-              Sign Up
-            </Button>
-            <Typography textAlign="center">
-              Already have an account ?<Link to="/login">Login</Link>
-            </Typography>
-          </form>
+            <form
+              onSubmit={registerHandler}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px",
+              }}
+            >
+              <Typography textAlign="center" fontSize="26px" fontWeight="bold">
+                Lets Get Started
+              </Typography>
+              <Typography
+                textAlign="center"
+                fontSize="17px"
+                fontWeight="light"
+                color="typography.light"
+              >
+                Create an account
+              </Typography>
+              <InputBase
+                label="Name"
+                placeholder="Enter Name"
+                color="primary"
+                focused
+                name="name"
+                onChange={handleInputChange}
+                value={formDetails.name}
+                sx={inputStyle}
+                required
+              />
+              <InputBase
+                required
+                label="Email"
+                placeholder="Enter Email"
+                color="primary"
+                focused
+                name="email"
+                onChange={handleInputChange}
+                type="email"
+                value={formDetails.email}
+                sx={inputStyle}
+              />
+              <InputBase
+                label="Password"
+                placeholder="Enter Password"
+                color="primary"
+                focused
+                name="password"
+                onChange={handleInputChange}
+                value={formDetails.password}
+                sx={inputStyle}
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => {
+                        setshowPassword(!showPassword);
+                      }}
+                      sx={{ color: "black" }}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              <Button variant="contained" size="medium" type="submit">
+                Sign Up
+              </Button>
+              <Typography textAlign="center">
+                Already have an account ?
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  Login
+                </Link>
+              </Typography>
+            </form>
           </Box>
         </Box>
       </Container>
