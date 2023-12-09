@@ -6,6 +6,7 @@ import {
   IconButton,
   InputAdornment,
   InputBase,
+  LinearProgress,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -22,6 +23,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setshowPassword] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
   let inputStyle = {
     color: "black",
@@ -43,6 +45,7 @@ const Login = () => {
   };
   const handleLogin = async (e) => {
     e.preventDefault();
+    setisLoading(true);
     if (loginInput.email === "" || loginInput.password === "") {
       toast.error("Must Fill the Field");
     } else {
@@ -64,7 +67,7 @@ const Login = () => {
         });
         dispatch(setLogged());
         dispatch(setUser(resp?.data?.payload?.user));
-
+        setisLoading(false);
         toast.success(resp?.data?.message);
         navigate("/");
       } catch (err) {
@@ -74,7 +77,19 @@ const Login = () => {
   };
   return (
     <>
-      <Container maxWidth="100vw" sx={{ bgcolor: "white" }}>
+      {isLoading ? (
+        <Box
+          sx={{
+            position: "absolute",
+            top: "0",
+            overflow: "hidden",
+            width: "100%",
+          }}
+        >
+          <LinearProgress />
+        </Box>
+      ) : null}
+      <Container maxWidth="100vw" sx={{ bgcolor: "#F0F2F5" }}>
         <Box
           sx={{
             height: "100vh",

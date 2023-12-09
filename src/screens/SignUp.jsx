@@ -1,10 +1,12 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   IconButton,
   InputAdornment,
   InputBase,
+  LinearProgress,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -21,6 +23,7 @@ const SignUp = () => {
     password: "",
   });
   const [showPassword, setshowPassword] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const navigate = useNavigate();
 
   function handleInputChange(e) {
@@ -40,6 +43,7 @@ const SignUp = () => {
 
   const registerHandler = async (e) => {
     e.preventDefault();
+    setisLoading(true);
     if (
       formDetails.email === "" ||
       formDetails.name === "" ||
@@ -65,15 +69,9 @@ const SignUp = () => {
             password: formDetails.password,
           },
         });
-        // let resp = await axios.post(
-        //   `${process.env.REACT_APP_API_KEY}/users/register`,
-        //   {
-        //     name: formDetails.name,
-        //     email: formDetails.email,
-        //     password: formDetails.password,
-        //   }
-        // );
+
         toast.success(response?.data?.message);
+        setisLoading(false);
         navigate("/login");
         setformDetails({
           name: "",
@@ -81,6 +79,7 @@ const SignUp = () => {
           password: "",
         });
       } catch (err) {
+        setisLoading(false);
         toast.error(err?.response?.data?.message);
       }
     }
@@ -88,10 +87,22 @@ const SignUp = () => {
 
   return (
     <>
-      <Container maxWidth="100vw" sx={{ bgcolor: "white" }}>
+      {isLoading ? (
         <Box
           sx={{
-            minHeight: "100vh",
+            position: "absolute",
+            top: "0",
+            overflow: "hidden",
+            width: "100%",
+          }}
+        >
+          <LinearProgress />
+        </Box>
+      ) : null}
+      <Container maxWidth="100vw" sx={{ bgcolor: "#F0F2F5" }}>
+        <Box
+          sx={{
+            minHeight: "99vh",
             display: "flex",
             flexDirection: { xs: "column", sm: "column", md: "row" },
             justifyContent: "space-evenly",

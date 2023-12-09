@@ -6,9 +6,9 @@ import { Box } from "@mui/material";
 export default function Loader() {
   // Define the animation properties
   const translateAnimation = useSpring({
-    from: { transform: "translateY(100%)", opacity: 0 },
-    to: { transform: "translateY(0)", opacity: 1, transition: "0.4s linear" },
-    config: { duration: 700 },
+    from: { transform: "translateY(25%)", opacity: 0 },
+    to: { transform: "translateY(0)", opacity: 1, transition: "0.5s ease in" },
+    config: { duration: 500 },
   });
 
   return (
