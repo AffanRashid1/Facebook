@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../assets/facebook.svg";
@@ -92,19 +91,24 @@ const SignUp = () => {
       <Container maxWidth="100vw" sx={{ bgcolor: "white" }}>
         <Box
           sx={{
-            height: "100vh",
+            minHeight: "100vh",
             display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
+            flexDirection: { xs: "column", sm: "column", md: "row" },
             justifyContent: "space-evenly",
-            gap: "40px",
             alignItems: "center",
           }}
         >
-          <Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: { xs: "center", sm: "center", md: "flex-start" },
+            }}
+          >
             <img
               src={logo}
               width={200}
-              style={{ marginLeft: "20px" }}
               alt="logo"
             />
             <Typography
@@ -114,33 +118,30 @@ const SignUp = () => {
                 fontSize: { xs: "1rem", sm: "1.5rem" },
                 userSelect: "none",
                 textAlign: "left",
-                marginLeft: "10px",
                 color: "black",
+                display: { xs: "none", sm: "none", md: "block" },
               }}
             >
               Facebook helps you connect and <br /> share with the people in
               your life.
             </Typography>
           </Box>
+          <Box sx={{ boxShadow: {xs: "unset" , sm : "unset" , md : 
+                "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px"},
+                borderRadius: "10px",
+                padding: {xs : "0" , sm: "0" , md : "60px 30px"},
+                }}>
           <form
             onSubmit={registerHandler}
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "30px",
-              padding: "60px 30px",
-              borderRadius: "10px",
-              boxShadow:
-                "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+              gap: "20px",
+              
             }}
           >
-            <Typography
-              textAlign={"center"}
-              fontSize={"20px"}
-              fontWeight={"bold"}
-            >
-              Sign Up
-            </Typography>
+            <Typography textAlign="center" fontSize="26px" fontWeight="bold">Lets Get Started</Typography>
+            <Typography textAlign="center" fontSize="17px" fontWeight="light" color="typography.light">Create an account</Typography>
             <InputBase
               label="Name"
               placeholder="Enter Name"
@@ -191,10 +192,11 @@ const SignUp = () => {
             <Button variant="contained" size="medium" type="submit">
               Sign Up
             </Button>
-            <Typography>
+            <Typography textAlign="center">
               Already have an account ?<Link to="/login">Login</Link>
             </Typography>
           </form>
+          </Box>
         </Box>
       </Container>
     </>
