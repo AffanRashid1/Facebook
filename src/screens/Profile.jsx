@@ -7,6 +7,8 @@ import {
   Divider,
   FormControl,
   Grid,
+  Menu,
+  MenuItem,
   Modal,
   Skeleton,
   Stack,
@@ -15,6 +17,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import ImageIcon from "@mui/icons-material/Image";
 import AddPost from "../components/AddPost";
 import Post from "../components/Post";
 import EditIcon from "@mui/icons-material/Edit";
@@ -24,6 +27,8 @@ import CameraIcon from "@mui/icons-material/Camera";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import Navbar from "../components/Navbar";
+import { PermIdentity, PhotoSizeSelectActual } from "@mui/icons-material";
+import styled from "@emotion/styled";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);
@@ -36,6 +41,8 @@ const Profile = () => {
   const [imgPreview, setimgPreview] = useState(null);
   const [loadingUpdateBtn, setloadingUpdateBtn] = useState(false);
   const [postLoading, setpostLoading] = useState(false);
+  const [picMenu, setpicMenu] = useState(null);
+  const menuOpen = Boolean(picMenu);
 
   const myPosts = async () => {
     try {
@@ -86,6 +93,7 @@ const Profile = () => {
   useEffect(() => {
     myPosts();
   }, []);
+
   return (
     <>
       <Container
@@ -137,7 +145,47 @@ const Profile = () => {
                     outline: "3px solid white",
                   }}
                   src={user?.profile_photo[user?.profile_photo.length - 1]}
+                  alt="A"
+                  onClick={(event) => {
+                    setpicMenu(event.currentTarget);
+                  }}
                 />
+                {/* profile pic menu  */}
+                <Menu
+                  anchorEl={picMenu}
+                  open={menuOpen}
+                  onClose={() => {
+                    setpicMenu(null);
+                  }}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                >
+                  <MenuItem>
+                    <PermIdentity sx={{ margin: "0 5px" }} />
+                    Show Profile Picture
+                  </MenuItem>
+                  <MenuItem>
+                    <label
+                      htmlFor="profilePictureInput"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <ImageIcon sx={{ margin: "0 5px" }} />
+                      Update Profile Picture
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                    />
+                  </MenuItem>
+                </Menu>
+
                 <Typography
                   sx={{
                     color: "text.primary",

@@ -78,7 +78,7 @@ const Rightbar = () => {
                       border: "2px solid transparent",
                       outline: "2px solid grey",
                     }}
-                    src={user?.profile_photo}
+                    src={user?.profile_photo[user?.profile_photo.length - 1]}
                   />
                 </ListItemIcon>
                 <ListItemText primary={user?.name} />

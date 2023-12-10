@@ -86,7 +86,7 @@ const Comment = ({
             padding: "10px 15px",
           }}
         >
-          <Avatar src={user?.profile_photo} />
+          <Avatar src={user?.profile_photo[user?.profile_photo.length - 1]} />
           <InputBase
             placeholder="Submit Your Comment"
             fullWidth

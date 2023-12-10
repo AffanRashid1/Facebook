@@ -266,14 +266,14 @@ const Navbar = () => {
               border: "2px solid transparent",
               outline: "2px solid grey",
             }}
-            src={user?.profile_photo}
+            src={user?.profile_photo[user?.profile_photo.length - 1]}
             onClick={(e) => setOpen(true)}
           />
         </Icons>
         <UserBox>
           <Avatar
             sx={{ width: "35px", height: "35px" }}
-            src={user?.profile_photo}
+            src={user?.profile_photo[user?.profile_photo.length - 1]}
             onClick={(e) => setOpen(true)}
           />
           <Typography variant="span">{user?.name}</Typography>
@@ -310,7 +310,7 @@ const Navbar = () => {
                 marginRight: "10px",
                 border: "2px solid grey",
               }}
-              src={user?.profile_photo}
+              src={user?.profile_photo[user?.profile_photo.length - 1]}
             ></Avatar>
             <Typography textTransform={"capitalize"} color="text.primary">
               {user?.name}

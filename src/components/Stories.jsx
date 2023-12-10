@@ -102,7 +102,9 @@ export default function Stories() {
                 direction={"column"}
                 className="story"
                 style={{
-                  backgroundImage: `url(${user?.profile_photo})`,
+                  backgroundImage: `url(${
+                    user?.profile_photo[user?.profile_photo.length - 1]
+                  })`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   width: "100%",

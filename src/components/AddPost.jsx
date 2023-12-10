@@ -135,7 +135,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
               mt={2}
             >
               <Avatar
-                src={user?.profile_photo}
+                src={user?.profile_photo[user?.profile_photo.length - 1]}
                 sx={{ width: "45px", height: "45px", marginRight: "15px" }}
               />
               <Box sx={addInputStyle}>
@@ -269,7 +269,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
               <UserBox>
                 <Avatar
                   sx={{ width: "35px", height: "35px" }}
-                  src={user?.profile_photo}
+                  src={user?.profile_photo[user?.profile_photo.length - 1]}
                   onClick={(e) => setOpen(true)}
                 ></Avatar>
                 <Typography
