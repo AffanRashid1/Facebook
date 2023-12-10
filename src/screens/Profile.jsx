@@ -38,17 +38,14 @@ const Profile = () => {
   const [postLoading, setpostLoading] = useState(false);
 
   const myPosts = async () => {
-    setpostLoading(true);
     try {
       let response = await apiManager({
         method: "get",
         path: `/posts/user-post`,
       });
       setuserPost(response?.data?.payload);
-      setpostLoading(false);
     } catch (error) {
       console.log(error);
-      setpostLoading(false);
     }
   };
 

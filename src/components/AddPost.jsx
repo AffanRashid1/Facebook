@@ -229,14 +229,14 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
         >
           <Box
             sx={{
-              width: "40vw",
+              width: { xs: "70vw", sm: "60vw", md: "40vw" },
               bgcolor: "background.paper",
               padding: "0 20px",
               outline: "none",
             }}
             bgcolor={"background.default"}
             color={"text.primary"}
-            borderRadius={5}
+            borderRadius={2}
           >
             <Box
               sx={{
@@ -258,7 +258,12 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 onClick={(e) => setOpen(false)}
               />
 
-              <Typography variant="h6" color="gray" textAlign={"center"}>
+              <Typography
+                variant="h6"
+                color="gray"
+                textAlign={"center"}
+                margin="10px 0"
+              >
                 Create post
               </Typography>
               <UserBox>
@@ -269,7 +274,8 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 ></Avatar>
                 <Typography
                   variant="span"
-                  fontWeight={500}
+                  fontWeight={300}
+                  fontSize="18px"
                   textTransform="capitalize"
                 >
                   {user?.name}
@@ -306,7 +312,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                     sx={{
                       position: "relative",
                       top: "50px",
-                      right: "-90%",
+                      right: { md: "-85%", sm: "-80%", xs: "-80%" },
                       bgcolor: "background.paper",
                     }}
                     onClick={() => {
@@ -352,7 +358,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                     type="file"
                     filename={file}
                     onChange={(e) => setFile(e.target.files[0])}
-                    // accept="image/*"
+                    accept="image/*"
                   />
                 </IconButton>
                 <IconButton>

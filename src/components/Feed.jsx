@@ -10,16 +10,13 @@ const Feed = () => {
   const [postLoading, setpostLoading] = useState(false);
 
   const feedPosts = async () => {
-    setpostLoading(true);
     try {
       const response = await apiManager({
         method: "get",
         path: `/posts`,
       });
       setallPosts(response?.data?.payload);
-      setpostLoading(true);
     } catch (err) {
-      setpostLoading(true);
       console.log(err);
     }
   };
