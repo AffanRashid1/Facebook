@@ -7,17 +7,17 @@ import {
   Divider,
   FormControl,
   Grid,
+  IconButton,
   Menu,
   MenuItem,
   Modal,
-  Skeleton,
+  LinearProgress,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import ImageIcon from "@mui/icons-material/Image";
 import AddPost from "../components/AddPost";
 import Post from "../components/Post";
 import EditIcon from "@mui/icons-material/Edit";
@@ -27,8 +27,8 @@ import CameraIcon from "@mui/icons-material/Camera";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import Navbar from "../components/Navbar";
-import { PermIdentity, PhotoSizeSelectActual } from "@mui/icons-material";
-import styled from "@emotion/styled";
+import CloseIcon from "@mui/icons-material/Close";
+import ProfilePicMenu from "../components/ProfilePicMenu";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);
@@ -42,16 +42,18 @@ const Profile = () => {
   const [loadingUpdateBtn, setloadingUpdateBtn] = useState(false);
   const [postLoading, setpostLoading] = useState(false);
   const [picMenu, setpicMenu] = useState(null);
-  const menuOpen = Boolean(picMenu);
 
   const myPosts = async () => {
+    setpostLoading(true);
     try {
       let response = await apiManager({
         method: "get",
         path: `/posts/user-post`,
       });
       setuserPost(response?.data?.payload);
+      // setpostLoading(false);
     } catch (error) {
+      // setpostLoading(false);
       console.log(error);
     }
   };
@@ -94,6 +96,21 @@ const Profile = () => {
     myPosts();
   }, []);
 
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    pt: 2,
+    px: 4,
+    borderRadius: "10px",
+    pb: 3,
+    color: "action.selected",
+  };
+
   return (
     <>
       <Container
@@ -108,7 +125,10 @@ const Profile = () => {
         <Box>
           <Box
             sx={{
-              backgroundImage: `url(${"https://scontent.flhe20-1.fna.fbcdn.net/v/t39.30808-6/391705295_122106304346078044_9091400103311535031_n.png?_nc_cat=102&ccb=1-7&_nc_sid=783fdb&_nc_eui2=AeE1xXErnoP1TjqRaZpQ9P_n7uYIOHBBnRHu5gg4cEGdEXFsxHQHLVbRYAlHvBrxX3mli96IaWaima5TU6joR07-&_nc_ohc=XGnXbACBIXEAX-b4GC5&_nc_oc=AQlgGeqOaDb9ZJHiSrdgxJJ6lYpJ5vbUu6ezy356Jh1mSh4jB0s7ARWIC4l6kuTyBqo&_nc_ht=scontent.flhe20-1.fna&oh=00_AfAAmHRw9lEDUQH8MZRqFEq6LTM-YVAd5TJ8gat7ErOMxw&oe=6578F62E"})`,
+              backgroundImage: `url(${
+                user?.cover_photo[user?.cover_photo?.length - 1]
+              })`,
+              // backgroundImage: `url(${"https://imgs.search.brave.com/nJz_Nq_HMMszATPGnL9H0ZPw-5mDLDqvnBfJp9bhlno/rs:fit:860:0:0/g:ce/aHR0cHM6Ly92aXNt/ZS5jby9ibG9nL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIwLzA5/L0hlYWRlci0xLTEu/cG5n"})`,
               backgroundRepeat: "no-repeat",
               width: "100%",
               backgroundSize: "cover",
@@ -151,40 +171,13 @@ const Profile = () => {
                   }}
                 />
                 {/* profile pic menu  */}
-                <Menu
-                  anchorEl={picMenu}
-                  open={menuOpen}
-                  onClose={() => {
-                    setpicMenu(null);
+                <ProfilePicMenu
+                  picMenu={picMenu}
+                  setpicMenu={() => {
+                    setpicMenu();
                   }}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
-                >
-                  <MenuItem>
-                    <PermIdentity sx={{ margin: "0 5px" }} />
-                    Show Profile Picture
-                  </MenuItem>
-                  <MenuItem>
-                    <label
-                      htmlFor="profilePictureInput"
-                      style={{ display: "flex", alignItems: "center" }}
-                    >
-                      <ImageIcon sx={{ margin: "0 5px" }} />
-                      Update Profile Picture
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      style={{ display: "none" }}
-                    />
-                  </MenuItem>
-                </Menu>
+                  modalStyle={modalStyle}
+                />
 
                 <Typography
                   sx={{
@@ -200,7 +193,6 @@ const Profile = () => {
             </Stack>
           </Box>
         </Box>
-
         <Grid container spacing={2} xs={12} mt={2}>
           <Grid item xs={12} md={6}>
             <Card
@@ -256,15 +248,7 @@ const Profile = () => {
                 <Typography textAlign={"center"}>No Post Yet</Typography>
               ) : (
                 userPost.map((post, i) => {
-                  return postLoading ? (
-                    <Box sx={{ marginBottom: "15px" }}>
-                      <Skeleton
-                        variant="rectangular"
-                        height="50vh"
-                        animation="wave"
-                      />
-                    </Box>
-                  ) : (
+                  return (
                     <Post
                       key={i}
                       data={post}
@@ -278,9 +262,7 @@ const Profile = () => {
           </Grid>
         </Grid>
       </Container>
-
       {/* Update Modal */}
-
       <Modal
         open={showUpdateModal}
         onClose={() => {
@@ -289,22 +271,7 @@ const Profile = () => {
         }}
         disableAutoFocus
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            pt: 2,
-            px: 4,
-            borderRadius: "10px",
-            pb: 3,
-            color: "action.selected",
-          }}
-        >
+        <Box sx={modalStyle}>
           <FormControl fullWidth sx={{ display: "flex", gap: "20px" }}>
             <TextField
               type="text"

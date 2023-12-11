@@ -71,6 +71,7 @@ const Login = () => {
         toast.success(resp?.data?.message);
         navigate("/");
       } catch (err) {
+        setisLoading(false);
         toast.error(err?.response?.data?.message);
       }
     }

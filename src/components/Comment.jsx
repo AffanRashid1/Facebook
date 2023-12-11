@@ -100,6 +100,7 @@ const Comment = ({
                 handleComment();
               }
             }}
+            autoFocus
           />
           {isLoading ? (
             <LoadingButton loading={isLoading} />

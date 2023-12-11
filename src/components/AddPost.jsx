@@ -229,7 +229,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
         >
           <Box
             sx={{
-              width: { xs: "70vw", sm: "60vw", md: "40vw" },
+              width: { xs: "60vw", sm: "60vw", md: "30vw" },
               bgcolor: "background.paper",
               padding: "0 20px",
               outline: "none",

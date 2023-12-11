@@ -107,7 +107,14 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
       <Card key={data?._id} sx={{ marginBottom: "20px", borderRadius: "10px" }}>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: "gray" }} src={data?.owner?.profile_photo} />
+            <Avatar
+              sx={{ bgcolor: "gray" }}
+              src={
+                data?.owner?.profile_photo[
+                  data?.owner?.profile_photo?.length - 1
+                ]
+              }
+            />
           }
           action={
             <>

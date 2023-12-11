@@ -48,7 +48,11 @@ const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
     >
       <Avatar
         sx={{ height: "22px", width: "22px" }}
-        src={comment?.owner?.profile_photo}
+        src={
+          comment?.owner?.profile_photo[
+            comment?.owner?.profile_photo.length - 1
+          ]
+        }
       />
       <Box
         sx={{
