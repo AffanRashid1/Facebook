@@ -12,6 +12,9 @@ import {
   Stack,
   Autocomplete,
   LinearProgress,
+  Modal,
+  TextField,
+  Button,
 } from "@mui/material";
 import { Settings } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -83,6 +86,9 @@ const Navbar = () => {
   const [searchResult, setsearchResult] = useState([]);
   const [searchField, setsearchField] = useState("");
   const [logoutLoading, setlogoutLoading] = useState(false);
+  const [delAccModal, setdelAccModal] = useState(true);
+  const [delEmail, setdelEmail] = useState("");
+  const [delPass, setdelPass] = useState("");
 
   let iconColor = "#2374e1";
 
@@ -120,7 +126,21 @@ const Navbar = () => {
     }
   };
 
-  const handleDelAccount = () => {};
+  const handleDelAccount = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await apiManager({
+        method: "delete",
+        path: "/users/delete",
+        params: {
+          email: delEmail,
+          delPass: delPass,
+        },
+      });
+    } catch (err) {
+      console.log(err?.message);
+    }
+  };
   return (
     <>
       <AppBar
@@ -361,7 +381,7 @@ const Navbar = () => {
             />
             <Typography>Logout</Typography>
           </MenuItem>
-          <MenuItem color="red" onClick={handleDelAccount}>
+          <MenuItem color="red" onClick={() => setdelAccModal(true)}>
             <RemoveCircleOutlineIcon
               sx={{
                 width: "20px",
@@ -375,6 +395,64 @@ const Navbar = () => {
         </Menu>
         <Messenger />
       </AppBar>
+
+      {/* Delete Account Modal  */}
+
+      <Modal
+        open={delAccModal}
+        onClose={() => setdelAccModal(false)}
+        disableAutoFocus
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            pt: 2,
+            px: 4,
+            borderRadius: "10px",
+            pb: 3,
+            color: "typography.dark",
+          }}
+        >
+          <form>
+            <TextField
+              variant="outlined"
+              label="Email"
+              type="email"
+              fullWidth
+              sx={{ marginBottom: "20px" }}
+              required
+              value={delEmail}
+              onChange={(e) => setdelEmail(e.target.value)}
+            />
+            <TextField
+              required
+              variant="outlined"
+              label="Password"
+              type="password"
+              fullWidth
+              value={delPass}
+              onChange={(e) => setdelPass(e.target.value)}
+            />
+            <Stack direction="row" justifyContent="space-between" mt={5}>
+              <Button variant="outlined" onClick={() => setdelAccModal(false)}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                onClick={() => handleDelAccount}
+              >
+                Done
+              </Button>
+            </Stack>
+          </form>
+        </Box>
+      </Modal>
     </>
   );
 };

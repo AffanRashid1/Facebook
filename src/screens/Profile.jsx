@@ -38,10 +38,14 @@ const Profile = () => {
   const [profilePic, setprofilePic] = useState(null);
   const [updateNameInput, setupdateNameInput] = useState("");
   const [updateEmailInput, setupdateEmailInput] = useState("");
+  const [bio, setbio] = useState("");
+  const [livesIn, setlivesIn] = useState("");
   const [imgPreview, setimgPreview] = useState(null);
   const [loadingUpdateBtn, setloadingUpdateBtn] = useState(false);
   const [postLoading, setpostLoading] = useState(false);
   const [picMenu, setpicMenu] = useState(null);
+  const [coverPic, setcoverPic] = useState(null);
+  const [coverPreviews, setcoverPreviews] = useState(null);
 
   const myPosts = async () => {
     setpostLoading(true);
@@ -63,8 +67,11 @@ const Profile = () => {
       setloadingUpdateBtn(true);
       let formData = new FormData();
       formData.append("profile_photo", profilePic);
+      formData.append("cover_photo", coverPic);
       formData.append("name", updateNameInput);
       formData.append("email", updateEmailInput);
+      formData.append("bio", bio);
+      formData.append("liveIn", livesIn);
 
       let response = await apiManager({
         method: "put",
@@ -90,7 +97,10 @@ const Profile = () => {
     if (profilePic) {
       setimgPreview(URL.createObjectURL(profilePic));
     }
-  }, [profilePic]);
+    if (coverPic) {
+      setcoverPreviews(URL.createObjectURL(coverPic));
+    }
+  }, [profilePic, coverPic]);
 
   useEffect(() => {
     myPosts();
@@ -154,22 +164,30 @@ const Profile = () => {
                 alignItems="center"
                 spacing={3}
               >
-                <Avatar
-                  sx={{
-                    width: "200px",
-                    height: "200px",
-                    padding: 0,
-                    margin: 0,
-                    borderRadius: "50%",
-                    border: "5px solid grey",
-                    outline: "3px solid white",
-                  }}
-                  src={user?.profile_photo[user?.profile_photo.length - 1]}
-                  alt="A"
-                  onClick={(event) => {
-                    setpicMenu(event.currentTarget);
-                  }}
-                />
+                <Box>
+                  <Avatar
+                    sx={{
+                      width: "200px",
+                      height: "200px",
+                      padding: 0,
+                      margin: 0,
+                      borderRadius: "50%",
+                      border: "5px solid grey",
+                      cursor: "pointer",
+                      outline: "3px solid white",
+                      bgcolor: "white",
+                      transition: "transform 0.2s ease-in-out",
+                      "&:hover": {
+                        opacity: "0.7",
+                      },
+                    }}
+                    src={user?.profile_photo[user?.profile_photo.length - 1]}
+                    alt=""
+                    onClick={(event) => {
+                      setpicMenu(event.currentTarget);
+                    }}
+                  />
+                </Box>
                 {/* profile pic menu  */}
                 <ProfilePicMenu
                   picMenu={picMenu}
@@ -217,12 +235,12 @@ const Profile = () => {
                 color="typography.dark"
                 margin="15px 0"
               >
-                Growing one experience at a time ⏲️ <br /> Capturing moments 📸
+                {user?.bio}
               </Typography>
               <Divider />
               <Stack direction="row" spacing={3} margin="10px 0">
                 <HouseIcon sx={{ color: "typography.dark" }} />
-                <Typography>Lives in Miami</Typography>
+                <Typography>Lives in {user?.liveIn}</Typography>
               </Stack>
               <Button
                 variant="contained"
@@ -231,6 +249,8 @@ const Profile = () => {
                   setshowUpdateModal(true);
                   setupdateNameInput(user?.name);
                   setupdateEmailInput(user?.email);
+                  setbio(user?.bio);
+                  setlivesIn(user?.liveIn);
                 }}
                 sx={{
                   bgcolor: "action.selected",
@@ -267,7 +287,10 @@ const Profile = () => {
         open={showUpdateModal}
         onClose={() => {
           setshowUpdateModal(false);
+          setcoverPic(null);
+          setprofilePic(null);
           setimgPreview(null);
+          setcoverPreviews(null);
         }}
         disableAutoFocus
       >
@@ -293,8 +316,28 @@ const Profile = () => {
                 setupdateEmailInput(e.target.value);
               }}
             />
+            <TextField
+              type="text"
+              label="Bio"
+              fullWidth
+              variant="standard"
+              value={bio}
+              onChange={(e) => {
+                setbio(e.target.value);
+              }}
+            />
+            <TextField
+              type="text"
+              label="Lives in"
+              fullWidth
+              variant="standard"
+              value={livesIn}
+              onChange={(e) => {
+                setlivesIn(e.target.value);
+              }}
+            />
             <Button component="label" variant="contained">
-              <CameraIcon /> Add Profile Pic
+              <CameraIcon sx={{ margin: "0 5px" }} /> Add Profile Pic
               <input
                 filename={profilePic}
                 type="file"
@@ -312,22 +355,58 @@ const Profile = () => {
                   width: 1,
                 }}
               />
+              {imgPreview !== null ? (
+                <Box
+                  sx={{
+                    width: "100%",
+                  }}
+                >
+                  <img
+                    src={imgPreview}
+                    alt=""
+                    style={{ width: "100%", borderRadius: "10px" }}
+                  />
+                </Box>
+              ) : (
+                ""
+              )}
             </Button>
-            {imgPreview !== null ? (
-              <Box
-                sx={{
-                  width: "100%",
+            <Button component="label" variant="contained">
+              <CameraIcon sx={{ margin: "0 5px" }} /> Add Cover Picture
+              <input
+                filename={coverPic}
+                type="file"
+                onChange={(e) => setcoverPic(e.target.files[0])}
+                accept="image/*"
+                style={{
+                  clip: "rect(0 0 0 0)",
+                  clipPath: "inset(50%)",
+                  height: 1,
+                  overflow: "hidden",
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  whiteSpace: "nowrap",
+                  width: 1,
                 }}
-              >
-                <img
-                  src={imgPreview}
-                  alt=""
-                  style={{ width: "100%", borderRadius: "10px" }}
-                />
-              </Box>
-            ) : (
-              ""
-            )}
+              />
+              {coverPreviews !== null ? (
+                <Box
+                  sx={{
+                    width: "100%",
+                  }}
+                >
+                  <img
+                    src={coverPreviews}
+                    alt=""
+                    style={{ width: "100%", borderRadius: "10px" }}
+                  />
+                </Box>
+              ) : (
+                ""
+              )}
+            </Button>
+
             <LoadingButton
               loading={loadingUpdateBtn}
               variant="contained"
