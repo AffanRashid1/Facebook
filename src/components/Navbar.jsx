@@ -140,8 +140,8 @@ const Navbar = () => {
         },
       });
       localStorage.removeItem("token");
+      navigate("/login");
       toast.success(response?.data?.message);
-      dispatch(setInitialLogged());
     } catch (err) {
       console.log(err?.message);
     }

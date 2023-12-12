@@ -83,7 +83,6 @@ const Profile = () => {
       });
       setimgPreview(null);
       setshowUpdateModal(false);
-
       toast.success(response?.data?.message);
     } catch (error) {
       toast.error(error?.message);
@@ -250,7 +249,7 @@ const Profile = () => {
                   <Typography>Lives in {user?.liveIn}</Typography>
                 </Stack>
               )}
-              <Stack direction="row" spacing={3} margin="10px 0">
+              {/* <Stack direction="row" spacing={3} margin="10px 0">
                 <LinkIcon sx={{ color: "typography.dark" }} />
                 <a
                   href={user?.socialLinks[0]}
@@ -259,7 +258,7 @@ const Profile = () => {
                 >
                   {user?.socialLinks[0]}
                 </a>
-              </Stack>
+              </Stack> */}
               <Button
                 variant="contained"
                 fullWidth

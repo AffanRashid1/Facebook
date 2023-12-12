@@ -64,62 +64,70 @@ const VisuallyHiddenInput = styled("input")({
 const AddPost = ({ post, feedPosts, isProfile }) => {
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.appReducer.user);
-  const [caption, setCaption] = useState("");
-  const [file, setFile] = useState(null);
-  const [imgUrl, setimgUrl] = useState(null);
   const [loadingBtn, setloadingBtn] = useState(false);
+
+  const [formData, setformData] = useState({
+    file: null,
+    caption: "",
+    imgUrl: null,
+  });
+
+  const validateFormData = () => {
+    if (!formData.file && formData.caption.trim() === "") {
+      toast.error("Please select a file or enter a caption");
+      return false;
+    }
+
+    if (formData.file) {
+      const allowedExtensions = ["jpg", "jpeg", "png", "gif", "svg"];
+      const fileExtension = formData.file.name.split(".").pop().toLowerCase();
+
+      if (!allowedExtensions.includes(fileExtension)) {
+        toast.error("Please select a valid image");
+        return false;
+      }
+    }
+
+    return true;
+  };
 
   const createPost = async (e) => {
     e.preventDefault();
-    if (caption === "" && file === null) {
-      toast.error("Must Fill The Field");
-      setCaption("");
-      setimgUrl(null);
-      setFile(null);
-    } else if (file && file.type && !file.type.startsWith("image/")) {
-      setCaption("");
-      setimgUrl(null);
-      toast.error("Please select a valid image file");
-    } else {
-      try {
-        setloadingBtn(true);
-
-        let formData = new FormData();
-        formData.append("imageUrl", file);
-        formData.append("caption", caption);
-
-        let res = await apiManager({
-          method: "post",
-          path: `/posts/create-post`,
-          params: formData,
-          header: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-
-        isProfile ? post() : feedPosts();
-        setCaption("");
-        setFile(null);
-        setOpen(false);
-        setimgUrl(null);
-        toast.success(res?.data?.message);
-      } catch (error) {
-        setCaption("");
-        setFile(null);
-        setimgUrl(null);
-        setOpen(false);
-        toast.error(error?.message);
-      } finally {
+    try {
+      setloadingBtn(true);
+      if (!validateFormData()) {
         setloadingBtn(false);
+        return;
       }
+
+      let data = new FormData();
+      data.append("imageUrl", formData.file);
+      data.append("caption", formData.caption);
+
+      let res = await apiManager({
+        method: "post",
+        path: `/posts/create-post`,
+        params: data,
+        header: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      isProfile ? post() : feedPosts();
+      setOpen(false);
+      toast.success(res?.data?.message);
+    } catch (error) {
+      setOpen(false);
+      toast.error(error?.message);
+    } finally {
+      setformData({
+        imgUrl: null,
+        file: null,
+        caption: null,
+      });
+      setloadingBtn(false);
     }
   };
-
-  useEffect(() => {
-    if (file) {
-      setimgUrl(URL.createObjectURL(file));
-    }
-  }, [file]);
 
   return (
     <>
@@ -220,8 +228,11 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
           open={open}
           onClose={(e) => {
             setOpen(false);
-            setCaption("");
-            setimgUrl(null);
+            setformData({
+              imgUrl: null,
+              file: null,
+              caption: null,
+            });
           }}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -255,7 +266,14 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                   marginLeft: "45%",
                   color: "gray",
                 }}
-                onClick={(e) => setOpen(false)}
+                onClick={(e) => {
+                  setOpen(false);
+                  setformData({
+                    imgUrl: null,
+                    file: null,
+                    caption: null,
+                  });
+                }}
               />
 
               <Typography
@@ -296,13 +314,17 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 placeholder="What's on your mind?"
                 sx={{ width: "100%", margin: "10px 0" }}
                 variant="standard"
-                value={caption}
+                value={formData.caption}
                 onChange={(e) => {
-                  setCaption(e.target.value);
+                  setformData({
+                    ...formData,
+                    caption: e.target.value,
+                  });
                 }}
+                name="caption"
                 autoFocus
               />
-              {imgUrl !== null ? (
+              {formData.imgUrl !== null ? (
                 <Box
                   sx={{
                     width: "100%",
@@ -316,14 +338,16 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                       bgcolor: "background.paper",
                     }}
                     onClick={() => {
-                      setimgUrl(null);
-                      setFile(null);
+                      setformData({
+                        imgUrl: null,
+                        file: null,
+                      });
                     }}
                   >
                     <CloseIcon />
                   </IconButton>
                   <img
-                    src={imgUrl}
+                    src={formData.imgUrl}
                     alt=""
                     style={{
                       width: "100%",
@@ -356,8 +380,15 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                   />
                   <VisuallyHiddenInput
                     type="file"
-                    filename={file}
-                    onChange={(e) => setFile(e.target.files[0])}
+                    filename={formData.file}
+                    name="file"
+                    onChange={(e) => {
+                      setformData({
+                        ...formData,
+                        file: e.target.files[0],
+                        imgUrl: URL.createObjectURL(e.target.files[0]),
+                      });
+                    }}
                     accept="image/*"
                   />
                 </IconButton>
@@ -370,8 +401,6 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 <IconButton>
                   <MoreHorizIcon color="error" />
                 </IconButton>
-                {/* <TagFacesIcon color="success" /> */}
-                {/* <LocationOnIcon color="error" /> */}
               </Box>
 
               <LoadingButton

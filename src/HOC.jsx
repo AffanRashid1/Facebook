@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-const HOC = ({ childern, isLogged, isProtected }) => {
+const Hoc = ({ childern, isLogged, isProtected }) => {
   if (isProtected) {
     if (isLogged) {
       return childern;
@@ -15,4 +15,4 @@ const HOC = ({ childern, isLogged, isProtected }) => {
   }
 };
 
-export default HOC;
+export default Hoc;

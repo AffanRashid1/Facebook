@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { setLogged, setUser } from "./store/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HOC from "./HOC";
+import Hoc from "./Hoc";
 import Error from "./Screens/Error";
 import { routes } from "./router";
 import { createTheme, ThemeProvider } from "@mui/material";
@@ -14,11 +14,10 @@ function App() {
   const dispatch = useDispatch();
   const isLogged = useSelector((state) => state.appReducer.isLogged);
   const [isLoading, setIsLoading] = useState(true);
-  const [mode, setMode] = useState("dark");
 
   const darkTheme = createTheme({
     palette: {
-      mode: mode,
+      mode: "dark",
       primary: {
         main: "#2196f3",
       },
@@ -78,7 +77,7 @@ function App() {
                     path={e.path}
                     key={i}
                     element={
-                      <HOC
+                      <Hoc
                         childern={e.element}
                         isProtected={e.protected}
                         isLogged={isLogged}
