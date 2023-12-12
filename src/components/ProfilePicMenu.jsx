@@ -5,7 +5,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Button, IconButton, Menu, MenuItem, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
-const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle }) => {
+
+const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle, updateProfile }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [profilePic, setprofilePic] = useState(null);
   const [profilePreview, setprofilePreview] = useState(null);
@@ -15,6 +16,7 @@ const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle }) => {
 
   useEffect(() => {
     if (profilePic) {
+      console.log(profilePic);
       setprofilePreview(URL.createObjectURL(profilePic));
       setprofilePicModal(true);
     }
@@ -105,7 +107,13 @@ const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle }) => {
           ) : (
             ""
           )}
-          <Button fullWidth variant="contained">
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => {
+              updateProfile(profilePic);
+            }}
+          >
             UPDATE PROFILE PICTURE
           </Button>
         </Box>

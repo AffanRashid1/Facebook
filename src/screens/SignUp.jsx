@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  CircularProgress,
   Container,
   IconButton,
   InputAdornment,
@@ -15,8 +14,10 @@ import { toast } from "react-toastify";
 import logo from "../assets/facebook.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import apiManager from "../Helper/ApiManager";
+import usePageTitle from "../Helper/usePageTitle";
 
 const SignUp = () => {
+  usePageTitle("Sign Up");
   const [formDetails, setformDetails] = useState({
     name: "",
     email: "",

@@ -32,6 +32,7 @@ import { Link } from "react-router-dom";
 import apiManager from "../Helper/ApiManager";
 import Messenger from "./Messenger";
 import { setAllUser } from "../store/reducer";
+import { useNavigate } from "react-router-dom";
 
 // Toolbar to hold logo search and icons
 const StyledToolbar = styled(Toolbar)({
@@ -81,12 +82,13 @@ const UserBox = styled(Box)(({ theme }) => ({
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.appReducer.user);
   const [open, setOpen] = useState(false);
   const [searchResult, setsearchResult] = useState([]);
   const [searchField, setsearchField] = useState("");
   const [logoutLoading, setlogoutLoading] = useState(false);
-  const [delAccModal, setdelAccModal] = useState(true);
+  const [delAccModal, setdelAccModal] = useState(false);
   const [delEmail, setdelEmail] = useState("");
   const [delPass, setdelPass] = useState("");
 
@@ -129,14 +131,17 @@ const Navbar = () => {
   const handleDelAccount = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiManager({
+      let response = await apiManager({
         method: "delete",
         path: "/users/delete",
         params: {
           email: delEmail,
-          delPass: delPass,
+          password: delPass,
         },
       });
+      localStorage.removeItem("token");
+      toast.success(response?.data?.message);
+      dispatch(setInitialLogged());
     } catch (err) {
       console.log(err?.message);
     }
@@ -445,7 +450,7 @@ const Navbar = () => {
               <Button
                 type="submit"
                 variant="contained"
-                onClick={() => handleDelAccount}
+                onClick={handleDelAccount}
               >
                 Done
               </Button>

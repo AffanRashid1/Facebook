@@ -24,11 +24,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import HouseIcon from "@mui/icons-material/House";
 import apiManager from "../Helper/ApiManager";
 import CameraIcon from "@mui/icons-material/Camera";
+import LinkIcon from "@mui/icons-material/Link";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import Navbar from "../components/Navbar";
-import CloseIcon from "@mui/icons-material/Close";
 import ProfilePicMenu from "../components/ProfilePicMenu";
+import usePageTitle from "../Helper/usePageTitle";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);
@@ -42,36 +43,35 @@ const Profile = () => {
   const [livesIn, setlivesIn] = useState("");
   const [imgPreview, setimgPreview] = useState(null);
   const [loadingUpdateBtn, setloadingUpdateBtn] = useState(false);
-  const [postLoading, setpostLoading] = useState(false);
   const [picMenu, setpicMenu] = useState(null);
   const [coverPic, setcoverPic] = useState(null);
+  const [socialLinks, setsocialLinks] = useState("");
   const [coverPreviews, setcoverPreviews] = useState(null);
+  usePageTitle("Profile");
 
   const myPosts = async () => {
-    setpostLoading(true);
     try {
       let response = await apiManager({
         method: "get",
         path: `/posts/user-post`,
       });
       setuserPost(response?.data?.payload);
-      // setpostLoading(false);
     } catch (error) {
-      // setpostLoading(false);
       console.log(error);
     }
   };
 
-  const updateProfile = async () => {
+  const updateProfile = async (profile) => {
     try {
       setloadingUpdateBtn(true);
       let formData = new FormData();
-      formData.append("profile_photo", profilePic);
+      formData.append("profile_photo", profile);
       formData.append("cover_photo", coverPic);
       formData.append("name", updateNameInput);
       formData.append("email", updateEmailInput);
       formData.append("bio", bio);
       formData.append("liveIn", livesIn);
+      formData.append("socialLinks", socialLinks);
 
       let response = await apiManager({
         method: "put",
@@ -135,10 +135,10 @@ const Profile = () => {
         <Box>
           <Box
             sx={{
-              backgroundImage: `url(${
+              background: `url(${
                 user?.cover_photo[user?.cover_photo?.length - 1]
               })`,
-              // backgroundImage: `url(${"https://imgs.search.brave.com/nJz_Nq_HMMszATPGnL9H0ZPw-5mDLDqvnBfJp9bhlno/rs:fit:860:0:0/g:ce/aHR0cHM6Ly92aXNt/ZS5jby9ibG9nL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIwLzA5/L0hlYWRlci0xLTEu/cG5n"})`,
+              bgcolor: "gray",
               backgroundRepeat: "no-repeat",
               width: "100%",
               backgroundSize: "cover",
@@ -175,7 +175,7 @@ const Profile = () => {
                       border: "5px solid grey",
                       cursor: "pointer",
                       outline: "3px solid white",
-                      bgcolor: "white",
+                      bgcolor: "gray",
                       transition: "transform 0.2s ease-in-out",
                       "&:hover": {
                         opacity: "0.7",
@@ -188,13 +188,16 @@ const Profile = () => {
                     }}
                   />
                 </Box>
+
                 {/* profile pic menu  */}
+
                 <ProfilePicMenu
                   picMenu={picMenu}
                   setpicMenu={() => {
                     setpicMenu();
                   }}
                   modalStyle={modalStyle}
+                  updateProfile={updateProfile}
                 />
 
                 <Typography
@@ -230,17 +233,32 @@ const Profile = () => {
               >
                 Intro
               </Typography>
-              <Typography
-                textAlign="center"
-                color="typography.dark"
-                margin="15px 0"
-              >
-                {user?.bio}
-              </Typography>
+              {user?.bio == "undefined" ? null : (
+                <Typography
+                  textAlign="center"
+                  color="typography.dark"
+                  margin="15px 0"
+                  fontStyle="italic"
+                >
+                  {user?.bio}
+                </Typography>
+              )}
               <Divider />
+              {user?.liveIn == "" ? null : (
+                <Stack direction="row" spacing={3} margin="10px 0">
+                  <HouseIcon sx={{ color: "typography.dark" }} />
+                  <Typography>Lives in {user?.liveIn}</Typography>
+                </Stack>
+              )}
               <Stack direction="row" spacing={3} margin="10px 0">
-                <HouseIcon sx={{ color: "typography.dark" }} />
-                <Typography>Lives in {user?.liveIn}</Typography>
+                <LinkIcon sx={{ color: "typography.dark" }} />
+                <a
+                  href={user?.socialLinks[0]}
+                  style={{ color: "#2374E1", textDecoration: "none" }}
+                  target="_blank"
+                >
+                  {user?.socialLinks[0]}
+                </a>
               </Stack>
               <Button
                 variant="contained"
@@ -254,6 +272,7 @@ const Profile = () => {
                 }}
                 sx={{
                   bgcolor: "action.selected",
+                  margin: "6px 0",
                 }}
               >
                 <EditIcon />
@@ -336,6 +355,16 @@ const Profile = () => {
                 setlivesIn(e.target.value);
               }}
             />
+            <TextField
+              type="text"
+              label="Social Links"
+              fullWidth
+              variant="standard"
+              value={socialLinks}
+              onChange={(e) => {
+                setsocialLinks(e.target.value);
+              }}
+            />
             <Button component="label" variant="contained">
               <CameraIcon sx={{ margin: "0 5px" }} /> Add Profile Pic
               <input
@@ -411,7 +440,7 @@ const Profile = () => {
               loading={loadingUpdateBtn}
               variant="contained"
               fullWidth
-              onClick={updateProfile}
+              onClick={() => updateProfile(profilePic)}
             >
               UPDATE
             </LoadingButton>

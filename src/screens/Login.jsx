@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { setLogged, setUser } from "../store/reducer";
 import loginsvg from "../assets/loginsvg.svg";
 import apiManager from "../Helper/ApiManager";
+import usePageTitle from "../Helper/usePageTitle";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
@@ -24,6 +25,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setshowPassword] = useState(false);
   const [isLoading, setisLoading] = useState(false);
+  usePageTitle("Login");
 
   let inputStyle = {
     color: "black",
