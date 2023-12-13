@@ -77,6 +77,7 @@ const Comment = ({
         >
           <Avatar src={user?.profile_photo[user?.profile_photo.length - 1]} />
           <InputBase
+            autoFocus
             placeholder="Submit Your Comment"
             fullWidth
             sx={{ margin: "0 10px" }}
@@ -89,7 +90,6 @@ const Comment = ({
                 handleComment();
               }
             }}
-            autoFocus
           />
           {isLoading ? (
             <LoadingButton loading={isLoading} />

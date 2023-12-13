@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 
-const TimeAgo = (createdAt) => {
+const TimeAgo = ({ createdAt }) => {
   const [timeAgo, setTimeAgo] = useState("");
 
   useEffect(() => {
@@ -13,15 +13,21 @@ const TimeAgo = (createdAt) => {
       if (diffInMinutes < 1) {
         setTimeAgo("Just Now");
       } else if (diffInMinutes < 60) {
-        setTimeAgo(`${diffInMinutes} minutes ago`);
+        setTimeAgo(
+          `${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`
+        );
       } else {
         setTimeAgo(postTime.fromNow());
       }
     };
 
+    // Initial update
     updateRelativeTime();
+
+    // Set up interval to update every minute
     const intervalId = setInterval(updateRelativeTime, 60000);
 
+    // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, [createdAt]);
 

@@ -256,7 +256,7 @@ const Profile = () => {
             </Card>
           </Grid>
           <Grid item xs={12} md={6}>
-            <CreatePost post={() => myPosts()} isProfile={isProfile} />
+            <CreatePost ProfilePosts={() => myPosts()} isProfile={isProfile} />
             <Box>
               {userPost?.length === undefined || 0 ? (
                 <Typography textAlign={"center"}>No Post Yet</Typography>

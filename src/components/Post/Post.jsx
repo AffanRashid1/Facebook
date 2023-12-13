@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Card,
   CardActions,
@@ -12,7 +13,6 @@ import {
   Divider,
   Stack,
   FormControlLabel,
-  Backdrop,
   Menu,
   MenuItem,
 } from "@mui/material";
@@ -22,21 +22,18 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ReplyIcon from "@mui/icons-material/Reply";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import { useEffect, useState } from "react";
+import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import moment from "moment";
 import Checkbox from "@mui/material/Checkbox";
 import likeSvg from "../../assets/facebook-like.svg";
 import apiManager from "../../helper/apiManager";
 import Comment from "../Comment/Comment";
-import { LoadingButton } from "@mui/lab";
 import TimeAgo from "../TimeAgo";
 
 const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
   const [imgLoading, setImgLoading] = useState(true);
   const [delLoading, setDelLoading] = useState(false);
-  const [timeAgo, setTimeAgo] = useState("");
   const [likeModal, setLikeModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [commentBox, setCommentBox] = useState(false);
@@ -51,7 +48,6 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
         path: `/posts/like/${postId}`,
       });
 
-      data?.likes.push(response?.data?.likerId);
       isProfile ? updateProfileData() : getFeedPosts();
     } catch (error) {
       console.log(error);
@@ -66,12 +62,12 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
         path: `/posts/delete-post/${data?._id}`,
       });
       isProfile ? updateProfileData() : getFeedPosts();
-      setDelLoading(false);
       toast.success(response?.data?.message);
       setAnchorEl(null);
     } catch (error) {
-      setDelLoading(false);
       console.log(error);
+    } finally {
+      setDelLoading(false);
     }
   };
 
@@ -104,11 +100,6 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
                 onClick={(event) => {
                   setAnchorEl(event.currentTarget);
                 }}
-                aria-label="more"
-                id="long-button"
-                aria-controls={open ? "long-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                aria-haspopup="true"
               >
                 <MoreHorizIcon />
               </IconButton>
@@ -138,16 +129,19 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
           </Typography>
         </CardContent>
 
-        {data?.imageUrl.length === 0 ? null : imgLoading ? (
-          <Skeleton variant="rectangular" height={400} animation="wave" />
-        ) : (
-          <CardMedia
-            component="img"
-            height="auto%"
-            image={data?.imageUrl[0]}
-            alt="Post"
-          />
-        )}
+        <Box>
+          {data?.imageUrl.length === 0 ? null : imgLoading ? (
+            <Skeleton variant="rectangular" height={500} animation="wave" />
+          ) : (
+            <CardMedia
+              component="img"
+              width="auto"
+              height="500"
+              image={data?.imageUrl[0]}
+              alt="Post"
+            />
+          )}
+        </Box>
         <Divider />
         <Stack
           direction={"row"}
@@ -233,15 +227,7 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
           setLikeModal(false);
         }}
         disableAutoFocus
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
         closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
       >
         <Box
           sx={{

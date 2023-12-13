@@ -30,7 +30,7 @@ import {
   StyledModal,
 } from "./postStyles";
 
-const CreatePost = ({ post, getFeedPosts, isProfile }) => {
+const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
   const [open, setOpen] = useState(false);
   const [loadingBtn, setLoadingBtn] = useState(false);
 
@@ -93,7 +93,7 @@ const CreatePost = ({ post, getFeedPosts, isProfile }) => {
         },
       });
 
-      isProfile ? post() : getFeedPosts();
+      isProfile ? ProfilePosts() : getFeedPosts();
       toast.success(res?.data?.message);
     } catch (error) {
       toast.error(error?.message);
@@ -130,6 +130,7 @@ const CreatePost = ({ post, getFeedPosts, isProfile }) => {
                   }}
                   readOnly
                   onClick={(e) => setOpen(true)}
+                  autoFocus
                 />
               </Box>
             </Stack>
@@ -198,7 +199,7 @@ const CreatePost = ({ post, getFeedPosts, isProfile }) => {
           </Card>
         </Box>
 
-        {/* add post modal */}
+        {/* add ProfilePosts modal */}
         <StyledModal
           open={open}
           onClose={(e) => {
@@ -249,7 +250,7 @@ const CreatePost = ({ post, getFeedPosts, isProfile }) => {
                 textAlign={"center"}
                 margin="10px 0"
               >
-                Create post
+                Create ProfilePosts
               </Typography>
               <UserBox>
                 <Avatar

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Hoc from "./Hoc";
 import { routes } from "./router";
-import NotFound from "./Screens/NotFound";
+import NotFound from "./screens/NotFound";
 import { createTheme, ThemeProvider } from "@mui/material";
 import apiManager from "./helper/apiManager";
 
