@@ -4,7 +4,6 @@ import logo from "../assets/logo.png";
 import { Box } from "@mui/material";
 
 export default function Loader() {
-  // Define the animation properties
   const translateAnimation = useSpring({
     from: { transform: "translateY(25%)", opacity: 0 },
     to: { transform: "translateY(0)", opacity: 1, transition: "0.5s ease in" },

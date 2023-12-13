@@ -22,31 +22,31 @@ import AddPost from "../components/AddPost";
 import Post from "../components/Post";
 import EditIcon from "@mui/icons-material/Edit";
 import HouseIcon from "@mui/icons-material/House";
-import apiManager from "../Helper/ApiManager";
+import apiManager from "../helper/apiManager";
 import CameraIcon from "@mui/icons-material/Camera";
 import LinkIcon from "@mui/icons-material/Link";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import Navbar from "../components/Navbar";
 import ProfilePicMenu from "../components/ProfilePicMenu";
-import usePageTitle from "../Helper/usePageTitle";
+import usePageTitle from "../hooks/usePageTitle";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);
-  const [userPost, setuserPost] = useState([]);
-  const [isProfile, setisProfile] = useState(true);
-  const [showUpdateModal, setshowUpdateModal] = useState(false);
-  const [profilePic, setprofilePic] = useState(null);
-  const [updateNameInput, setupdateNameInput] = useState("");
-  const [updateEmailInput, setupdateEmailInput] = useState("");
-  const [bio, setbio] = useState("");
-  const [livesIn, setlivesIn] = useState("");
-  const [imgPreview, setimgPreview] = useState(null);
-  const [loadingUpdateBtn, setloadingUpdateBtn] = useState(false);
-  const [picMenu, setpicMenu] = useState(null);
-  const [coverPic, setcoverPic] = useState(null);
-  const [socialLinks, setsocialLinks] = useState("");
-  const [coverPreviews, setcoverPreviews] = useState(null);
+  const [userPost, setUserPost] = useState([]);
+  const [isProfile, setIsProfile] = useState(true);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [profilePic, setProfilePic] = useState(null);
+  const [updateNameInput, setUpdateNameInput] = useState("");
+  const [updateEmailInput, setUpdateEmailInput] = useState("");
+  const [bio, setBio] = useState("");
+  const [livesIn, setLivesIn] = useState("");
+  const [imgPreview, setImgPreview] = useState(null);
+  const [loadingUpdateBtn, setLoadingUpdateBtn] = useState(false);
+  const [picMenu, setPicMenu] = useState(null);
+  const [coverPic, setCoverPic] = useState(null);
+  const [socialLinks, setSocialLinks] = useState("");
+  const [coverPreviews, setCoverPreviews] = useState(null);
   usePageTitle("Profile");
 
   const myPosts = async () => {
@@ -55,7 +55,7 @@ const Profile = () => {
         method: "get",
         path: `/posts/user-post`,
       });
-      setuserPost(response?.data?.payload);
+      setUserPost(response?.data?.payload);
     } catch (error) {
       console.log(error);
     }
@@ -63,7 +63,7 @@ const Profile = () => {
 
   const updateProfile = async (profile) => {
     try {
-      setloadingUpdateBtn(true);
+      setLoadingUpdateBtn(true);
       let formData = new FormData();
       formData.append("profile_photo", profile);
       formData.append("cover_photo", coverPic);
@@ -81,23 +81,23 @@ const Profile = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      setimgPreview(null);
-      setshowUpdateModal(false);
+      setImgPreview(null);
+      setShowUpdateModal(false);
       toast.success(response?.data?.message);
     } catch (error) {
       toast.error(error?.message);
-      setloadingUpdateBtn(false);
+      setLoadingUpdateBtn(false);
     } finally {
-      setloadingUpdateBtn(false);
+      setLoadingUpdateBtn(false);
     }
   };
 
   useEffect(() => {
     if (profilePic) {
-      setimgPreview(URL.createObjectURL(profilePic));
+      setImgPreview(URL.createObjectURL(profilePic));
     }
     if (coverPic) {
-      setcoverPreviews(URL.createObjectURL(coverPic));
+      setCoverPreviews(URL.createObjectURL(coverPic));
     }
   }, [profilePic, coverPic]);
 
@@ -183,7 +183,7 @@ const Profile = () => {
                     src={user?.profile_photo[user?.profile_photo.length - 1]}
                     alt=""
                     onClick={(event) => {
-                      setpicMenu(event.currentTarget);
+                      setPicMenu(event.currentTarget);
                     }}
                   />
                 </Box>
@@ -192,8 +192,8 @@ const Profile = () => {
 
                 <ProfilePicMenu
                   picMenu={picMenu}
-                  setpicMenu={() => {
-                    setpicMenu();
+                  setPicMenu={() => {
+                    setPicMenu();
                   }}
                   modalStyle={modalStyle}
                   updateProfile={updateProfile}
@@ -249,7 +249,7 @@ const Profile = () => {
                   <Typography>Lives in {user?.liveIn}</Typography>
                 </Stack>
               )}
-              {/* <Stack direction="row" spacing={3} margin="10px 0">
+              <Stack direction="row" spacing={3} margin="10px 0">
                 <LinkIcon sx={{ color: "typography.dark" }} />
                 <a
                   href={user?.socialLinks[0]}
@@ -258,16 +258,16 @@ const Profile = () => {
                 >
                   {user?.socialLinks[0]}
                 </a>
-              </Stack> */}
+              </Stack>
               <Button
                 variant="contained"
                 fullWidth
                 onClick={() => {
-                  setshowUpdateModal(true);
-                  setupdateNameInput(user?.name);
-                  setupdateEmailInput(user?.email);
-                  setbio(user?.bio);
-                  setlivesIn(user?.liveIn);
+                  setShowUpdateModal(true);
+                  setUpdateNameInput(user?.name);
+                  setUpdateEmailInput(user?.email);
+                  setBio(user?.bio);
+                  setLivesIn(user?.liveIn);
                 }}
                 sx={{
                   bgcolor: "action.selected",
@@ -304,11 +304,11 @@ const Profile = () => {
       <Modal
         open={showUpdateModal}
         onClose={() => {
-          setshowUpdateModal(false);
-          setcoverPic(null);
-          setprofilePic(null);
-          setimgPreview(null);
-          setcoverPreviews(null);
+          setShowUpdateModal(false);
+          setCoverPic(null);
+          setProfilePic(null);
+          setImgPreview(null);
+          setCoverPreviews(null);
         }}
         disableAutoFocus
       >
@@ -321,7 +321,7 @@ const Profile = () => {
               variant="standard"
               value={updateNameInput}
               onChange={(e) => {
-                setupdateNameInput(e.target.value);
+                setUpdateNameInput(e.target.value);
               }}
             />
             <TextField
@@ -331,7 +331,7 @@ const Profile = () => {
               variant="standard"
               value={updateEmailInput}
               onChange={(e) => {
-                setupdateEmailInput(e.target.value);
+                setUpdateEmailInput(e.target.value);
               }}
             />
             <TextField
@@ -341,7 +341,7 @@ const Profile = () => {
               variant="standard"
               value={bio}
               onChange={(e) => {
-                setbio(e.target.value);
+                setBio(e.target.value);
               }}
             />
             <TextField
@@ -351,7 +351,7 @@ const Profile = () => {
               variant="standard"
               value={livesIn}
               onChange={(e) => {
-                setlivesIn(e.target.value);
+                setLivesIn(e.target.value);
               }}
             />
             <TextField
@@ -361,7 +361,7 @@ const Profile = () => {
               variant="standard"
               value={socialLinks}
               onChange={(e) => {
-                setsocialLinks(e.target.value);
+                setSocialLinks(e.target.value);
               }}
             />
             <Button component="label" variant="contained">
@@ -369,7 +369,7 @@ const Profile = () => {
               <input
                 filename={profilePic}
                 type="file"
-                onChange={(e) => setprofilePic(e.target.files[0])}
+                onChange={(e) => setProfilePic(e.target.files[0])}
                 accept="image/*"
                 style={{
                   clip: "rect(0 0 0 0)",
@@ -383,7 +383,7 @@ const Profile = () => {
                   width: 1,
                 }}
               />
-              {imgPreview !== null ? (
+              {imgPreview !== null && (
                 <Box
                   sx={{
                     width: "100%",
@@ -395,8 +395,6 @@ const Profile = () => {
                     style={{ width: "100%", borderRadius: "10px" }}
                   />
                 </Box>
-              ) : (
-                ""
               )}
             </Button>
             <Button component="label" variant="contained">
@@ -404,7 +402,7 @@ const Profile = () => {
               <input
                 filename={coverPic}
                 type="file"
-                onChange={(e) => setcoverPic(e.target.files[0])}
+                onChange={(e) => setCoverPic(e.target.files[0])}
                 accept="image/*"
                 style={{
                   clip: "rect(0 0 0 0)",

@@ -7,12 +7,13 @@ import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 
 const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle, updateProfile }) => {
-  const user = useSelector((state) => state.appReducer.user);
   const [profilePic, setprofilePic] = useState(null);
   const [profilePreview, setprofilePreview] = useState(null);
   const [profilePicModal, setprofilePicModal] = useState(false);
   const [showpic, setshowpic] = useState(false);
+
   const menuOpen = Boolean(picMenu);
+  const user = useSelector((state) => state.appReducer.user);
 
   useEffect(() => {
     if (profilePic) {

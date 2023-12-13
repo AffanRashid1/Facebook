@@ -3,7 +3,7 @@ import Post from "./Post";
 import AddPost from "./AddPost";
 import Stories from "./Stories";
 import { useEffect, useState } from "react";
-import apiManager from "../Helper/ApiManager";
+import apiManager from "../helper/apiManager";
 
 const Feed = () => {
   const [allPosts, setallPosts] = useState([]);

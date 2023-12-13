@@ -16,7 +16,7 @@ import VideoCallIcon from "@mui/icons-material/VideoCall";
 import SearchIcon from "@mui/icons-material/Search";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { contacts } from "../Data/data";
+import { contacts } from "../data/data";
 import { useSelector } from "react-redux";
 
 const RightBox = styled(Box)({

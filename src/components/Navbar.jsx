@@ -29,8 +29,7 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { useSelector, useDispatch } from "react-redux";
 import { setInitialLogged } from "../store/reducer";
 import { Link } from "react-router-dom";
-import apiManager from "../Helper/ApiManager";
-import Messenger from "./Messenger";
+import apiManager from "../helper/apiManager";
 import { setAllUser } from "../store/reducer";
 import { useNavigate } from "react-router-dom";
 
@@ -85,12 +84,12 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.appReducer.user);
   const [open, setOpen] = useState(false);
-  const [searchResult, setsearchResult] = useState([]);
-  const [searchField, setsearchField] = useState("");
-  const [logoutLoading, setlogoutLoading] = useState(false);
-  const [delAccModal, setdelAccModal] = useState(false);
-  const [delEmail, setdelEmail] = useState("");
-  const [delPass, setdelPass] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [searchField, setSearchField] = useState("");
+  const [logoutLoading, setLogoutLoading] = useState(false);
+  const [delAccModal, setDelAccModal] = useState(false);
+  const [delEmail, setDelEmail] = useState("");
+  const [delPass, setDelPass] = useState("");
 
   let iconColor = "#2374e1";
 
@@ -101,7 +100,7 @@ const Navbar = () => {
         path: `/users`,
       });
       dispatch(setAllUser(res?.data?.payload));
-      setsearchResult(res?.data?.payload);
+      setSearchResult(res?.data?.payload);
     } catch (error) {
       console.log(error);
     }
@@ -112,18 +111,18 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = async () => {
-    setlogoutLoading(true);
+    setLogoutLoading(true);
     try {
-      let response = await apiManager({
-        method: "post",
-        path: `/users/logout`,
-      });
+      // let response = await apiManager({
+      //   method: "post",
+      //   path: `/users/logout`,
+      // });
       localStorage.removeItem("token");
       toast.success("Logout Successfully");
-      setlogoutLoading(false);
+      setLogoutLoading(false);
       dispatch(setInitialLogged());
     } catch (err) {
-      setlogoutLoading(false);
+      setLogoutLoading(false);
       toast.error(err?.message);
     }
   };
@@ -218,7 +217,7 @@ const Navbar = () => {
                       {...params.InputProps}
                       {...rest}
                       onChange={(e) => {
-                        setsearchField(e.target.value);
+                        setSearchField(e.target.value);
                       }}
                       value={searchField}
                       placeholder="Search Facebook"
@@ -386,7 +385,7 @@ const Navbar = () => {
             />
             <Typography>Logout</Typography>
           </MenuItem>
-          <MenuItem color="red" onClick={() => setdelAccModal(true)}>
+          <MenuItem color="red" onClick={() => setDelAccModal(true)}>
             <RemoveCircleOutlineIcon
               sx={{
                 width: "20px",
@@ -398,14 +397,13 @@ const Navbar = () => {
             <Typography color="red">Delete Account</Typography>
           </MenuItem>
         </Menu>
-        <Messenger />
       </AppBar>
 
       {/* Delete Account Modal  */}
 
       <Modal
         open={delAccModal}
-        onClose={() => setdelAccModal(false)}
+        onClose={() => setDelAccModal(false)}
         disableAutoFocus
       >
         <Box
@@ -432,7 +430,7 @@ const Navbar = () => {
               sx={{ marginBottom: "20px" }}
               required
               value={delEmail}
-              onChange={(e) => setdelEmail(e.target.value)}
+              onChange={(e) => setDelEmail(e.target.value)}
             />
             <TextField
               required
@@ -441,10 +439,10 @@ const Navbar = () => {
               type="password"
               fullWidth
               value={delPass}
-              onChange={(e) => setdelPass(e.target.value)}
+              onChange={(e) => setDelPass(e.target.value)}
             />
             <Stack direction="row" justifyContent="space-between" mt={5}>
-              <Button variant="outlined" onClick={() => setdelAccModal(false)}>
+              <Button variant="outlined" onClick={() => setDelAccModal(false)}>
                 Cancel
               </Button>
               <Button

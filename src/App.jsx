@@ -8,12 +8,13 @@ import Hoc from "./Hoc";
 import Error from "./Screens/Error";
 import { routes } from "./router";
 import { createTheme, ThemeProvider } from "@mui/material";
-import apiManager from "./Helper/ApiManager";
+import apiManager from "./helper/apiManager";
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
   const dispatch = useDispatch();
   const isLogged = useSelector((state) => state.appReducer.isLogged);
-  const [isLoading, setIsLoading] = useState(true);
 
   const darkTheme = createTheme({
     palette: {
@@ -69,7 +70,6 @@ function App() {
         <ThemeProvider theme={darkTheme}>
           <BrowserRouter>
             <Routes>
-              {/* <Route path="/" element={<HOC childern={<Home />} />}></Route> */}
               <Route path="*" element={<Error />}></Route>
               {routes.map((e, i) => {
                 return (
@@ -78,7 +78,7 @@ function App() {
                     key={i}
                     element={
                       <Hoc
-                        childern={e.element}
+                        children={e.element}
                         isProtected={e.protected}
                         isLogged={isLogged}
                       />

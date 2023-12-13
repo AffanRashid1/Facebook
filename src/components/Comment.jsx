@@ -12,7 +12,7 @@ import {
 import React, { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { useSelector } from "react-redux";
-import apiManager from "../Helper/ApiManager";
+import apiManager from "../helper/apiManager";
 import { toast } from "react-toastify";
 import ShowComment from "./ShowComment";
 import { LoadingButton } from "@mui/lab";

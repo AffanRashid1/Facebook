@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Avatar,
   Box,
@@ -23,7 +23,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import apiManager from "../Helper/ApiManager";
+import apiManager from "../helper/apiManager";
 
 const addInputStyle = {
   display: "flex",
@@ -63,14 +63,21 @@ const VisuallyHiddenInput = styled("input")({
 
 const AddPost = ({ post, feedPosts, isProfile }) => {
   const [open, setOpen] = useState(false);
-  const user = useSelector((state) => state.appReducer.user);
-  const [loadingBtn, setloadingBtn] = useState(false);
+  const [loadingBtn, setLoadingBtn] = useState(false);
 
-  const [formData, setformData] = useState({
+  const user = useSelector((state) => state.appReducer.user);
+
+  const [formData, setFormData] = useState({
     file: null,
     caption: "",
     imgUrl: null,
   });
+
+  const initialFormData = {
+    file: null,
+    caption: "",
+    imgUrl: null,
+  };
 
   const validateFormData = () => {
     if (!formData.file && formData.caption.trim() === "") {
@@ -94,11 +101,10 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
   const createPost = async (e) => {
     e.preventDefault();
     try {
-      setloadingBtn(true);
       if (!validateFormData()) {
-        setloadingBtn(false);
         return;
       }
+      setLoadingBtn(true);
 
       let data = new FormData();
       data.append("imageUrl", formData.file);
@@ -114,18 +120,13 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
       });
 
       isProfile ? post() : feedPosts();
-      setOpen(false);
       toast.success(res?.data?.message);
     } catch (error) {
-      setOpen(false);
       toast.error(error?.message);
     } finally {
-      setformData({
-        imgUrl: null,
-        file: null,
-        caption: null,
-      });
-      setloadingBtn(false);
+      setOpen(false);
+      setFormData(initialFormData);
+      setLoadingBtn(false);
     }
   };
 
@@ -228,11 +229,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
           open={open}
           onClose={(e) => {
             setOpen(false);
-            setformData({
-              imgUrl: null,
-              file: null,
-              caption: null,
-            });
+            setFormData(initialFormData);
           }}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -268,11 +265,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 }}
                 onClick={(e) => {
                   setOpen(false);
-                  setformData({
-                    imgUrl: null,
-                    file: null,
-                    caption: null,
-                  });
+                  setFormData(initialFormData);
                 }}
               />
 
@@ -316,7 +309,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 variant="standard"
                 value={formData.caption}
                 onChange={(e) => {
-                  setformData({
+                  setFormData({
                     ...formData,
                     caption: e.target.value,
                   });
@@ -324,7 +317,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                 name="caption"
                 autoFocus
               />
-              {formData.imgUrl !== null ? (
+              {formData.imgUrl !== null && (
                 <Box
                   sx={{
                     width: "100%",
@@ -338,7 +331,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                       bgcolor: "background.paper",
                     }}
                     onClick={() => {
-                      setformData({
+                      setFormData({
                         imgUrl: null,
                         file: null,
                       });
@@ -355,8 +348,6 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                     }}
                   />
                 </Box>
-              ) : (
-                ""
               )}
             </Box>
             <Box
@@ -383,13 +374,14 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
                     filename={formData.file}
                     name="file"
                     onChange={(e) => {
-                      setformData({
+                      setFormData({
                         ...formData,
                         file: e.target.files[0],
                         imgUrl: URL.createObjectURL(e.target.files[0]),
                       });
                     }}
                     accept="image/*"
+                    multiple
                   />
                 </IconButton>
                 <IconButton>

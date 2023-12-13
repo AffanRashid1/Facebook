@@ -13,22 +13,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../assets/facebook.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import apiManager from "../Helper/ApiManager";
-import usePageTitle from "../Helper/usePageTitle";
+import apiManager from "../helper/apiManager";
+import usePageTitle from "../hooks/usePageTitle";
 
 const SignUp = () => {
   usePageTitle("Sign Up");
-  const [formDetails, setformDetails] = useState({
+  const [formDetails, setFormDetails] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [showPassword, setshowPassword] = useState(false);
-  const [isLoading, setisLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   function handleInputChange(e) {
-    setformDetails({
+    setFormDetails({
       ...formDetails,
       [e.target.name]: e.target.value,
     });
@@ -44,7 +44,7 @@ const SignUp = () => {
 
   const registerHandler = async (e) => {
     e.preventDefault();
-    setisLoading(true);
+    setIsLoading(true);
     if (
       formDetails.email === "" ||
       formDetails.name === "" ||
@@ -72,15 +72,15 @@ const SignUp = () => {
         });
 
         toast.success(response?.data?.message);
-        setisLoading(false);
+        setIsLoading(false);
         navigate("/login");
-        setformDetails({
+        setFormDetails({
           name: "",
           email: "",
           password: "",
         });
       } catch (err) {
-        setisLoading(false);
+        setIsLoading(false);
         toast.error(err?.response?.data?.message);
       }
     }
@@ -202,7 +202,7 @@ const SignUp = () => {
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={() => {
-                        setshowPassword(!showPassword);
+                        setShowPassword(!showPassword);
                       }}
                       sx={{ color: "black" }}
                     >

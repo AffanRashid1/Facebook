@@ -29,19 +29,20 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import Checkbox from "@mui/material/Checkbox";
 import likeSvg from "../assets/facebook-like.svg";
-import apiManager from "../Helper/ApiManager";
+import apiManager from "../helper/apiManager";
 import Comment from "./Comment";
 import { LoadingButton } from "@mui/lab";
 
 const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
-  const user = useSelector((state) => state.appReducer.user);
-  const [imgLoading, setimgLoading] = useState(true);
-  const [delLoading, setdelLoading] = useState(false);
+  const [imgLoading, setImgLoading] = useState(true);
+  const [delLoading, setDelLoading] = useState(false);
   const [timeAgo, setTimeAgo] = useState("");
-  const [likeModal, setlikeModal] = useState(false);
+  const [likeModal, setLikeModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [commentBox, setcommentBox] = useState(false);
+  const [commentBox, setCommentBox] = useState(false);
+
   const open = Boolean(anchorEl);
+  const user = useSelector((state) => state.appReducer.user);
 
   const handleProfileLikeClick = async (postId) => {
     try {
@@ -58,18 +59,18 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
   };
 
   const deletePost = async () => {
-    setdelLoading(true);
+    setDelLoading(true);
     try {
       let response = await apiManager({
         method: "delete",
         path: `/posts/delete-post/${data?._id}`,
       });
       isProfile ? updateProfileData() : feedPosts();
-      setdelLoading(false);
+      setDelLoading(false);
       toast.success(response?.data?.message);
       setAnchorEl(null);
     } catch (error) {
-      setdelLoading(false);
+      setDelLoading(false);
       console.log(error);
     }
   };
@@ -96,7 +97,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
     imageObj.src = data?.imageUrl;
 
     imageObj.onload = () => {
-      setimgLoading(false);
+      setImgLoading(false);
     };
 
     return () => clearInterval(intervalId);
@@ -176,7 +177,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
             direction="row"
             spacing={0.5}
             onClick={() => {
-              setlikeModal(true);
+              setLikeModal(true);
             }}
           >
             <img src={likeSvg} alt="svg" width="18" />
@@ -211,7 +212,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
             aria-label="share"
             sx={{ display: "flex", alignItems: "center" }}
             onClick={() => {
-              setcommentBox(!commentBox);
+              setCommentBox(!commentBox);
             }}
           >
             <ChatBubbleOutlineIcon />
@@ -248,7 +249,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
       <Modal
         open={likeModal}
         onClose={() => {
-          setlikeModal(false);
+          setLikeModal(false);
         }}
         disableAutoFocus
         aria-labelledby="parent-modal-title"

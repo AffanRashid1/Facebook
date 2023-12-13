@@ -16,15 +16,19 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogged, setUser } from "../store/reducer";
 import loginsvg from "../assets/loginsvg.svg";
-import apiManager from "../Helper/ApiManager";
-import usePageTitle from "../Helper/usePageTitle";
+import apiManager from "../helper/apiManager";
+import usePageTitle from "../hooks/usePageTitle";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showPassword, setshowPassword] = useState(false);
-  const [isLoading, setisLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginInput, setLoginInput] = useState({
+    email: "",
+    password: "",
+  });
   usePageTitle("Login");
 
   let inputStyle = {
@@ -35,19 +39,15 @@ const Login = () => {
     margin: "15px 0",
   };
 
-  const [loginInput, setloginInput] = useState({
-    email: "",
-    password: "",
-  });
   const handleInputChange = (e) => {
-    setloginInput({
+    setLoginInput({
       ...loginInput,
       [e.target.name]: e.target.value,
     });
   };
   const handleLogin = async (e) => {
     e.preventDefault();
-    setisLoading(true);
+    setIsLoading(true);
     if (loginInput.email === "" || loginInput.password === "") {
       toast.error("Must Fill the Field");
     } else {
@@ -63,17 +63,17 @@ const Login = () => {
 
         localStorage.setItem("token", resp?.data?.payload?.token);
 
-        setloginInput({
+        setLoginInput({
           email: "",
           password: "",
         });
         dispatch(setLogged());
         dispatch(setUser(resp?.data?.payload?.user));
-        setisLoading(false);
+        setIsLoading(false);
         toast.success(resp?.data?.message);
         navigate("/");
       } catch (err) {
-        setisLoading(false);
+        setIsLoading(false);
         toast.error(err?.response?.data?.message);
       }
     }
@@ -179,7 +179,7 @@ const Login = () => {
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={() => {
-                        setshowPassword(!showPassword);
+                        setShowPassword(!showPassword);
                       }}
                       sx={{ color: "black" }}
                     >

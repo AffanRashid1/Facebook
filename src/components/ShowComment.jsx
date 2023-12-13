@@ -11,28 +11,29 @@ import React, { useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import apiManager from "../Helper/ApiManager";
+import apiManager from "../helper/apiManager";
+
 import { LoadingButton } from "@mui/lab";
 
 const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
   const user = useSelector((state) => state.appReducer.user);
-  const [menuComment, setmenuComment] = useState(null);
-  const [delLoading, setdelLoading] = useState(false);
+  const [menuComment, setMenuComment] = useState(null);
+  const [delLoading, setDelLoading] = useState(false);
   const menuOpen = Boolean(menuComment);
 
   const handleDelComment = async (id) => {
-    setdelLoading(true);
+    setDelLoading(true);
     try {
       let response = await apiManager({
         method: "delete",
         path: `/posts/delete-comment/${id}`,
       });
       isProfile ? updateProfileData() : feedPosts();
-      setmenuComment(null);
-      setdelLoading(false);
+      setMenuComment(null);
+      setDelLoading(false);
       toast.success(response?.data?.message);
     } catch (error) {
-      setdelLoading(false);
+      setDelLoading(false);
       console.log(error);
     }
   };
@@ -71,7 +72,7 @@ const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
       </Box>
       <IconButton
         onClick={(event) => {
-          setmenuComment(event.currentTarget);
+          setMenuComment(event.currentTarget);
         }}
       >
         <MoreHorizIcon sx={{ color: "typography.light" }} />
@@ -80,7 +81,7 @@ const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
         anchorEl={menuComment}
         open={menuOpen}
         onClose={() => {
-          setmenuComment(null);
+          setMenuComment(null);
         }}
       >
         {comment?.owner?._id === user?._id ? (
