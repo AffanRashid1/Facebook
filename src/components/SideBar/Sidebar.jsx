@@ -15,12 +15,8 @@ import {
   ListItemIcon,
   ListItemText,
   Avatar,
-  Switch,
 } from "@mui/material";
-
-import avatar from "../assets/avatar.jpg";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
 const Sidebar = () => {
   const user = useSelector((state) => state.appReducer.user);

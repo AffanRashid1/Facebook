@@ -1,19 +1,8 @@
-import {
-  Avatar,
-  Box,
-  Divider,
-  IconButton,
-  InputBase,
-  MenuItem,
-  Stack,
-  Typography,
-  Menu,
-} from "@mui/material";
+import { Avatar, Box, Divider, IconButton, InputBase } from "@mui/material";
 import React, { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { useSelector } from "react-redux";
-import apiManager from "../helper/apiManager";
-import { toast } from "react-toastify";
+import apiManager from "../../helper/apiManager";
 import ShowComment from "./ShowComment";
 import { LoadingButton } from "@mui/lab";
 
@@ -25,11 +14,11 @@ const Comment = ({
   feedPosts,
 }) => {
   const user = useSelector((state) => state.appReducer.user);
-  const [commentInput, setcommentInput] = useState("");
-  const [isLoading, setisLoading] = useState(false);
+  const [commentInput, setCommentInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleComment = async () => {
-    setisLoading(true);
+    setIsLoading(true);
     try {
       if (commentInput?.trim()) {
         let res = await apiManager({
@@ -54,11 +43,11 @@ const Comment = ({
         };
 
         data?.comments.push(commentData);
-        setcommentInput("");
-        setisLoading(false);
+        setCommentInput("");
+        setIsLoading(false);
       }
     } catch (err) {
-      setisLoading(false);
+      setIsLoading(false);
       console.log(err);
     }
   };
@@ -93,7 +82,7 @@ const Comment = ({
             sx={{ margin: "0 10px" }}
             value={commentInput}
             onChange={(e) => {
-              setcommentInput(e.target.value);
+              setCommentInput(e.target.value);
             }}
             onKeyUp={(e) => {
               if (e.code === "Enter") {

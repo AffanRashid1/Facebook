@@ -1,6 +1,6 @@
 import { Box, Fab, Stack, Typography } from "@mui/material";
 import { useRef, useState, useEffect } from "react";
-import arrow from "../assets/arrow.png";
+import arrow from "../../assets/arrow.png";
 import AddIcon from "@mui/icons-material/Add";
 import Story from "./Story";
 import { useSelector } from "react-redux";

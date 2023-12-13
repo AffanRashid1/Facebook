@@ -6,11 +6,11 @@ import { Button, IconButton, Menu, MenuItem, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 
-const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle, updateProfile }) => {
-  const [profilePic, setprofilePic] = useState(null);
-  const [profilePreview, setprofilePreview] = useState(null);
-  const [profilePicModal, setprofilePicModal] = useState(false);
-  const [showpic, setshowpic] = useState(false);
+const ProfilePicMenu = ({ picMenu, setPicMenu, modalStyle, updateProfile }) => {
+  const [profilePic, setProfilePic] = useState(null);
+  const [profilePreview, setProfilePreview] = useState(null);
+  const [profilePicModal, setProfilePicModal] = useState(false);
+  const [showPic, setShowPic] = useState(false);
 
   const menuOpen = Boolean(picMenu);
   const user = useSelector((state) => state.appReducer.user);
@@ -18,8 +18,8 @@ const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle, updateProfile }) => {
   useEffect(() => {
     if (profilePic) {
       console.log(profilePic);
-      setprofilePreview(URL.createObjectURL(profilePic));
-      setprofilePicModal(true);
+      setProfilePreview(URL.createObjectURL(profilePic));
+      setProfilePicModal(true);
     }
   }, [profilePic]);
 
@@ -29,7 +29,7 @@ const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle, updateProfile }) => {
         anchorEl={picMenu}
         open={menuOpen}
         onClose={() => {
-          setpicMenu(null);
+          setPicMenu(null);
         }}
         anchorOrigin={{
           vertical: "bottom",
@@ -40,7 +40,7 @@ const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle, updateProfile }) => {
           horizontal: "center",
         }}
       >
-        <MenuItem onClick={() => setshowpic(true)}>
+        <MenuItem onClick={() => setShowPic(true)}>
           <PermIdentity sx={{ margin: "0 5px" }} />
           Show Profile Picture
         </MenuItem>
@@ -58,7 +58,7 @@ const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle, updateProfile }) => {
             accept="image/*"
             style={{ display: "none" }}
             filename={profilePic}
-            onChange={(e) => setprofilePic(e.target.files[0])}
+            onChange={(e) => setProfilePic(e.target.files[0])}
           />
         </MenuItem>
       </Menu>
@@ -70,7 +70,7 @@ const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle, updateProfile }) => {
       <Modal
         open={profilePicModal}
         onClose={() => {
-          setprofilePicModal(false);
+          setProfilePicModal(false);
         }}
       >
         <Box sx={modalStyle}>
@@ -88,9 +88,9 @@ const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle, updateProfile }) => {
                   bgcolor: "background.paper",
                 }}
                 onClick={() => {
-                  setprofilePicModal(false);
-                  setprofilePreview(null);
-                  setprofilePic(null);
+                  setProfilePicModal(false);
+                  setProfilePreview(null);
+                  setProfilePic(null);
                 }}
               >
                 <CloseIcon />
@@ -123,9 +123,9 @@ const ProfilePicMenu = ({ picMenu, setpicMenu, modalStyle, updateProfile }) => {
       {/* show profile pic  */}
 
       <Modal
-        open={showpic}
+        open={showPic}
         onClose={() => {
-          setshowpic(false);
+          setShowPic(false);
         }}
         disableAutoFocus
       >

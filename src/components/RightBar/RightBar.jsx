@@ -16,7 +16,6 @@ import VideoCallIcon from "@mui/icons-material/VideoCall";
 import SearchIcon from "@mui/icons-material/Search";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { contacts } from "../data/data";
 import { useSelector } from "react-redux";
 
 const RightBox = styled(Box)({
@@ -27,7 +26,7 @@ const RightBox = styled(Box)({
   gap: "1rem",
 });
 
-const Rightbar = () => {
+const RightBar = () => {
   const allUsers = useSelector((state) => state.appReducer.allUsers);
 
   return (
@@ -147,4 +146,4 @@ const Rightbar = () => {
     </Box>
   );
 };
-export default Rightbar;
+export default RightBar;

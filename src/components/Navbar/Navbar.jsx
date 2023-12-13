@@ -5,8 +5,6 @@ import {
   Box,
   IconButton,
   InputBase,
-  Toolbar,
-  Typography,
   Menu,
   MenuItem,
   Stack,
@@ -15,69 +13,30 @@ import {
   Modal,
   TextField,
   Button,
+  Typography,
 } from "@mui/material";
 import { Settings } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from "@mui/icons-material/Logout";
-import logo from "../assets/logo.png";
-import styled from "@emotion/styled";
+import logo from "../../assets/logo.png";
 import MailIcon from "@mui/icons-material/Mail";
 import { Notifications } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { useSelector, useDispatch } from "react-redux";
-import { setInitialLogged } from "../store/reducer";
+import { setInitialLogged } from "../../store/reducer";
 import { Link } from "react-router-dom";
-import apiManager from "../helper/apiManager";
-import { setAllUser } from "../store/reducer";
+import apiManager from "../../helper/apiManager";
+import { setAllUser } from "../../store/reducer";
 import { useNavigate } from "react-router-dom";
-
-// Toolbar to hold logo search and icons
-const StyledToolbar = styled(Toolbar)({
-  display: "flex",
-  justifyContent: "space-between",
-  margin: "0 15px",
-  alignItems: "center",
-});
-
-//Creating custom components
-const Search = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  backgroundColor: "#4E4F50",
-  padding: "5px 7px",
-  borderRadius: "25px",
-  width: 250,
-}));
-
-// icons container box means div
-const Icons = styled(Box)(({ theme }) => ({
-  display: "none",
-  alignItems: "center",
-  gap: "20px",
-  [theme.breakpoints.up("sm")]: {
-    display: "flex",
-  },
-}));
-
-// border for icons
-const IconsBorder = styled(Box)({
-  bgcolor: "red",
-  padding: "8px",
-  borderRadius: "50%",
-});
-
-// userBox to display in mobile devices
-const UserBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  gap: "5px",
-  [theme.breakpoints.up("sm")]: {
-    display: "none",
-  },
-}));
+import {
+  StyledToolbar,
+  Search,
+  Icons,
+  IconsBorder,
+  UserBox,
+} from "./navbarStyles";
 
 const Navbar = () => {
   const dispatch = useDispatch();

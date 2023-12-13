@@ -7,19 +7,15 @@ import {
   Divider,
   FormControl,
   Grid,
-  IconButton,
-  Menu,
-  MenuItem,
   Modal,
-  LinearProgress,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import AddPost from "../components/AddPost";
-import Post from "../components/Post";
+import AddPost from "../components/Post/AddPost";
+import Post from "../components/Post/Post";
 import EditIcon from "@mui/icons-material/Edit";
 import HouseIcon from "@mui/icons-material/House";
 import apiManager from "../helper/apiManager";
@@ -27,8 +23,8 @@ import CameraIcon from "@mui/icons-material/Camera";
 import LinkIcon from "@mui/icons-material/Link";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
-import Navbar from "../components/Navbar";
-import ProfilePicMenu from "../components/ProfilePicMenu";
+import Navbar from "../components/Navbar/Navbar";
+import ProfilePicMenu from "../components/Profile/ProfilePicMenu";
 import usePageTitle from "../hooks/usePageTitle";
 
 const Profile = () => {
@@ -47,6 +43,7 @@ const Profile = () => {
   const [coverPic, setCoverPic] = useState(null);
   const [socialLinks, setSocialLinks] = useState("");
   const [coverPreviews, setCoverPreviews] = useState(null);
+
   usePageTitle("Profile");
 
   const myPosts = async () => {

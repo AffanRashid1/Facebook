@@ -1,19 +1,18 @@
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
-import Rightbar from "../components/Rightbar";
-import Feed from "../components/Feed";
+import Sidebar from "../components/SideBar/Sidebar";
+import Navbar from "../components/Navbar/Navbar";
+import Feed from "../components/Feed/Feed";
 import { Stack, Box } from "@mui/material";
+import RightBar from "../components/RightBar/RightBar";
 
 const Home = () => {
   return (
     <>
       <Box bgcolor={"background.default"} color={"text.primary"}>
-        {/* navbar */}
         <Navbar />
         <Stack direction="row" justifyContent={"space-between"}>
           <Sidebar />
           <Feed />
-          <Rightbar />
+          <RightBar />
         </Stack>
       </Box>
     </>

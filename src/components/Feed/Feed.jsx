@@ -1,13 +1,13 @@
 import { Box, Skeleton, Typography } from "@mui/material";
-import Post from "./Post";
-import AddPost from "./AddPost";
-import Stories from "./Stories";
+import Post from "../Post/Post";
+import AddPost from "../Post/AddPost";
+import Stories from "../Stories/Stories";
 import { useEffect, useState } from "react";
-import apiManager from "../helper/apiManager";
+import apiManager from "../../helper/apiManager";
 
 const Feed = () => {
-  const [allPosts, setallPosts] = useState([]);
-  const [postLoading, setpostLoading] = useState(false);
+  const [allPosts, setAllPosts] = useState([]);
+  const [postLoading, setPostLoading] = useState(false);
 
   const feedPosts = async () => {
     try {
@@ -15,7 +15,7 @@ const Feed = () => {
         method: "get",
         path: `/posts`,
       });
-      setallPosts(response?.data?.payload);
+      setAllPosts(response?.data?.payload);
     } catch (err) {
       console.log(err);
     }
@@ -34,7 +34,9 @@ const Feed = () => {
         }}
       />
       {!allPosts?.length ? (
-        <Typography textAlign={"center"}>No Post Yet</Typography>
+        <Typography textAlign={"center"} color="typography.light">
+          No Post Yet
+        </Typography>
       ) : (
         allPosts.map((post, i) => {
           return postLoading ? (

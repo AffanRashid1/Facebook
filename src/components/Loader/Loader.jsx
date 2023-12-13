@@ -1,6 +1,6 @@
 import React from "react";
 import { useSpring, animated } from "react-spring";
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 import { Box } from "@mui/material";
 
 export default function Loader() {

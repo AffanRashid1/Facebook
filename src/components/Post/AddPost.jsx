@@ -15,7 +15,6 @@ import { LoadingButton } from "@mui/lab";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import TagFacesIcon from "@mui/icons-material/TagFaces";
-import styled from "@emotion/styled";
 import { useState } from "react";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import GifBoxIcon from "@mui/icons-material/GifBox";
@@ -23,43 +22,13 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import apiManager from "../helper/apiManager";
-
-const addInputStyle = {
-  display: "flex",
-  alignItems: "center",
-  margin: "auto",
-  marginBottom: "15px",
-  borderRadius: "25px",
-  width: "80%",
-  backgroundColor: "action.selected",
-};
-
-// custom modal
-const StyledModal = styled(Modal)({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-});
-
-// userBox to display in mobile devices
-const UserBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  gap: "10px",
-  marginBottom: "20px",
-}));
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import apiManager from "../../helper/apiManager";
+import {
+  addInputStyle,
+  VisuallyHiddenInput,
+  UserBox,
+  StyledModal,
+} from "./postStyles";
 
 const AddPost = ({ post, feedPosts, isProfile }) => {
   const [open, setOpen] = useState(false);
@@ -80,8 +49,13 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
   };
 
   const validateFormData = () => {
-    if (!formData.file && formData.caption.trim() === "") {
+    if (!formData.file && !formData.caption.trim()) {
       toast.error("Please select a file or enter a caption");
+      return false;
+    }
+
+    if (formData.caption.length >= 149) {
+      toast.error("Text minimum 150 characters");
       return false;
     }
 

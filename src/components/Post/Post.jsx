@@ -15,7 +15,6 @@ import {
   Backdrop,
   Menu,
   MenuItem,
-  CircularProgress,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -28,9 +27,9 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import Checkbox from "@mui/material/Checkbox";
-import likeSvg from "../assets/facebook-like.svg";
-import apiManager from "../helper/apiManager";
-import Comment from "./Comment";
+import likeSvg from "../../assets/facebook-like.svg";
+import apiManager from "../../helper/apiManager";
+import Comment from "../Comment/Comment";
 import { LoadingButton } from "@mui/lab";
 
 const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
