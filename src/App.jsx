@@ -5,8 +5,8 @@ import { setLogged, setUser } from "./store/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Hoc from "./Hoc";
-import Error from "./Screens/Error";
 import { routes } from "./router";
+import NotFound from "./Screens/NotFound";
 import { createTheme, ThemeProvider } from "@mui/material";
 import apiManager from "./helper/apiManager";
 
@@ -70,7 +70,7 @@ function App() {
         <ThemeProvider theme={darkTheme}>
           <BrowserRouter>
             <Routes>
-              <Route path="*" element={<Error />}></Route>
+              <Route path="*" element={<NotFound />}></Route>
               {routes.map((e, i) => {
                 return (
                   <Route

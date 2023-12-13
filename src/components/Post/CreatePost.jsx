@@ -30,7 +30,7 @@ import {
   StyledModal,
 } from "./postStyles";
 
-const AddPost = ({ post, feedPosts, isProfile }) => {
+const CreatePost = ({ post, getFeedPosts, isProfile }) => {
   const [open, setOpen] = useState(false);
   const [loadingBtn, setLoadingBtn] = useState(false);
 
@@ -93,7 +93,7 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
         },
       });
 
-      isProfile ? post() : feedPosts();
+      isProfile ? post() : getFeedPosts();
       toast.success(res?.data?.message);
     } catch (error) {
       toast.error(error?.message);
@@ -384,4 +384,4 @@ const AddPost = ({ post, feedPosts, isProfile }) => {
     </>
   );
 };
-export default AddPost;
+export default CreatePost;

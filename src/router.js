@@ -1,7 +1,7 @@
-import Login from "./Screens/Login";
-import SignUp from "./Screens/SignUp";
-import Profile from "./Screens/Profile";
-import Home from "./Screens/Home";
+import Login from "./Screens/Login/Login";
+import Profile from "./Screens/Profile/Profile";
+import Home from "./Screens/Home/Home";
+import SignUp from "./Screens/SignUp/SignUp";
 
 const routes = [
   {

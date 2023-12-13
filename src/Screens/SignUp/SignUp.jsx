@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Container,
-  FormControl,
   IconButton,
   InputAdornment,
   InputBase,
@@ -10,74 +9,76 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setLogged, setUser } from "../store/reducer";
-import loginsvg from "../assets/loginsvg.svg";
-import apiManager from "../helper/apiManager";
-import usePageTitle from "../hooks/usePageTitle";
+import logo from "../../assets/facebook.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import apiManager from "../../helper/apiManager";
+import { inputStyle } from "./signupStyle";
+import usePageTitle from "../../hooks/usePageTitle";
 
-const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [loginInput, setLoginInput] = useState({
+const SignUp = () => {
+  usePageTitle("Sign Up");
+  const [formDetails, setFormDetails] = useState({
+    name: "",
     email: "",
     password: "",
   });
-  usePageTitle("Login");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  let inputStyle = {
-    color: "black",
-    border: "1px solid grey",
-    borderRadius: "5px",
-    padding: "8px 15px",
-    margin: "15px 0",
-  };
-
-  const handleInputChange = (e) => {
-    setLoginInput({
-      ...loginInput,
+  function handleInputChange(e) {
+    setFormDetails({
+      ...formDetails,
       [e.target.name]: e.target.value,
     });
-  };
-  const handleLogin = async (e) => {
+  }
+
+  const registerHandler = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    if (loginInput.email === "" || loginInput.password === "") {
-      toast.error("Must Fill the Field");
+    if (
+      formDetails.email === "" ||
+      formDetails.name === "" ||
+      formDetails.password === ""
+    ) {
+      toast.error("Fill Form");
+    } else if (formDetails.password.length < 6) {
+      toast.error("Password length must be longer than 6");
+    } else if (formDetails.password.length > 20) {
+      toast.error("Password length must be shorter than 20");
+    } else if (formDetails.name.length < 3) {
+      toast.error("Name is too short");
+    } else if (formDetails.name.length > 20) {
+      toast.error("Name is too long");
     } else {
       try {
-        let resp = await apiManager({
+        let response = await apiManager({
           method: "post",
-          path: `/users/login`,
+          path: `/users/register`,
           params: {
-            email: loginInput.email,
-            password: loginInput.password,
+            name: formDetails.name,
+            email: formDetails.email,
+            password: formDetails.password,
           },
         });
 
-        localStorage.setItem("token", resp?.data?.payload?.token);
-
-        setLoginInput({
+        toast.success(response?.data?.message);
+        setIsLoading(false);
+        navigate("/login");
+        setFormDetails({
+          name: "",
           email: "",
           password: "",
         });
-        dispatch(setLogged());
-        dispatch(setUser(resp?.data?.payload?.user));
-        setIsLoading(false);
-        toast.success(resp?.data?.message);
-        navigate("/");
       } catch (err) {
         setIsLoading(false);
         toast.error(err?.response?.data?.message);
       }
     }
   };
+
   return (
     <>
       {isLoading ? (
@@ -95,22 +96,29 @@ const Login = () => {
       <Container maxWidth="100vw" sx={{ bgcolor: "#F0F2F5" }}>
         <Box
           sx={{
-            height: "100vh",
+            minHeight: "99vh",
             display: "flex",
-            justifyContent: "space-evenly",
             flexDirection: { xs: "column", sm: "column", md: "row" },
+            justifyContent: "space-evenly",
             alignItems: "center",
           }}
         >
-          <Box>
-            <img src={loginsvg} width={300} alt="svg" />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: { xs: "center", sm: "center", md: "flex-start" },
+            }}
+          >
+            <img src={logo} width={200} alt="logo" />
             <Typography
               sx={{
                 fontFamily: "monospace",
+                textAlign: "center",
                 fontSize: { xs: "1rem", sm: "1.5rem" },
                 userSelect: "none",
                 textAlign: "left",
-                marginLeft: "25px",
                 color: "black",
                 display: { xs: "none", sm: "none", md: "block" },
               }}
@@ -131,49 +139,57 @@ const Login = () => {
             }}
           >
             <form
+              onSubmit={registerHandler}
               style={{
                 display: "flex",
                 flexDirection: "column",
+                gap: "20px",
               }}
-              onSubmit={handleLogin}
             >
-              <Typography
-                textAlign="center"
-                fontSize="26px"
-                fontWeight="bold"
-                margin="10px 0"
-              >
-                Welcome Back!
+              <Typography textAlign="center" fontSize="26px" fontWeight="bold">
+                Lets Get Started
               </Typography>
               <Typography
                 textAlign="center"
                 fontSize="17px"
                 fontWeight="light"
                 color="typography.light"
-                margin="10px 0"
               >
-                Login to your Account
+                Create an account
               </Typography>
               <InputBase
-                placeholder="Enter Email"
+                label="Name"
+                placeholder="Enter Name"
                 color="primary"
                 focused
-                value={loginInput.email}
+                name="name"
                 onChange={handleInputChange}
-                name="email"
+                value={formDetails.name}
                 sx={inputStyle}
-                type="email"
                 required
               />
               <InputBase
-                placeholder="Enter Password"
+                required
+                label="Email"
+                placeholder="Enter Email"
+                color="primary"
                 focused
-                value={loginInput.password}
+                name="email"
                 onChange={handleInputChange}
+                type="email"
+                value={formDetails.email}
+                sx={inputStyle}
+              />
+              <InputBase
+                label="Password"
+                placeholder="Enter Password"
+                color="primary"
+                focused
                 name="password"
+                onChange={handleInputChange}
+                value={formDetails.password}
                 sx={inputStyle}
                 type={showPassword ? "text" : "password"}
-                required
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -188,28 +204,15 @@ const Login = () => {
                   </InputAdornment>
                 }
               />
-              <Button
-                variant="contained"
-                size="large"
-                type="submit"
-                sx={{ bgcolor: "#1877F2", color: "white", margin: "10px 0" }}
-              >
-                Login
+              <Button variant="contained" size="medium" type="submit">
+                Sign Up
               </Button>
-              <hr
-                style={{ bgcolor: "grey", width: "80%", margin: "10px auto" }}
-              />
-              <Button
-                variant="contained"
-                size="large"
-                color="success"
-                onClick={() => {
-                  navigate("/register");
-                }}
-                sx={{ bgcolor: "#42B72A", color: "white", margin: "10px 0" }}
-              >
-                Create New Account
-              </Button>
+              <Typography textAlign="center">
+                Already have an account ?
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  Login
+                </Link>
+              </Typography>
             </form>
           </Box>
         </Box>
@@ -217,4 +220,5 @@ const Login = () => {
     </>
   );
 };
-export default Login;
+
+export default SignUp;

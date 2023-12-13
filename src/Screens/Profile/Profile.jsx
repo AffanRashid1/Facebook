@@ -14,18 +14,19 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import AddPost from "../components/Post/AddPost";
-import Post from "../components/Post/Post";
+import CreatePost from "../../components/Post/CreatePost";
+import Post from "../../components/Post/Post";
 import EditIcon from "@mui/icons-material/Edit";
 import HouseIcon from "@mui/icons-material/House";
-import apiManager from "../helper/apiManager";
+import apiManager from "../../helper/apiManager";
 import CameraIcon from "@mui/icons-material/Camera";
 import LinkIcon from "@mui/icons-material/Link";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
-import Navbar from "../components/Navbar/Navbar";
-import ProfilePicMenu from "../components/Profile/ProfilePicMenu";
-import usePageTitle from "../hooks/usePageTitle";
+import Navbar from "../../components/Navbar/Navbar";
+import ProfilePicMenu from "../../components/Profile/ProfilePicMenu";
+import usePageTitle from "../../hooks/usePageTitle";
+import { AvatarStyle, UploadInputStyle, modalStyle } from "./profileStyle";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);
@@ -62,13 +63,20 @@ const Profile = () => {
     try {
       setLoadingUpdateBtn(true);
       let formData = new FormData();
-      formData.append("profile_photo", profile);
-      formData.append("cover_photo", coverPic);
-      formData.append("name", updateNameInput);
-      formData.append("email", updateEmailInput);
-      formData.append("bio", bio);
-      formData.append("liveIn", livesIn);
-      formData.append("socialLinks", socialLinks);
+
+      const data = {
+        profile_photo: profile,
+        cover_photo: coverPic,
+        name: updateNameInput,
+        email: updateEmailInput,
+        bio: bio,
+        liveIn: livesIn,
+        socialLinks: socialLinks,
+      };
+
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
 
       let response = await apiManager({
         method: "put",
@@ -101,21 +109,6 @@ const Profile = () => {
   useEffect(() => {
     myPosts();
   }, []);
-
-  const modalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    pt: 2,
-    px: 4,
-    borderRadius: "10px",
-    pb: 3,
-    color: "action.selected",
-  };
 
   return (
     <>
@@ -162,21 +155,7 @@ const Profile = () => {
               >
                 <Box>
                   <Avatar
-                    sx={{
-                      width: "200px",
-                      height: "200px",
-                      padding: 0,
-                      margin: 0,
-                      borderRadius: "50%",
-                      border: "5px solid grey",
-                      cursor: "pointer",
-                      outline: "3px solid white",
-                      bgcolor: "gray",
-                      transition: "transform 0.2s ease-in-out",
-                      "&:hover": {
-                        opacity: "0.7",
-                      },
-                    }}
+                    sx={AvatarStyle}
                     src={user?.profile_photo[user?.profile_photo.length - 1]}
                     alt=""
                     onClick={(event) => {
@@ -277,7 +256,7 @@ const Profile = () => {
             </Card>
           </Grid>
           <Grid item xs={12} md={6}>
-            <AddPost post={() => myPosts()} isProfile={isProfile} />
+            <CreatePost post={() => myPosts()} isProfile={isProfile} />
             <Box>
               {userPost?.length === undefined || 0 ? (
                 <Typography textAlign={"center"}>No Post Yet</Typography>
@@ -368,17 +347,7 @@ const Profile = () => {
                 type="file"
                 onChange={(e) => setProfilePic(e.target.files[0])}
                 accept="image/*"
-                style={{
-                  clip: "rect(0 0 0 0)",
-                  clipPath: "inset(50%)",
-                  height: 1,
-                  overflow: "hidden",
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  whiteSpace: "nowrap",
-                  width: 1,
-                }}
+                style={UploadInputStyle}
               />
               {imgPreview !== null && (
                 <Box

@@ -31,8 +31,9 @@ import likeSvg from "../../assets/facebook-like.svg";
 import apiManager from "../../helper/apiManager";
 import Comment from "../Comment/Comment";
 import { LoadingButton } from "@mui/lab";
+import TimeAgo from "../TimeAgo";
 
-const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
+const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
   const [imgLoading, setImgLoading] = useState(true);
   const [delLoading, setDelLoading] = useState(false);
   const [timeAgo, setTimeAgo] = useState("");
@@ -51,7 +52,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
       });
 
       data?.likes.push(response?.data?.likerId);
-      isProfile ? updateProfileData() : feedPosts();
+      isProfile ? updateProfileData() : getFeedPosts();
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +65,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
         method: "delete",
         path: `/posts/delete-post/${data?._id}`,
       });
-      isProfile ? updateProfileData() : feedPosts();
+      isProfile ? updateProfileData() : getFeedPosts();
       setDelLoading(false);
       toast.success(response?.data?.message);
       setAnchorEl(null);
@@ -75,32 +76,13 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
   };
 
   useEffect(() => {
-    const updateRelativeTime = () => {
-      const now = moment();
-      const postTime = moment(data?.createdAt);
-      const diffInMinutes = now.diff(postTime, "minutes");
-
-      if (diffInMinutes < 1) {
-        setTimeAgo("Just Now");
-      } else if (diffInMinutes < 60) {
-        setTimeAgo(`${diffInMinutes} minutes ago`);
-      } else {
-        setTimeAgo(postTime.fromNow());
-      }
-    };
-
-    updateRelativeTime();
-    const intervalId = setInterval(updateRelativeTime, 60000);
-
     const imageObj = new Image();
     imageObj.src = data?.imageUrl;
 
     imageObj.onload = () => {
       setImgLoading(false);
     };
-
-    return () => clearInterval(intervalId);
-  }, [data?.createdAt]);
+  }, [data?.imageUrl]);
 
   return (
     <>
@@ -148,7 +130,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
             </>
           }
           title={data?.owner?.name}
-          subheader={timeAgo}
+          subheader={<TimeAgo createdAt={data?.createdAt} />}
         />
         <CardContent>
           <Typography variant="body2" color="text.primary">
@@ -240,7 +222,7 @@ const Post = ({ data, updateProfileData, feedPosts, isProfile }) => {
           commentBox={commentBox}
           isProfile={isProfile}
           updateProfileData={updateProfileData}
-          feedPosts={feedPosts}
+          getFeedPosts={getFeedPosts}
         />
       </Card>
 

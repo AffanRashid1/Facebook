@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Container,
+  FormControl,
   IconButton,
   InputAdornment,
   InputBase,
@@ -9,83 +10,74 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import logo from "../assets/facebook.svg";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLogged, setUser } from "../../store/reducer";
+import loginsvg from "../../assets/loginsvg.svg";
+import apiManager from "../../helper/apiManager";
+import usePageTitle from "../../hooks/usePageTitle";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import apiManager from "../helper/apiManager";
-import usePageTitle from "../hooks/usePageTitle";
 
-const SignUp = () => {
-  usePageTitle("Sign Up");
-  const [formDetails, setFormDetails] = useState({
-    name: "",
+const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginInput, setLoginInput] = useState({
     email: "",
     password: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-
-  function handleInputChange(e) {
-    setFormDetails({
-      ...formDetails,
-      [e.target.name]: e.target.value,
-    });
-  }
+  usePageTitle("Login");
 
   let inputStyle = {
     color: "black",
     border: "1px solid grey",
     borderRadius: "5px",
     padding: "8px 15px",
-    margin: "8px 0",
+    margin: "15px 0",
   };
 
-  const registerHandler = async (e) => {
+  const handleInputChange = (e) => {
+    setLoginInput({
+      ...loginInput,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    if (
-      formDetails.email === "" ||
-      formDetails.name === "" ||
-      formDetails.password === ""
-    ) {
-      toast.error("Fill Form");
-    } else if (formDetails.password.length < 6) {
-      toast.error("Password length must be longer than 6");
-    } else if (formDetails.password.length > 20) {
-      toast.error("Password length must be shorter than 20");
-    } else if (formDetails.name.length < 3) {
-      toast.error("Name is too short");
-    } else if (formDetails.name.length > 20) {
-      toast.error("Name is too long");
+    if (loginInput.email === "" || loginInput.password === "") {
+      toast.error("Must Fill the Field");
     } else {
       try {
-        let response = await apiManager({
+        let resp = await apiManager({
           method: "post",
-          path: `/users/register`,
+          path: `/users/login`,
           params: {
-            name: formDetails.name,
-            email: formDetails.email,
-            password: formDetails.password,
+            email: loginInput.email,
+            password: loginInput.password,
           },
         });
 
-        toast.success(response?.data?.message);
-        setIsLoading(false);
-        navigate("/login");
-        setFormDetails({
-          name: "",
+        localStorage.setItem("token", resp?.data?.payload?.token);
+
+        setLoginInput({
           email: "",
           password: "",
         });
+        dispatch(setLogged());
+        dispatch(setUser(resp?.data?.payload?.user));
+        setIsLoading(false);
+        toast.success(resp?.data?.message);
+        navigate("/");
       } catch (err) {
         setIsLoading(false);
         toast.error(err?.response?.data?.message);
       }
     }
   };
-
   return (
     <>
       {isLoading ? (
@@ -103,29 +95,22 @@ const SignUp = () => {
       <Container maxWidth="100vw" sx={{ bgcolor: "#F0F2F5" }}>
         <Box
           sx={{
-            minHeight: "99vh",
+            height: "100vh",
             display: "flex",
-            flexDirection: { xs: "column", sm: "column", md: "row" },
             justifyContent: "space-evenly",
+            flexDirection: { xs: "column", sm: "column", md: "row" },
             alignItems: "center",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignItems: { xs: "center", sm: "center", md: "flex-start" },
-            }}
-          >
-            <img src={logo} width={200} alt="logo" />
+          <Box>
+            <img src={loginsvg} width={300} alt="svg" />
             <Typography
               sx={{
                 fontFamily: "monospace",
-                textAlign: "center",
                 fontSize: { xs: "1rem", sm: "1.5rem" },
                 userSelect: "none",
                 textAlign: "left",
+                marginLeft: "25px",
                 color: "black",
                 display: { xs: "none", sm: "none", md: "block" },
               }}
@@ -146,57 +131,49 @@ const SignUp = () => {
             }}
           >
             <form
-              onSubmit={registerHandler}
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "20px",
               }}
+              onSubmit={handleLogin}
             >
-              <Typography textAlign="center" fontSize="26px" fontWeight="bold">
-                Lets Get Started
+              <Typography
+                textAlign="center"
+                fontSize="26px"
+                fontWeight="bold"
+                margin="10px 0"
+              >
+                Welcome Back!
               </Typography>
               <Typography
                 textAlign="center"
                 fontSize="17px"
                 fontWeight="light"
                 color="typography.light"
+                margin="10px 0"
               >
-                Create an account
+                Login to your Account
               </Typography>
               <InputBase
-                label="Name"
-                placeholder="Enter Name"
-                color="primary"
-                focused
-                name="name"
-                onChange={handleInputChange}
-                value={formDetails.name}
-                sx={inputStyle}
-                required
-              />
-              <InputBase
-                required
-                label="Email"
                 placeholder="Enter Email"
                 color="primary"
                 focused
-                name="email"
+                value={loginInput.email}
                 onChange={handleInputChange}
-                type="email"
-                value={formDetails.email}
+                name="email"
                 sx={inputStyle}
+                type="email"
+                required
               />
               <InputBase
-                label="Password"
                 placeholder="Enter Password"
-                color="primary"
                 focused
-                name="password"
+                value={loginInput.password}
                 onChange={handleInputChange}
-                value={formDetails.password}
+                name="password"
                 sx={inputStyle}
                 type={showPassword ? "text" : "password"}
+                required
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -211,15 +188,28 @@ const SignUp = () => {
                   </InputAdornment>
                 }
               />
-              <Button variant="contained" size="medium" type="submit">
-                Sign Up
+              <Button
+                variant="contained"
+                size="large"
+                type="submit"
+                sx={{ bgcolor: "#1877F2", color: "white", margin: "10px 0" }}
+              >
+                Login
               </Button>
-              <Typography textAlign="center">
-                Already have an account ?
-                <Link to="/login" style={{ textDecoration: "none" }}>
-                  Login
-                </Link>
-              </Typography>
+              <hr
+                style={{ bgcolor: "grey", width: "80%", margin: "10px auto" }}
+              />
+              <Button
+                variant="contained"
+                size="large"
+                color="success"
+                onClick={() => {
+                  navigate("/register");
+                }}
+                sx={{ bgcolor: "#42B72A", color: "white", margin: "10px 0" }}
+              >
+                Create New Account
+              </Button>
             </form>
           </Box>
         </Box>
@@ -227,5 +217,4 @@ const SignUp = () => {
     </>
   );
 };
-
-export default SignUp;
+export default Login;
