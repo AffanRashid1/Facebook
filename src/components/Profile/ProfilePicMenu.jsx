@@ -138,11 +138,7 @@ const ProfilePicMenu = ({ picMenu, setPicMenu, modalStyle, updateProfile }) => {
             boxShadow: 24,
           }}
         >
-          <img
-            src={user?.profile_photo[user?.profile_photo.length - 1]}
-            alt="Profile"
-            width="600px"
-          />
+          <img src={user?.profile_photo} alt="Profile" width="600px" />
         </Box>
       </Modal>
     </>

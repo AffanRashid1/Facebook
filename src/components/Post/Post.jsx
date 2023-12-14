@@ -31,6 +31,7 @@ import apiManager from "../../helper/apiManager";
 import Comment from "../Comment/Comment";
 import TimeAgo from "../TimeAgo";
 import CustomModal from "../CustomModal";
+import PostImg from "./PostImg";
 
 const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
   const [imgLoading, setImgLoading] = useState(true);
@@ -81,19 +82,13 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
     };
   }, [data?.imageUrl]);
 
+  console.log(data?.postOwner[0]?.name);
   return (
     <>
       <Card key={data?._id} sx={{ marginBottom: "20px", borderRadius: "10px" }}>
         <CardHeader
           avatar={
-            <Avatar
-              sx={{ bgcolor: "gray" }}
-              src={
-                data?.owner?.profile_photo[
-                  data?.owner?.profile_photo?.length - 1
-                ]
-              }
-            />
+            <Avatar sx={{ bgcolor: "gray" }} src={data?.owner?.profile_photo} />
           }
           action={
             <>
@@ -121,8 +116,8 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
               </Menu>
             </>
           }
-          title={data?.owner?.name}
-          subheader={<TimeAgo createdAt={data?.createdAt} />}
+          title={data?.postOwner[0]?.name}
+          subheader={<TimeAgo createdAt={data?.postOwner[0]?.createdAt} />}
         />
         <CardContent>
           <Typography variant="body2" color="text.primary">
@@ -130,19 +125,10 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
           </Typography>
         </CardContent>
 
-        <Box>
-          {data?.imageUrl.length === 0 ? null : imgLoading ? (
-            <Skeleton variant="rectangular" height={500} animation="wave" />
-          ) : (
-            <CardMedia
-              component="img"
-              width="auto"
-              height="500"
-              image={data?.imageUrl[0]}
-              alt="Post"
-            />
-          )}
-        </Box>
+        {/* Image  */}
+
+        <PostImg img={data?.imageUrl} imgLoading={imgLoading} />
+
         <Divider />
         <Stack
           direction={"row"}

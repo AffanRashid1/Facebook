@@ -125,9 +125,7 @@ const Profile = () => {
         <Box>
           <Box
             sx={{
-              background: `url(${
-                user?.cover_photo[user?.cover_photo?.length - 1]
-              })`,
+              background: `url(${user?.cover_photo})`,
               bgcolor: "gray",
               backgroundRepeat: "no-repeat",
               width: "100%",
@@ -229,11 +227,11 @@ const Profile = () => {
               <Stack direction="row" spacing={3} margin="10px 0">
                 <LinkIcon sx={{ color: "typography.dark" }} />
                 <a
-                  href={user?.socialLinks[0]}
+                  href={user?.socialLinks}
                   style={{ color: "#2374E1", textDecoration: "none" }}
                   target="_blank"
                 >
-                  {user?.socialLinks[0]}
+                  {user?.socialLinks}
                 </a>
               </Stack>
               <Button

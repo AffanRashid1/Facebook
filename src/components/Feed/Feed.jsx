@@ -7,7 +7,6 @@ import apiManager from "../../helper/apiManager";
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
-  const [postLoading, setPostLoading] = useState(false);
 
   const getFeedPosts = async () => {
     try {
@@ -26,7 +25,7 @@ const Feed = () => {
   }, []);
 
   return (
-    <Box flex={1.5} p={2} sx={{ paddingTop: "84px" }}>
+    <Box sx={{ paddingTop: "84px" }}>
       <Stories />
       <CreatePost
         getFeedPosts={() => {
@@ -39,11 +38,7 @@ const Feed = () => {
         </Typography>
       ) : (
         allPosts.map((post, i) => {
-          return postLoading ? (
-            <Box sx={{ marginBottom: "15px" }}>
-              <Skeleton variant="rectangular" height="50vh" animation="wave" />
-            </Box>
-          ) : (
+          return (
             <Post
               key={i}
               data={post}

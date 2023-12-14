@@ -76,8 +76,8 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
       setLoadingBtn(true);
 
       let data = new FormData();
-      data.append("imageUrl", formData.file);
       data.append("caption", formData.caption);
+      data.append("postImage", formData.file);
 
       let res = await apiManager({
         method: "post",
@@ -113,7 +113,7 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
               mt={2}
             >
               <Avatar
-                src={user?.profile_photo[user?.profile_photo.length - 1]}
+                src={user?.profile_photo}
                 sx={{ width: "45px", height: "45px", marginRight: "15px" }}
               />
               <Box sx={addInputStyle}>
@@ -254,7 +254,7 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
               <UserBox>
                 <Avatar
                   sx={{ width: "35px", height: "35px" }}
-                  src={user?.profile_photo[user?.profile_photo.length - 1]}
+                  src={user?.profile_photo}
                   onClick={(e) => setOpen(true)}
                 ></Avatar>
                 <Typography

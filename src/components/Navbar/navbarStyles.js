@@ -1,14 +1,6 @@
 import { Box, Modal, Toolbar } from "@mui/material";
 import styled from "@emotion/styled";
 
-// Toolbar to hold logo search and icons
-const StyledToolbar = styled(Toolbar)({
-  display: "flex",
-  justifyContent: "space-between",
-  margin: "0 15px",
-  alignItems: "center",
-});
-
 //Creating custom components
 const Search = styled("div")(({ theme }) => ({
   display: "flex",
@@ -47,4 +39,4 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export { StyledToolbar, Search, Icons, IconsBorder, UserBox };
+export { Search, Icons, IconsBorder, UserBox };

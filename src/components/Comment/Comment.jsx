@@ -55,7 +55,7 @@ const Comment = ({
   return (
     <>
       <Box sx={{ display: commentBox ? "block" : "none" }}>
-        {data?.comments.map((comment, i) => {
+        {/* {data?.comments.map((comment, i) => {
           return (
             <ShowComment
               comment={comment}
@@ -65,7 +65,7 @@ const Comment = ({
               updateProfileData={updateProfileData}
             />
           );
-        })}
+        })} */}
         <Divider />
         <Box
           sx={{
@@ -75,7 +75,7 @@ const Comment = ({
             padding: "10px 15px",
           }}
         >
-          <Avatar src={user?.profile_photo[user?.profile_photo.length - 1]} />
+          <Avatar src={user?.profile_photo} />
           <InputBase
             autoFocus
             placeholder="Submit Your Comment"

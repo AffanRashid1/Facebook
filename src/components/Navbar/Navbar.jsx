@@ -28,13 +28,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MailIcon from "@mui/icons-material/Mail";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import {
-  StyledToolbar,
-  Search,
-  Icons,
-  IconsBorder,
-  UserBox,
-} from "./navbarStyles";
+import { Search, Icons, IconsBorder, UserBox } from "./navbarStyles";
 import apiManager from "../../helper/apiManager";
 import { logo } from "../../assets/assets";
 import { Friends, Home, Marketplace, Videos, Games } from "../../assets/assets";
@@ -126,7 +120,7 @@ const Navbar = () => {
             <LinearProgress />
           </Box>
         ) : null}
-        <StyledToolbar>
+        <Stack direction="row" justifyContent="space-between" padding="0 12px">
           <Stack spacing={3} direction={"row"} sx={{ alignItems: "center" }}>
             <Link to="/">
               <img src={logo} alt="" width={40} height={40} />
@@ -160,17 +154,7 @@ const Navbar = () => {
               renderInput={(params) => {
                 const { InputLabelProps, InputProps, ...rest } = params;
                 return (
-                  <Search
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      backgroundColor: "#4E4F50",
-                      padding: "5px 7px",
-                      borderRadius: "25px",
-                      width: { xs: 0, sm: "250px" },
-                    }}
-                  >
+                  <Search>
                     <SearchIcon sx={{ color: "gray" }} />
                     <InputBase
                       {...params.InputProps}
@@ -191,7 +175,7 @@ const Navbar = () => {
             direction={"row"}
             alignItems={"center"}
             justifyContent="space-between"
-            width="40%"
+            width="30%"
             sx={{ display: { xs: "none", md: "flex" } }}
           >
             <Link to="/">
@@ -243,22 +227,20 @@ const Navbar = () => {
                 border: "2px solid transparent",
                 outline: "2px solid grey",
               }}
-              src={user?.profile_photo[user?.profile_photo.length - 1]}
+              src={user?.profile_photo}
               onClick={(e) => setOpen(true)}
             />
           </Icons>
           <UserBox>
             <Avatar
               sx={{ width: "35px", height: "35px" }}
-              src={user?.profile_photo[user?.profile_photo.length - 1]}
+              src={user?.profile_photo}
               onClick={(e) => setOpen(true)}
             />
             <Typography variant="span">{user?.name}</Typography>
           </UserBox>
-        </StyledToolbar>
+        </Stack>
         <Menu
-          id="demo-positioned-menu"
-          aria-labelledby="demo-positioned-button"
           open={open}
           onClose={(e) => setOpen(false)}
           anchorOrigin={{
@@ -287,7 +269,7 @@ const Navbar = () => {
                   marginRight: "10px",
                   border: "2px solid grey",
                 }}
-                src={user?.profile_photo[user?.profile_photo.length - 1]}
+                src={user?.profile_photo}
               ></Avatar>
               <Typography textTransform={"capitalize"} color="text.primary">
                 {user?.name}
