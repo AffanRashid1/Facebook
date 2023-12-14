@@ -1,4 +1,4 @@
-import { Box, Modal } from "@mui/material";
+import { Box } from "@mui/material";
 import styled from "@emotion/styled";
 
 const addInputStyle = {
@@ -10,13 +10,6 @@ const addInputStyle = {
   width: "80%",
   backgroundColor: "action.selected",
 };
-
-// custom modal
-const StyledModal = styled(Modal)({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-});
 
 // userBox to display in mobile devices
 const UserBox = styled(Box)(({ theme }) => ({
@@ -37,4 +30,4 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export { addInputStyle, StyledModal, UserBox, VisuallyHiddenInput };
+export { addInputStyle, UserBox, VisuallyHiddenInput };

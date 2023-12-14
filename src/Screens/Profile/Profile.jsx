@@ -27,6 +27,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import ProfilePicMenu from "../../components/Profile/ProfilePicMenu";
 import usePageTitle from "../../hooks/usePageTitle";
 import { AvatarStyle, UploadInputStyle, modalStyle } from "./profileStyle";
+import CustomModal from "../../components/CustomModal";
 
 const Profile = () => {
   const user = useSelector((state) => state.appReducer.user);
@@ -244,6 +245,7 @@ const Profile = () => {
                   setUpdateEmailInput(user?.email);
                   setBio(user?.bio);
                   setLivesIn(user?.liveIn);
+                  setSocialLinks(user?.socialLinks);
                 }}
                 sx={{
                   bgcolor: "action.selected",
@@ -277,7 +279,7 @@ const Profile = () => {
         </Grid>
       </Container>
       {/* Update Modal */}
-      <Modal
+      <CustomModal
         open={showUpdateModal}
         onClose={() => {
           setShowUpdateModal(false);
@@ -286,130 +288,128 @@ const Profile = () => {
           setImgPreview(null);
           setCoverPreviews(null);
         }}
-        disableAutoFocus
+        title={"Edit Profile"}
       >
-        <Box sx={modalStyle}>
-          <FormControl fullWidth sx={{ display: "flex", gap: "20px" }}>
-            <TextField
-              type="text"
-              label="Name"
-              fullWidth
-              variant="standard"
-              value={updateNameInput}
-              onChange={(e) => {
-                setUpdateNameInput(e.target.value);
-              }}
+        <FormControl fullWidth sx={{ display: "flex", gap: "20px" }}>
+          <TextField
+            type="text"
+            label="Name"
+            fullWidth
+            variant="standard"
+            value={updateNameInput}
+            onChange={(e) => {
+              setUpdateNameInput(e.target.value);
+            }}
+          />
+          <TextField
+            label="Email"
+            type="email"
+            fullWidth
+            variant="standard"
+            value={updateEmailInput}
+            onChange={(e) => {
+              setUpdateEmailInput(e.target.value);
+            }}
+          />
+          <TextField
+            type="text"
+            label="Bio"
+            fullWidth
+            variant="standard"
+            value={bio}
+            onChange={(e) => {
+              setBio(e.target.value);
+            }}
+          />
+          <TextField
+            type="text"
+            label="Lives in"
+            fullWidth
+            variant="standard"
+            value={livesIn}
+            onChange={(e) => {
+              setLivesIn(e.target.value);
+            }}
+          />
+          <TextField
+            type="text"
+            label="Social Links"
+            fullWidth
+            variant="standard"
+            value={socialLinks}
+            onChange={(e) => {
+              setSocialLinks(e.target.value);
+            }}
+          />
+          <Button component="label" variant="contained">
+            <CameraIcon sx={{ margin: "0 5px" }} /> Add Profile Pic
+            <input
+              filename={profilePic}
+              type="file"
+              onChange={(e) => setProfilePic(e.target.files[0])}
+              accept="image/*"
+              style={UploadInputStyle}
             />
-            <TextField
-              label="Email"
-              type="email"
-              fullWidth
-              variant="standard"
-              value={updateEmailInput}
-              onChange={(e) => {
-                setUpdateEmailInput(e.target.value);
-              }}
-            />
-            <TextField
-              type="text"
-              label="Bio"
-              fullWidth
-              variant="standard"
-              value={bio}
-              onChange={(e) => {
-                setBio(e.target.value);
-              }}
-            />
-            <TextField
-              type="text"
-              label="Lives in"
-              fullWidth
-              variant="standard"
-              value={livesIn}
-              onChange={(e) => {
-                setLivesIn(e.target.value);
-              }}
-            />
-            <TextField
-              type="text"
-              label="Social Links"
-              fullWidth
-              variant="standard"
-              value={socialLinks}
-              onChange={(e) => {
-                setSocialLinks(e.target.value);
-              }}
-            />
-            <Button component="label" variant="contained">
-              <CameraIcon sx={{ margin: "0 5px" }} /> Add Profile Pic
-              <input
-                filename={profilePic}
-                type="file"
-                onChange={(e) => setProfilePic(e.target.files[0])}
-                accept="image/*"
-                style={UploadInputStyle}
-              />
-              {imgPreview !== null && (
-                <Box
-                  sx={{
-                    width: "100%",
-                  }}
-                >
-                  <img
-                    src={imgPreview}
-                    alt=""
-                    style={{ width: "100%", borderRadius: "10px" }}
-                  />
-                </Box>
-              )}
-            </Button>
-            <Button component="label" variant="contained">
-              <CameraIcon sx={{ margin: "0 5px" }} /> Add Cover Picture
-              <input
-                filename={coverPic}
-                type="file"
-                onChange={(e) => setCoverPic(e.target.files[0])}
-                accept="image/*"
-                style={{
-                  clip: "rect(0 0 0 0)",
-                  clipPath: "inset(50%)",
-                  height: 1,
-                  overflow: "hidden",
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  whiteSpace: "nowrap",
-                  width: 1,
+            {imgPreview !== null && (
+              <Box
+                sx={{
+                  width: "100%",
                 }}
-              />
-              {coverPreviews !== null ? (
-                <Box
-                  sx={{
-                    width: "100%",
-                  }}
-                >
-                  <img
-                    src={coverPreviews}
-                    alt=""
-                    style={{ width: "100%", borderRadius: "10px" }}
-                  />
-                </Box>
-              ) : (
-                ""
-              )}
-            </Button>
+              >
+                <img
+                  src={imgPreview}
+                  alt=""
+                  style={{ width: "100%", borderRadius: "10px" }}
+                />
+              </Box>
+            )}
+          </Button>
+          <Button component="label" variant="contained">
+            <CameraIcon sx={{ margin: "0 5px" }} /> Add Cover Picture
+            <input
+              filename={coverPic}
+              type="file"
+              onChange={(e) => setCoverPic(e.target.files[0])}
+              accept="image/*"
+              style={{
+                clip: "rect(0 0 0 0)",
+                clipPath: "inset(50%)",
+                height: 1,
+                overflow: "hidden",
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                whiteSpace: "nowrap",
+                width: 1,
+              }}
+            />
+            {coverPreviews !== null ? (
+              <Box
+                sx={{
+                  width: "100%",
+                }}
+              >
+                <img
+                  src={coverPreviews}
+                  alt=""
+                  style={{ width: "100%", borderRadius: "10px" }}
+                />
+              </Box>
+            ) : (
+              ""
+            )}
+          </Button>
 
-            <LoadingButton
-              loading={loadingUpdateBtn}
-              variant="contained"
-              fullWidth
-              onClick={() => updateProfile(profilePic)}
-            >
-              UPDATE
-            </LoadingButton>
-          </FormControl>
-        </Box>
-      </Modal>
+          <LoadingButton
+            loading={loadingUpdateBtn}
+            variant="contained"
+            fullWidth
+            onClick={() => updateProfile(profilePic)}
+          >
+            UPDATE
+          </LoadingButton>
+        </FormControl>
+      </CustomModal>
     </>
   );
 };

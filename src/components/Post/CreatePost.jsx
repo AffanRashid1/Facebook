@@ -23,12 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import apiManager from "../../helper/apiManager";
-import {
-  addInputStyle,
-  VisuallyHiddenInput,
-  UserBox,
-  StyledModal,
-} from "./postStyles";
+import { addInputStyle, VisuallyHiddenInput, UserBox } from "./postStyles";
 
 const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
   const [open, setOpen] = useState(false);
@@ -200,15 +195,19 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
         </Box>
 
         {/* add ProfilePosts modal */}
-        <StyledModal
+
+        <Modal
           open={open}
           onClose={(e) => {
             setOpen(false);
             setFormData(initialFormData);
           }}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          disableAutoFocus={true}
+          disableAutoFocus
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
           <Box
             sx={{
@@ -380,7 +379,7 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
               </LoadingButton>
             </Box>
           </Box>
-        </StyledModal>
+        </Modal>
       </form>
     </>
   );

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Card,
   CardActions,
@@ -24,12 +25,12 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { Like } from "../../assets/assets";
 import Checkbox from "@mui/material/Checkbox";
-import likeSvg from "../../assets/facebook-like.svg";
 import apiManager from "../../helper/apiManager";
 import Comment from "../Comment/Comment";
 import TimeAgo from "../TimeAgo";
+import CustomModal from "../CustomModal";
 
 const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
   const [imgLoading, setImgLoading] = useState(true);
@@ -155,7 +156,7 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
               setLikeModal(true);
             }}
           >
-            <img src={likeSvg} alt="svg" width="18" />
+            <img src={Like} alt="svg" width="18" />
             <Typography color="typography.light" fontSize={14}>
               {data?.likes?.length}
             </Typography>
@@ -220,68 +221,48 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
         />
       </Card>
 
-      {/* Like Modal */}
-      <Modal
+      <CustomModal
         open={likeModal}
         onClose={() => {
           setLikeModal(false);
         }}
-        disableAutoFocus
-        closeAfterTransition
+        title={"Like"}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            borderRadius: "10px",
-            boxShadow: 24,
-            pt: 2,
-            px: 4,
-            pb: 3,
-          }}
-        >
-          <Stack spacing={1} direction="row" mb={2}>
-            <img src={likeSvg} alt="logo" width={25} />
-            <Typography color="typography.dark">
-              {data?.likes?.length}
-            </Typography>
-          </Stack>
-          <Divider />
-          {data?.likes?.length == undefined || 0 ? (
-            <Typography color="typography.dark" textAlign="center">
-              No likes
-            </Typography>
-          ) : (
-            data?.likes.map((liker, i) => {
-              return (
-                <Box key={i}>
-                  <Stack
-                    direction="row"
-                    spacing={3}
-                    alignItems="center"
-                    margin="10px 0"
-                  >
-                    <Avatar
-                      src={liker?.profile_photo}
-                      sx={{
-                        border: "2px solid transparent",
-                        outline: "2px solid grey",
-                      }}
-                    />
-                    <Typography color="typography.dark" fontSize={"20px"}>
-                      {liker?.name}
-                    </Typography>
-                  </Stack>
-                </Box>
-              );
-            })
-          )}
-        </Box>
-      </Modal>
+        <Stack spacing={1} direction="row" mb={2}>
+          <img src={Like} alt="logo" width={25} />
+          <Typography color="typography.dark">{data?.likes?.length}</Typography>
+        </Stack>
+        <Divider />
+        {data?.likes?.length == undefined || 0 ? (
+          <Typography color="typography.dark" textAlign="center">
+            No likes
+          </Typography>
+        ) : (
+          data?.likes.map((liker, i) => {
+            return (
+              <Box key={i}>
+                <Stack
+                  direction="row"
+                  spacing={3}
+                  alignItems="center"
+                  margin="10px 0"
+                >
+                  <Avatar
+                    src={liker?.profile_photo}
+                    sx={{
+                      border: "2px solid transparent",
+                      outline: "2px solid grey",
+                    }}
+                  />
+                  <Typography color="typography.dark" fontSize={"20px"}>
+                    {liker?.name}
+                  </Typography>
+                </Stack>
+              </Box>
+            );
+          })
+        )}
+      </CustomModal>
     </>
   );
 };
