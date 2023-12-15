@@ -100,7 +100,7 @@ main {
   left: 1rem;
 }
 .stories-scroll {
-  height: 15.5rem;
+  height: 14rem;
   width: 100%;
   overflow-x: scroll;
   position: relative;

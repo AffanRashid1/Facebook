@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import apiManager from "../../helper/apiManager";
 import { addInputStyle, VisuallyHiddenInput, UserBox } from "./postStyles";
+import CreatePostModal from "./CreatePostModal";
 
 const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
   const [open, setOpen] = useState(false);
@@ -101,286 +102,109 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
 
   return (
     <>
-      <form>
-        <Box mb={3}>
-          <Card pb={5} pt={5} sx={{ padding: "10px 0", borderRadius: "10px" }}>
-            <Stack
-              direction={"row"}
-              spacing={2}
-              alignItems="center"
-              justifyContent="center"
-              mb={2}
-              mt={2}
-            >
-              <Avatar
-                src={user?.profile_photo}
-                sx={{ width: "45px", height: "45px", marginRight: "15px" }}
-              />
-              <Box sx={addInputStyle}>
-                <InputBase
-                  placeholder={`Whats on your mind ${user?.name}`}
-                  fullWidth
-                  sx={{
-                    padding: "5px 10px",
-                  }}
-                  readOnly
-                  onClick={(e) => setOpen(true)}
-                  autoFocus
-                />
-              </Box>
-            </Stack>
-            <Divider variant="middle" />
-            <Box
-              sx={{
-                maxWidth: "100%",
-                display: "flex",
-                justifyContent: "space-around",
-                margin: "7px 0",
-              }}
-            >
-              <IconButton
-                aria-label="share"
-                sx={{ display: "flex", alignItems: "center" }}
-                onClick={(e) => setOpen(true)}
-              >
-                <VideoCallIcon sx={{ color: "#F23E5C", fontSize: "30px" }} />
-                <Typography
-                  variant="small"
-                  sx={{
-                    fontSize: { sm: "13px", lg: "16px" },
-                    marginLeft: "8px",
-                    display: { xs: "none", sm: "flex" },
-                  }}
-                >
-                  Live video
-                </Typography>
-              </IconButton>
-              <IconButton
-                aria-label="share"
-                sx={{ display: "flex", alignItems: "center" }}
-                onClick={(e) => setOpen(true)}
-              >
-                <CollectionsIcon sx={{ color: "#58C472", fontSize: "25px" }} />
-                <Typography
-                  variant="small"
-                  sx={{
-                    fontSize: { sm: "13px", lg: "16px" },
-                    marginLeft: "8px",
-                    display: { xs: "none", sm: "flex" },
-                  }}
-                >
-                  Photo/video
-                </Typography>
-              </IconButton>
-
-              <IconButton
-                aria-label="share"
-                sx={{ display: "flex", alignItems: "center" }}
-                onClick={(e) => setOpen(true)}
-              >
-                <TagFacesIcon sx={{ color: "#F5BE3E", fontSize: "25px" }} />
-                <Typography
-                  variant="small"
-                  sx={{
-                    fontSize: { sm: "13px", lg: "16px" },
-                    marginLeft: "8px",
-                    display: { xs: "none", sm: "flex" },
-                  }}
-                >
-                  Feeling/activity
-                </Typography>
-              </IconButton>
-            </Box>
-          </Card>
-        </Box>
-
-        {/* add ProfilePosts modal */}
-
-        <Modal
-          open={open}
-          onClose={(e) => {
-            setOpen(false);
-            setFormData(initialFormData);
-          }}
-          disableAutoFocus
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Box
-            sx={{
-              width: { xs: "60vw", sm: "60vw", md: "30vw" },
-              bgcolor: "background.paper",
-              padding: "0 20px",
-              outline: "none",
-            }}
-            bgcolor={"background.default"}
-            color={"text.primary"}
-            borderRadius={2}
+      <Box mb={3}>
+        <Card pb={5} pt={5} sx={{ padding: "10px 0", borderRadius: "10px" }}>
+          <Stack
+            direction={"row"}
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+            mb={2}
+            mt={2}
           >
-            <Box
-              sx={{
-                position: "sticky",
-                top: "0",
-                bgcolor: "background.paper",
-                zIndex: "4",
-                padding: "10px 0",
-              }}
-            >
-              <CloseIcon
+            <Avatar
+              src={user?.profile_photo}
+              sx={{ width: "45px", height: "45px", marginRight: "15px" }}
+            />
+            <Box sx={addInputStyle}>
+              <InputBase
+                placeholder={`Whats on your mind ${user?.name}`}
+                fullWidth
                 sx={{
-                  color: "black",
-                  textAlign: "end",
-                  width: "100%",
-                  marginLeft: "45%",
-                  color: "gray",
+                  padding: "5px 10px",
                 }}
-                onClick={(e) => {
-                  setOpen(false);
-                  setFormData(initialFormData);
-                }}
-              />
-
-              <Typography
-                variant="h6"
-                color="gray"
-                textAlign={"center"}
-                margin="10px 0"
-              >
-                Create ProfilePosts
-              </Typography>
-              <UserBox>
-                <Avatar
-                  sx={{ width: "35px", height: "35px" }}
-                  src={user?.profile_photo}
-                  onClick={(e) => setOpen(true)}
-                ></Avatar>
-                <Typography
-                  variant="span"
-                  fontWeight={300}
-                  fontSize="18px"
-                  textTransform="capitalize"
-                >
-                  {user?.name}
-                </Typography>
-              </UserBox>
-            </Box>
-            <Box
-              sx={{
-                overflowY: "scroll",
-                maxHeight: "45vh",
-                overflowX: "hidden",
-              }}
-            >
-              <TextField
-                id="standard-multiline-static"
-                multiline
-                rows={3}
-                placeholder="What's on your mind?"
-                sx={{ width: "100%", margin: "10px 0" }}
-                variant="standard"
-                value={formData.caption}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    caption: e.target.value,
-                  });
-                }}
-                name="caption"
+                readOnly
+                onClick={(e) => setOpen(true)}
                 autoFocus
               />
-              {formData.imgUrl !== null && (
-                <Box
-                  sx={{
-                    width: "100%",
-                  }}
-                >
-                  <IconButton
-                    sx={{
-                      position: "relative",
-                      top: "50px",
-                      right: { md: "-85%", sm: "-80%", xs: "-80%" },
-                      bgcolor: "background.paper",
-                    }}
-                    onClick={() => {
-                      setFormData({
-                        imgUrl: null,
-                        file: null,
-                      });
-                    }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                  <img
-                    src={formData.imgUrl}
-                    alt=""
-                    style={{
-                      width: "100%",
-                      borderRadius: "10px",
-                    }}
-                  />
-                </Box>
-              )}
             </Box>
-            <Box
-              sx={{
-                position: "sticky",
-                bottom: "0px",
-                bgcolor: "background.paper",
-                paddingBottom: "20px",
-              }}
+          </Stack>
+          <Divider variant="middle" />
+          <Box
+            sx={{
+              maxWidth: "100%",
+              display: "flex",
+              justifyContent: "space-around",
+              margin: "7px 0",
+            }}
+          >
+            <IconButton
+              aria-label="share"
+              sx={{ display: "flex", alignItems: "center" }}
+              onClick={(e) => setOpen(true)}
             >
-              <Box
+              <VideoCallIcon sx={{ color: "#F23E5C", fontSize: "30px" }} />
+              <Typography
+                variant="small"
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  margin: "15px 0",
+                  fontSize: { sm: "13px", lg: "16px" },
+                  marginLeft: "8px",
+                  display: { xs: "none", sm: "flex" },
                 }}
               >
-                <IconButton component="label" variant="contained">
-                  <CollectionsIcon
-                    sx={{ color: "#58C472", fontSize: "25px" }}
-                  />
-                  <VisuallyHiddenInput
-                    type="file"
-                    filename={formData.file}
-                    name="file"
-                    onChange={(e) => {
-                      setFormData({
-                        ...formData,
-                        file: e.target.files[0],
-                        imgUrl: URL.createObjectURL(e.target.files[0]),
-                      });
-                    }}
-                    accept="image/*"
-                    multiple
-                  />
-                </IconButton>
-                <IconButton>
-                  <PersonAddAltIcon color="primary" />
-                </IconButton>
-                <IconButton>
-                  <GifBoxIcon color="primary" />
-                </IconButton>
-                <IconButton>
-                  <MoreHorizIcon color="error" />
-                </IconButton>
-              </Box>
-
-              <LoadingButton
-                loading={loadingBtn}
-                variant="contained"
-                fullWidth
-                onClick={createPost}
+                Live video
+              </Typography>
+            </IconButton>
+            <IconButton
+              aria-label="share"
+              sx={{ display: "flex", alignItems: "center" }}
+              onClick={(e) => setOpen(true)}
+            >
+              <CollectionsIcon sx={{ color: "#58C472", fontSize: "25px" }} />
+              <Typography
+                variant="small"
+                sx={{
+                  fontSize: { sm: "13px", lg: "16px" },
+                  marginLeft: "8px",
+                  display: { xs: "none", sm: "flex" },
+                }}
               >
-                Post
-              </LoadingButton>
-            </Box>
+                Photo/video
+              </Typography>
+            </IconButton>
+
+            <IconButton
+              aria-label="share"
+              sx={{ display: "flex", alignItems: "center" }}
+              onClick={(e) => setOpen(true)}
+            >
+              <TagFacesIcon sx={{ color: "#F5BE3E", fontSize: "25px" }} />
+              <Typography
+                variant="small"
+                sx={{
+                  fontSize: { sm: "13px", lg: "16px" },
+                  marginLeft: "8px",
+                  display: { xs: "none", sm: "flex" },
+                }}
+              >
+                Feeling/activity
+              </Typography>
+            </IconButton>
           </Box>
-        </Modal>
-      </form>
+        </Card>
+      </Box>
+
+      {/* add ProfilePosts modal */}
+
+      <CreatePostModal
+        open={open}
+        setFormData={setFormData}
+        initialFormData={initialFormData}
+        createPost={createPost}
+        setOpen={setOpen}
+        loadingBtn={loadingBtn}
+        formData={formData}
+      />
     </>
   );
 };

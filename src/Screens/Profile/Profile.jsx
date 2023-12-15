@@ -13,13 +13,14 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CreatePost from "../../components/Post/CreatePost";
 import Post from "../../components/Post/Post";
 import EditIcon from "@mui/icons-material/Edit";
 import HouseIcon from "@mui/icons-material/House";
 import apiManager from "../../helper/apiManager";
 import CameraIcon from "@mui/icons-material/Camera";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LinkIcon from "@mui/icons-material/Link";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
@@ -28,9 +29,9 @@ import ProfilePicMenu from "../../components/Profile/ProfilePicMenu";
 import usePageTitle from "../../hooks/usePageTitle";
 import { AvatarStyle, UploadInputStyle, modalStyle } from "./profileStyle";
 import CustomModal from "../../components/CustomModal";
+import { setUser } from "../../store/reducer";
 
 const Profile = () => {
-  const user = useSelector((state) => state.appReducer.user);
   const [userPost, setUserPost] = useState([]);
   const [isProfile, setIsProfile] = useState(true);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -45,6 +46,8 @@ const Profile = () => {
   const [coverPic, setCoverPic] = useState(null);
   const [socialLinks, setSocialLinks] = useState("");
   const [coverPreviews, setCoverPreviews] = useState(null);
+  const user = useSelector((state) => state.appReducer.user);
+  const dispatch = useDispatch();
 
   usePageTitle("Profile");
 
@@ -87,8 +90,10 @@ const Profile = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      dispatch(setUser(response?.data?.payload));
       setImgPreview(null);
       setShowUpdateModal(false);
+
       toast.success(response?.data?.message);
     } catch (error) {
       toast.error(error?.message);
@@ -218,22 +223,31 @@ const Profile = () => {
                 </Typography>
               )}
               <Divider />
-              {user?.liveIn == "" ? null : (
+              {user?.email == "undefined" ? null : (
+                <Stack direction="row" spacing={3} margin="10px 0">
+                  <AlternateEmailIcon sx={{ color: "typography.dark" }} />
+                  <Typography>{user?.email}</Typography>
+                </Stack>
+              )}
+              {user?.liveIn == "undefined" ? null : (
                 <Stack direction="row" spacing={3} margin="10px 0">
                   <HouseIcon sx={{ color: "typography.dark" }} />
                   <Typography>Lives in {user?.liveIn}</Typography>
                 </Stack>
               )}
-              <Stack direction="row" spacing={3} margin="10px 0">
-                <LinkIcon sx={{ color: "typography.dark" }} />
-                <a
-                  href={user?.socialLinks}
-                  style={{ color: "#2374E1", textDecoration: "none" }}
-                  target="_blank"
-                >
-                  {user?.socialLinks}
-                </a>
-              </Stack>
+              {user?.socialLinks == "undefined" ? null : (
+                <Stack direction="row" spacing={3} margin="10px 0">
+                  <LinkIcon sx={{ color: "typography.dark" }} />
+                  <a
+                    href={user?.socialLinks}
+                    style={{ color: "#2374E1", textDecoration: "none" }}
+                    target="_blank"
+                  >
+                    {user?.socialLinks}
+                  </a>
+                </Stack>
+              )}
+
               <Button
                 variant="contained"
                 fullWidth
@@ -348,7 +362,7 @@ const Profile = () => {
               accept="image/*"
               style={UploadInputStyle}
             />
-            {imgPreview !== null && (
+            {imgPreview && (
               <Box
                 sx={{
                   width: "100%",
@@ -369,19 +383,9 @@ const Profile = () => {
               type="file"
               onChange={(e) => setCoverPic(e.target.files[0])}
               accept="image/*"
-              style={{
-                clip: "rect(0 0 0 0)",
-                clipPath: "inset(50%)",
-                height: 1,
-                overflow: "hidden",
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                whiteSpace: "nowrap",
-                width: 1,
-              }}
+              style={UploadInputStyle}
             />
-            {coverPreviews !== null ? (
+            {coverPreviews && (
               <Box
                 sx={{
                   width: "100%",
@@ -393,8 +397,6 @@ const Profile = () => {
                   style={{ width: "100%", borderRadius: "10px" }}
                 />
               </Box>
-            ) : (
-              ""
             )}
           </Button>
 

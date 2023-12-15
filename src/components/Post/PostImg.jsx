@@ -10,7 +10,7 @@ const PostImg = ({ img, imgLoading }) => {
         <Box
           sx={{
             maxHeight: "600px",
-            background: `url(${img[0]})`,
+            background: `url(${img})`,
             backgroundSize: "cover",
             position: "relative",
           }}
@@ -28,7 +28,7 @@ const PostImg = ({ img, imgLoading }) => {
 
           <CardMedia
             component="img"
-            image={img[0]}
+            image={img}
             alt="Post"
             sx={{
               maxHeight: "600px",

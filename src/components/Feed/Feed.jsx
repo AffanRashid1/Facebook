@@ -25,7 +25,7 @@ const Feed = () => {
   }, []);
 
   return (
-    <Box sx={{ paddingTop: "84px" }}>
+    <Box sx={{ paddingTop: { md: "70px", sm: "50px", xs: "25px" } }}>
       <Stories />
       <CreatePost
         getFeedPosts={() => {

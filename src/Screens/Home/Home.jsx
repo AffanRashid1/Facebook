@@ -9,15 +9,17 @@ const Home = () => {
     <>
       <Box bgcolor={"background.default"} color={"text.primary"}>
         <Navbar />
-        <Grid container xs={12}>
-          <Grid item lg={4} md={4} sm={0} xs={0}>
+        <Grid container spacing={3} p="0 10px">
+          <Grid item xs={3}>
             <Sidebar />
           </Grid>
-          <Grid item lg={4} md={4} sm={12} xs={0}>
+          <Grid item xs={12} md={6}>
             <Feed />
           </Grid>
-          <Grid item container lg={4} md={0} xs={0} justifyContent="flex-end">
-            <Right />
+          <Grid item container xs={3} justifyContent="flex-end">
+            <Grid item xs={9}>
+              <Right />
+            </Grid>
           </Grid>
         </Grid>
       </Box>

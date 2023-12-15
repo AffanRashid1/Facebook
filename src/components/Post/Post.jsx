@@ -82,7 +82,6 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
     };
   }, [data?.imageUrl]);
 
-  console.log(data?.postOwner[0]?.name);
   return (
     <>
       <Card key={data?._id} sx={{ marginBottom: "20px", borderRadius: "10px" }}>
@@ -116,8 +115,8 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
               </Menu>
             </>
           }
-          title={data?.postOwner[0]?.name}
-          subheader={<TimeAgo createdAt={data?.postOwner[0]?.createdAt} />}
+          title={data?.owner?.name}
+          subheader={<TimeAgo createdAt={data?.postOwner?.createdAt} />}
         />
         <CardContent>
           <Typography variant="body2" color="text.primary">
