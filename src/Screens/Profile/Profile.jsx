@@ -30,22 +30,19 @@ import usePageTitle from "../../hooks/usePageTitle";
 import { AvatarStyle, UploadInputStyle, modalStyle } from "./profileStyle";
 import CustomModal from "../../components/CustomModal";
 import { setUser } from "../../store/reducer";
+import Intro from "../../components/Profile/Intro";
 
 const Profile = () => {
   const [userPost, setUserPost] = useState([]);
   const [isProfile, setIsProfile] = useState(true);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [profilePic, setProfilePic] = useState(null);
-  const [updateNameInput, setUpdateNameInput] = useState("");
-  const [updateEmailInput, setUpdateEmailInput] = useState("");
-  const [bio, setBio] = useState("");
-  const [livesIn, setLivesIn] = useState("");
-  const [imgPreview, setImgPreview] = useState(null);
-  const [loadingUpdateBtn, setLoadingUpdateBtn] = useState(false);
+  // const [profilePic, setProfilePic] = useState(null);
+  // const [updateNameInput, setUpdateNameInput] = useState("");
+  // const [updateEmailInput, setUpdateEmailInput] = useState("");
+  // const [bio, setBio] = useState("");
+  // const [livesIn, setLivesIn] = useState("");
+  // const [imgPreview, setImgPreview] = useState(null);
   const [picMenu, setPicMenu] = useState(null);
-  const [coverPic, setCoverPic] = useState(null);
-  const [socialLinks, setSocialLinks] = useState("");
-  const [coverPreviews, setCoverPreviews] = useState(null);
   const user = useSelector((state) => state.appReducer.user);
   const dispatch = useDispatch();
 
@@ -63,54 +60,54 @@ const Profile = () => {
     }
   };
 
-  const updateProfile = async (profile) => {
-    try {
-      setLoadingUpdateBtn(true);
-      let formData = new FormData();
+  // const updateProfile = async (profile) => {
+  //   try {
+  //     setLoadingUpdateBtn(true);
+  //     let formData = new FormData();
 
-      const data = {
-        profile_photo: profile,
-        cover_photo: coverPic,
-        name: updateNameInput,
-        email: updateEmailInput,
-        bio: bio,
-        liveIn: livesIn,
-        socialLinks: socialLinks,
-      };
+  //     const data = {
+  //       profile_photo: profile,
+  //       cover_photo: coverPic,
+  //       name: updateNameInput,
+  //       email: updateEmailInput,
+  //       bio: bio,
+  //       liveIn: livesIn,
+  //       socialLinks: socialLinks,
+  //     };
 
-      Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
+  //     Object.entries(data).forEach(([key, value]) => {
+  //       formData.append(key, value);
+  //     });
 
-      let response = await apiManager({
-        method: "put",
-        path: `/users/updateUser`,
-        params: formData,
-        header: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      dispatch(setUser(response?.data?.payload));
-      setImgPreview(null);
-      setShowUpdateModal(false);
+  //     let response = await apiManager({
+  //       method: "put",
+  //       path: `/users/updateUser`,
+  //       params: formData,
+  //       header: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+  //     dispatch(setUser(response?.data?.payload));
+  //     setImgPreview(null);
+  //     setShowUpdateModal(false);
 
-      toast.success(response?.data?.message);
-    } catch (error) {
-      toast.error(error?.message);
-      setLoadingUpdateBtn(false);
-    } finally {
-      setLoadingUpdateBtn(false);
-    }
-  };
+  //     toast.success(response?.data?.message);
+  //   } catch (error) {
+  //     toast.error(error?.message);
+  //     setLoadingUpdateBtn(false);
+  //   } finally {
+  //     setLoadingUpdateBtn(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (profilePic) {
-      setImgPreview(URL.createObjectURL(profilePic));
-    }
-    if (coverPic) {
-      setCoverPreviews(URL.createObjectURL(coverPic));
-    }
-  }, [profilePic, coverPic]);
+  // useEffect(() => {
+  //   if (profilePic) {
+  //     setImgPreview(URL.createObjectURL(profilePic));
+  //   }
+  //   if (coverPic) {
+  //     setCoverPreviews(URL.createObjectURL(coverPic));
+  //   }
+  // }, [profilePic, coverPic]);
 
   useEffect(() => {
     myPosts();
@@ -169,7 +166,7 @@ const Profile = () => {
                 </Box>
 
                 {/* profile pic menu  */}
-
+                {/* 
                 <ProfilePicMenu
                   picMenu={picMenu}
                   setPicMenu={() => {
@@ -177,7 +174,7 @@ const Profile = () => {
                   }}
                   modalStyle={modalStyle}
                   updateProfile={updateProfile}
-                />
+                /> */}
 
                 <Typography
                   sx={{
@@ -195,79 +192,10 @@ const Profile = () => {
         </Box>
         <Grid container spacing={2} xs={12} mt={2}>
           <Grid item xs={12} md={6}>
-            <Card
-              sx={{
-                borderRadius: "10px",
-                padding: "20px",
-                position: "sticky",
-                top: "70px",
-                maxHeight: "70vh",
-              }}
-            >
-              <Typography
-                color="typography.dark"
-                fontWeight="bold"
-                fontSize="25px"
-                letterSpacing="4"
-              >
-                Intro
-              </Typography>
-              {user?.bio == "undefined" ? null : (
-                <Typography
-                  textAlign="center"
-                  color="typography.dark"
-                  margin="15px 0"
-                  fontStyle="italic"
-                >
-                  {user?.bio}
-                </Typography>
-              )}
-              <Divider />
-              {user?.email == "undefined" ? null : (
-                <Stack direction="row" spacing={3} margin="10px 0">
-                  <AlternateEmailIcon sx={{ color: "typography.dark" }} />
-                  <Typography>{user?.email}</Typography>
-                </Stack>
-              )}
-              {user?.liveIn == "undefined" ? null : (
-                <Stack direction="row" spacing={3} margin="10px 0">
-                  <HouseIcon sx={{ color: "typography.dark" }} />
-                  <Typography>Lives in {user?.liveIn}</Typography>
-                </Stack>
-              )}
-              {user?.socialLinks == "undefined" ? null : (
-                <Stack direction="row" spacing={3} margin="10px 0">
-                  <LinkIcon sx={{ color: "typography.dark" }} />
-                  <a
-                    href={user?.socialLinks}
-                    style={{ color: "#2374E1", textDecoration: "none" }}
-                    target="_blank"
-                  >
-                    {user?.socialLinks}
-                  </a>
-                </Stack>
-              )}
-
-              <Button
-                variant="contained"
-                fullWidth
-                onClick={() => {
-                  setShowUpdateModal(true);
-                  setUpdateNameInput(user?.name);
-                  setUpdateEmailInput(user?.email);
-                  setBio(user?.bio);
-                  setLivesIn(user?.liveIn);
-                  setSocialLinks(user?.socialLinks);
-                }}
-                sx={{
-                  bgcolor: "action.selected",
-                  margin: "6px 0",
-                }}
-              >
-                <EditIcon />
-                Edit Profile
-              </Button>
-            </Card>
+            <Intro
+              showUpdateModal={showUpdateModal}
+              setShowUpdateModal={setShowUpdateModal}
+            />
           </Grid>
           <Grid item xs={12} md={6}>
             <CreatePost ProfilePosts={() => myPosts()} isProfile={isProfile} />
@@ -290,126 +218,6 @@ const Profile = () => {
           </Grid>
         </Grid>
       </Container>
-      {/* Update Modal */}
-      <CustomModal
-        open={showUpdateModal}
-        onClose={() => {
-          setShowUpdateModal(false);
-          setCoverPic(null);
-          setProfilePic(null);
-          setImgPreview(null);
-          setCoverPreviews(null);
-        }}
-        title={"Edit Profile"}
-      >
-        <FormControl fullWidth sx={{ display: "flex", gap: "20px" }}>
-          <TextField
-            type="text"
-            label="Name"
-            fullWidth
-            variant="standard"
-            value={updateNameInput}
-            onChange={(e) => {
-              setUpdateNameInput(e.target.value);
-            }}
-          />
-          <TextField
-            label="Email"
-            type="email"
-            fullWidth
-            variant="standard"
-            value={updateEmailInput}
-            onChange={(e) => {
-              setUpdateEmailInput(e.target.value);
-            }}
-          />
-          <TextField
-            type="text"
-            label="Bio"
-            fullWidth
-            variant="standard"
-            value={bio}
-            onChange={(e) => {
-              setBio(e.target.value);
-            }}
-          />
-          <TextField
-            type="text"
-            label="Lives in"
-            fullWidth
-            variant="standard"
-            value={livesIn}
-            onChange={(e) => {
-              setLivesIn(e.target.value);
-            }}
-          />
-          <TextField
-            type="text"
-            label="Social Links"
-            fullWidth
-            variant="standard"
-            value={socialLinks}
-            onChange={(e) => {
-              setSocialLinks(e.target.value);
-            }}
-          />
-          <Button component="label" variant="contained">
-            <CameraIcon sx={{ margin: "0 5px" }} /> Add Profile Pic
-            <input
-              filename={profilePic}
-              type="file"
-              onChange={(e) => setProfilePic(e.target.files[0])}
-              accept="image/*"
-              style={UploadInputStyle}
-            />
-            {imgPreview && (
-              <Box
-                sx={{
-                  width: "100%",
-                }}
-              >
-                <img
-                  src={imgPreview}
-                  alt=""
-                  style={{ width: "100%", borderRadius: "10px" }}
-                />
-              </Box>
-            )}
-          </Button>
-          <Button component="label" variant="contained">
-            <CameraIcon sx={{ margin: "0 5px" }} /> Add Cover Picture
-            <input
-              filename={coverPic}
-              type="file"
-              onChange={(e) => setCoverPic(e.target.files[0])}
-              accept="image/*"
-              style={UploadInputStyle}
-            />
-            {coverPreviews && (
-              <Box
-                sx={{
-                  width: "100%",
-                }}
-              >
-                <img
-                  src={coverPreviews}
-                  alt=""
-                  style={{ width: "100%", borderRadius: "10px" }}
-                />
-              </Box>
-            )}
-          </Button>
-
-          <LoadingButton
-            loading={loadingUpdateBtn}
-            variant="contained"
-            fullWidth
-            onClick={() => updateProfile(profilePic)}
-          >
-            UPDATE
-          </LoadingButton>
-        </FormControl>
-      </CustomModal>
     </>
   );
 };

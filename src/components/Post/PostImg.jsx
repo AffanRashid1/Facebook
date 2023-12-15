@@ -4,7 +4,7 @@ import React from "react";
 const PostImg = ({ img, imgLoading }) => {
   return (
     <>
-      {img?.length === 0 ? null : imgLoading ? (
+      {imgLoading ? (
         <Skeleton variant="rectangular" height={600} animation="wave" />
       ) : (
         <Box

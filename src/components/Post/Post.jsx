@@ -105,12 +105,12 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
                   setAnchorEl(null);
                 }}
               >
-                {data?.owner?._id == user?._id ? (
+                {data?.owner?._id == user?._id && (
                   <MenuItem onClick={deletePost}>
                     Delete
                     <LoadingButton variant="text" loading={delLoading} />
                   </MenuItem>
-                ) : null}
+                )}
                 <MenuItem>Report</MenuItem>
               </Menu>
             </>
@@ -126,7 +126,9 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
 
         {/* Image  */}
 
-        <PostImg img={data?.imageUrl} imgLoading={imgLoading} />
+        {!data?.imageUrl && (
+          <PostImg img={data?.imageUrl} imgLoading={imgLoading} />
+        )}
 
         <Divider />
         <Stack
@@ -218,7 +220,7 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
           <Typography color="typography.dark">{data?.likes?.length}</Typography>
         </Stack>
         <Divider />
-        {data?.likes?.length == undefined || 0 ? (
+        {!data?.likes?.length ? (
           <Typography color="typography.dark" textAlign="center">
             No likes
           </Typography>

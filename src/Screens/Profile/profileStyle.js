@@ -10,7 +10,7 @@ const AvatarStyle = {
   bgcolor: "gray",
   transition: "transform 0.2s ease-in-out",
   "&:hover": {
-    opacity: "0.7",
+    opacity: "0.8",
   },
 };
 

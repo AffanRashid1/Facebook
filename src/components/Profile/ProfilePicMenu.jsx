@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Button, IconButton, Menu, MenuItem, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
+import CustomModal from "../CustomModal";
 
 const ProfilePicMenu = ({ picMenu, setPicMenu, modalStyle, updateProfile }) => {
   const [profilePic, setProfilePic] = useState(null);
@@ -67,11 +68,12 @@ const ProfilePicMenu = ({ picMenu, setPicMenu, modalStyle, updateProfile }) => {
 
       {/* Profile Pic Modal */}
 
-      <Modal
+      <CustomModal
         open={profilePicModal}
         onClose={() => {
           setProfilePicModal(false);
         }}
+        title="Update Profile Picture"
       >
         <Box sx={modalStyle}>
           {profilePreview !== null ? (
@@ -118,11 +120,11 @@ const ProfilePicMenu = ({ picMenu, setPicMenu, modalStyle, updateProfile }) => {
             UPDATE PROFILE PICTURE
           </Button>
         </Box>
-      </Modal>
+      </CustomModal>
 
       {/* show profile pic  */}
 
-      <Modal
+      <CustomModal
         open={showPic}
         onClose={() => {
           setShowPic(false);
@@ -140,7 +142,7 @@ const ProfilePicMenu = ({ picMenu, setPicMenu, modalStyle, updateProfile }) => {
         >
           <img src={user?.profile_photo} alt="Profile" width="600px" />
         </Box>
-      </Modal>
+      </CustomModal>
     </>
   );
 };
