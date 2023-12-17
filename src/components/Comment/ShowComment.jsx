@@ -15,7 +15,12 @@ import apiManager from "../../helper/apiManager";
 
 import { LoadingButton } from "@mui/lab";
 
-const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
+const ShowComment = ({
+  comment,
+  isProfile,
+  updateProfileData,
+  getFeedPosts,
+}) => {
   const user = useSelector((state) => state.appReducer.user);
   const [menuComment, setMenuComment] = useState(null);
   const [delLoading, setDelLoading] = useState(false);
@@ -28,7 +33,7 @@ const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
         method: "delete",
         path: `/posts/delete-comment/${id}`,
       });
-      isProfile ? updateProfileData() : feedPosts();
+      isProfile ? updateProfileData() : getFeedPosts();
       setMenuComment(null);
       setDelLoading(false);
       toast.success(response?.data?.message);
@@ -80,7 +85,7 @@ const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
           setMenuComment(null);
         }}
       >
-        {comment?.owner?._id === user?._id ? (
+        {comment?.owner?._id === user?._id && (
           <MenuItem
             onClick={() => {
               handleDelComment(comment?._id);
@@ -89,7 +94,7 @@ const ShowComment = ({ comment, isProfile, updateProfileData, feedPosts }) => {
             Delete
             <LoadingButton variant="text" loading={delLoading} />
           </MenuItem>
-        ) : null}
+        )}
         <MenuItem>Hide Comment</MenuItem>
       </Menu>
     </Stack>

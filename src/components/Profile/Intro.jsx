@@ -5,7 +5,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import HouseIcon from "@mui/icons-material/House";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LinkIcon from "@mui/icons-material/Link";
-import CustomModal from "../../components/CustomModal";
 import { setUser } from "../../store/reducer";
 import apiManager from "../../helper/apiManager";
 import { toast } from "react-toastify";

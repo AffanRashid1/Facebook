@@ -7,7 +7,7 @@ import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import CustomModal from "../CustomModal";
 
-const ProfilePicMenu = ({ picMenu, setPicMenu, modalStyle, updateProfile }) => {
+const ProfilePicMenu = ({ picMenu, setPicMenu, updateProfile }) => {
   const [profilePic, setProfilePic] = useState(null);
   const [profilePreview, setProfilePreview] = useState(null);
   const [profilePicModal, setProfilePicModal] = useState(false);
@@ -41,10 +41,12 @@ const ProfilePicMenu = ({ picMenu, setPicMenu, modalStyle, updateProfile }) => {
           horizontal: "center",
         }}
       >
-        <MenuItem onClick={() => setShowPic(true)}>
-          <PermIdentity sx={{ margin: "0 5px" }} />
-          Show Profile Picture
-        </MenuItem>
+        {user?.profile_photo?.length !== 0 && (
+          <MenuItem onClick={() => setShowPic(true)}>
+            <PermIdentity sx={{ margin: "0 5px" }} />
+            Show Profile Picture
+          </MenuItem>
+        )}
         <MenuItem>
           <label
             htmlFor="profilePictureInput"
@@ -64,8 +66,6 @@ const ProfilePicMenu = ({ picMenu, setPicMenu, modalStyle, updateProfile }) => {
         </MenuItem>
       </Menu>
 
-      {/* Modal  */}
-
       {/* Profile Pic Modal */}
 
       <CustomModal
@@ -75,51 +75,47 @@ const ProfilePicMenu = ({ picMenu, setPicMenu, modalStyle, updateProfile }) => {
         }}
         title="Update Profile Picture"
       >
-        <Box sx={modalStyle}>
-          {profilePreview !== null ? (
-            <Box
-              sx={{
-                width: "100%",
-              }}
-            >
-              <IconButton
-                sx={{
-                  position: "relative",
-                  top: "60px",
-                  right: { md: "-85%", sm: "-80%", xs: "-80%" },
-                  bgcolor: "background.paper",
-                }}
-                onClick={() => {
-                  setProfilePicModal(false);
-                  setProfilePreview(null);
-                  setProfilePic(null);
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-              <img
-                src={profilePreview}
-                alt=""
-                style={{
-                  width: "100%",
-                  borderRadius: "10px",
-                  margin: "10px 0",
-                }}
-              />
-            </Box>
-          ) : (
-            ""
-          )}
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={() => {
-              updateProfile(profilePic);
+        {profilePreview && (
+          <Box
+            sx={{
+              width: "100%",
             }}
           >
-            UPDATE PROFILE PICTURE
-          </Button>
-        </Box>
+            <IconButton
+              sx={{
+                position: "relative",
+                top: "60px",
+                right: { md: "-85%", sm: "-80%", xs: "-80%" },
+                bgcolor: "background.paper",
+              }}
+              onClick={() => {
+                setProfilePicModal(false);
+                setProfilePreview(null);
+                setProfilePic(null);
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <img
+              src={profilePreview}
+              alt=""
+              style={{
+                width: "100%",
+                borderRadius: "10px",
+                margin: "10px 0",
+              }}
+            />
+          </Box>
+        )}
+        <Button
+          fullWidth
+          variant="contained"
+          onClick={() => {
+            updateProfile(profilePic);
+          }}
+        >
+          UPDATE PROFILE PICTURE
+        </Button>
       </CustomModal>
 
       {/* show profile pic  */}

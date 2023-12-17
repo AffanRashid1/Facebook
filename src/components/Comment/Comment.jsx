@@ -11,7 +11,7 @@ const Comment = ({
   commentBox,
   isProfile,
   updateProfileData,
-  feedPosts,
+  getFeedPosts,
 }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [commentInput, setCommentInput] = useState("");
@@ -55,17 +55,17 @@ const Comment = ({
   return (
     <>
       <Box sx={{ display: commentBox ? "block" : "none" }}>
-        {/* {data?.comments.map((comment, i) => {
+        {data?.comments.map((comment, i) => {
           return (
             <ShowComment
               comment={comment}
               key={i}
               isProfile={isProfile}
-              feedPosts={feedPosts}
+              getFeedPosts={getFeedPosts}
               updateProfileData={updateProfileData}
             />
           );
-        })} */}
+        })}
         <Divider />
         <Box
           sx={{
