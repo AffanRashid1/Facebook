@@ -42,7 +42,7 @@ const ProfileHero = ({ updateProfile }) => {
             <Box>
               <Avatar
                 sx={AvatarStyle}
-                src={user?.profile_photo[user?.profile_photo.length - 1]}
+                src={user?.profileImages}
                 alt=""
                 onClick={(event) => {
                   setPicMenu(event.currentTarget);

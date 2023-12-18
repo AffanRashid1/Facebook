@@ -82,7 +82,7 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
 
       let res = await apiManager({
         method: "post",
-        path: `/posts/create-post`,
+        path: `/posts/createPost`,
         params: data,
         header: {
           "Content-Type": "multipart/form-data",

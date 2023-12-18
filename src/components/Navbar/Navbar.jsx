@@ -66,10 +66,10 @@ const Navbar = () => {
   const handleLogout = async () => {
     setLogoutLoading(true);
     try {
-      // let response = await apiManager({
-      //   method: "post",
-      //   path: `/users/logout`,
-      // });
+      let response = await apiManager({
+        method: "post",
+        path: `/users/logout`,
+      });
       localStorage.removeItem("token");
       toast.success("Logout Successfully");
       setLogoutLoading(false);

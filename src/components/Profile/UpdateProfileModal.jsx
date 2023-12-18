@@ -4,34 +4,79 @@ import { UploadInputStyle } from "../../screens/Profile/profileStyle";
 import CameraIcon from "@mui/icons-material/Camera";
 import CustomModal from "../../components/CustomModal";
 import { LoadingButton } from "@mui/lab";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "../../store/reducer";
+import apiManager from "../../helper/apiManager";
+import { toast } from "react-toastify";
 
-const UpdateProfileModal = ({
-  showUpdateModal,
-  setShowUpdateModal,
-  setCoverPic,
-  setProfilePic,
-  setCoverPreviews,
-  setImgPreview,
-  profileData,
-  handleInputChange,
-  loadingUpdateBtn,
-  imgPreview,
-  profilePic,
-  coverPic,
-  coverPreviews,
-  updateProfile,
-}) => {
+const UpdateProfileModal = ({ showUpdateModal, setShowUpdateModal }) => {
+  const [loadingUpdateBtn, setLoadingUpdateBtn] = useState(false);
+  const user = useSelector((state) => state.appReducer.user);
+  const dispatch = useDispatch();
+
+  const [profileData, setProfileData] = useState({
+    name: user?.name,
+    email: user?.email,
+    bio: user?.about?.bio,
+    socialLinks: user?.about?.socialLinks,
+    livesIn: user?.about?.livesIn,
+    profilePic: null,
+    profilePreview: user?.profileImage,
+    coverPic: null,
+    coverPreview: user?.coverImage,
+  });
+
+  const handleInputChange = (e) => {
+    setProfileData({
+      ...profileData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const updateProfile = async (profile) => {
+    try {
+      setLoadingUpdateBtn(true);
+      let formData = new FormData();
+
+      const data = {
+        profileImage: profile,
+        coverImage: profileData?.coverPic,
+        name: profileData.name,
+        email: profileData.email,
+        bio: profileData.bio,
+        livesIn: profileData.livesIn,
+        socialLinks: profileData.socialLinks,
+      };
+
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      let response = await apiManager({
+        method: "put",
+        path: `/users/updateUser`,
+        params: formData,
+        header: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      dispatch(setUser(response?.data?.payload));
+      setShowUpdateModal(false);
+      toast.success(response?.data?.message);
+    } catch (error) {
+      toast.error(error?.message);
+      setLoadingUpdateBtn(false);
+    } finally {
+      setLoadingUpdateBtn(false);
+    }
+  };
+
   return (
     <>
       <CustomModal
         open={showUpdateModal}
         onClose={() => {
           setShowUpdateModal(false);
-          setCoverPic(null);
-          setProfilePic(null);
-          setImgPreview(null);
-          setCoverPreviews(null);
         }}
         title={"Edit Profile"}
       >
@@ -84,20 +129,27 @@ const UpdateProfileModal = ({
           <Button component="label" variant="contained">
             <CameraIcon sx={{ margin: "0 5px" }} /> Add Profile Pic
             <input
-              filename={profilePic}
+              filename={profileData?.profilePic}
               type="file"
-              onChange={(e) => setProfilePic(e.target.files[0])}
+              onChange={(e) => {
+                setProfileData({
+                  ...profileData,
+                  profilePic: e.target.files[0],
+                  profilePreview: URL.createObjectURL(e.target.files[0]),
+                });
+              }}
               accept="image/*"
               style={UploadInputStyle}
+              name="profilePic"
             />
-            {imgPreview && (
+            {profileData?.profilePreview && (
               <Box
                 sx={{
                   width: "100%",
                 }}
               >
                 <img
-                  src={imgPreview}
+                  src={profileData?.profilePreview}
                   alt="img"
                   style={{ width: "100%", borderRadius: "10px" }}
                 />
@@ -107,20 +159,27 @@ const UpdateProfileModal = ({
           <Button component="label" variant="contained">
             <CameraIcon sx={{ margin: "0 5px" }} /> Add Cover Picture
             <input
-              filename={coverPic}
+              filename={profileData?.coverPic}
               type="file"
-              onChange={(e) => setCoverPic(e.target.files[0])}
               accept="image/*"
               style={UploadInputStyle}
+              onChange={(e) => {
+                setProfileData({
+                  ...profileData,
+                  coverPic: e.target.files[0],
+                  coverPreview: URL.createObjectURL(e.target.files[0]),
+                });
+              }}
+              name="coverPic"
             />
-            {coverPreviews && (
+            {profileData?.coverPreview && (
               <Box
                 sx={{
                   width: "100%",
                 }}
               >
                 <img
-                  src={coverPreviews}
+                  src={profileData?.coverPreview}
                   alt=""
                   style={{ width: "100%", borderRadius: "10px" }}
                 />
@@ -132,7 +191,7 @@ const UpdateProfileModal = ({
             loading={loadingUpdateBtn}
             variant="contained"
             fullWidth
-            onClick={() => updateProfile(profilePic)}
+            onClick={() => updateProfile(profileData?.profilePic)}
           >
             UPDATE
           </LoadingButton>

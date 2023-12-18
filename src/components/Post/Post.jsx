@@ -34,7 +34,6 @@ import CustomModal from "../CustomModal";
 import PostImg from "./PostImg";
 
 const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
-  const [imgLoading, setImgLoading] = useState(true);
   const [delLoading, setDelLoading] = useState(false);
   const [likeModal, setLikeModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -73,15 +72,6 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
     }
   };
 
-  useEffect(() => {
-    const imageObj = new Image();
-    imageObj.src = data?.imageUrl;
-
-    imageObj.onload = () => {
-      setImgLoading(false);
-    };
-  }, [data?.imageUrl]);
-
   return (
     <>
       <Card key={data?._id} sx={{ marginBottom: "20px", borderRadius: "10px" }}>
@@ -105,7 +95,7 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
                   setAnchorEl(null);
                 }}
               >
-                {data?.owner?._id == user?._id && (
+                {data?.postOwner?._id === user?._id && (
                   <MenuItem onClick={deletePost}>
                     Delete
                     <LoadingButton variant="text" loading={delLoading} />
@@ -115,7 +105,7 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
               </Menu>
             </>
           }
-          title={data?.owner?.name}
+          title={data?.postOwner?.name}
           subheader={<TimeAgo createdAt={data?.postOwner?.createdAt} />}
         />
         <CardContent>
@@ -125,10 +115,7 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
         </CardContent>
 
         {/* Image  */}
-
-        {!data?.imageUrl && (
-          <PostImg img={data?.imageUrl} imgLoading={imgLoading} />
-        )}
+        {!!data?.postimages?.length && <PostImg img={data?.postimages} />}
 
         <Divider />
         <Stack
@@ -153,7 +140,6 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
           </Typography>
         </Stack>
         <Divider />
-
         {/* Buttons */}
         <CardActions
           disableSpacing
@@ -197,7 +183,6 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
           </IconButton>
         </CardActions>
         <Divider />
-
         {/* Comment Section */}
         <Comment
           data={data}

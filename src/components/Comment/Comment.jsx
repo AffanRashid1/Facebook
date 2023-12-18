@@ -55,7 +55,7 @@ const Comment = ({
   return (
     <>
       <Box sx={{ display: commentBox ? "block" : "none" }}>
-        {data?.comments.map((comment, i) => {
+        {data?.comments?.map((comment, i) => {
           return (
             <ShowComment
               comment={comment}

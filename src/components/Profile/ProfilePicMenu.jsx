@@ -41,7 +41,7 @@ const ProfilePicMenu = ({ picMenu, setPicMenu, updateProfile }) => {
           horizontal: "center",
         }}
       >
-        {user?.profile_photo?.length !== 0 && (
+        {user?.profileImages?.length !== 0 && (
           <MenuItem onClick={() => setShowPic(true)}>
             <PermIdentity sx={{ margin: "0 5px" }} />
             Show Profile Picture

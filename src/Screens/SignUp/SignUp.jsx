@@ -81,7 +81,7 @@ const SignUp = () => {
 
   return (
     <>
-      {isLoading ? (
+      {isLoading && (
         <Box
           sx={{
             position: "absolute",
@@ -92,7 +92,7 @@ const SignUp = () => {
         >
           <LinearProgress />
         </Box>
-      ) : null}
+      )}
       <Container maxWidth="100vw" sx={{ bgcolor: "#F0F2F5" }}>
         <Box
           sx={{

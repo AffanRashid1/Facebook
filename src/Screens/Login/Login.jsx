@@ -19,6 +19,7 @@ import loginsvg from "../../assets/loginsvg.svg";
 import apiManager from "../../helper/apiManager";
 import usePageTitle from "../../hooks/usePageTitle";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { inputStyle } from "./loginStyle";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -30,14 +31,6 @@ const Login = () => {
     password: "",
   });
   usePageTitle("Login");
-
-  let inputStyle = {
-    color: "black",
-    border: "1px solid grey",
-    borderRadius: "5px",
-    padding: "8px 15px",
-    margin: "15px 0",
-  };
 
   const handleInputChange = (e) => {
     setLoginInput({

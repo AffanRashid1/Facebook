@@ -13,7 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import CreatePost from "../../components/Post/CreatePost";
 import Post from "../../components/Post/Post";
 
@@ -26,7 +25,6 @@ import ProfileHero from "../../components/Profile/ProfileHero";
 const Profile = () => {
   const [userPost, setUserPost] = useState([]);
   const [isProfile, setIsProfile] = useState(true);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   usePageTitle("Profile");
 
@@ -34,7 +32,7 @@ const Profile = () => {
     try {
       let response = await apiManager({
         method: "get",
-        path: `/posts/user-post`,
+        path: `/posts/userPost`,
       });
       setUserPost(response?.data?.payload);
     } catch (error) {
@@ -62,10 +60,7 @@ const Profile = () => {
         </Box>
         <Grid container spacing={2} xs={12} mt={2}>
           <Grid item xs={12} md={6}>
-            <Intro
-              showUpdateModal={showUpdateModal}
-              setShowUpdateModal={setShowUpdateModal}
-            />
+            <Intro />
           </Grid>
           <Grid item xs={12} md={6}>
             <CreatePost ProfilePosts={() => myPosts()} isProfile={isProfile} />

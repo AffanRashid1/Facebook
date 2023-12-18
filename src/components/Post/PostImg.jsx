@@ -1,7 +1,18 @@
 import { Box, CardMedia, Skeleton } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const PostImg = ({ img, imgLoading }) => {
+const PostImg = ({ img }) => {
+  const [imgLoading, setImgLoading] = useState(true);
+
+  useEffect(() => {
+    const imageObj = new Image();
+    imageObj.src = img[0]?.url;
+
+    imageObj.onload = () => {
+      setImgLoading(false);
+    };
+  }, [img[0]?.url]);
+
   return (
     <>
       {imgLoading ? (
@@ -10,7 +21,7 @@ const PostImg = ({ img, imgLoading }) => {
         <Box
           sx={{
             maxHeight: "600px",
-            background: `url(${img})`,
+            background: `url(${img[0]?.url})`,
             backgroundSize: "cover",
             position: "relative",
           }}
@@ -28,7 +39,7 @@ const PostImg = ({ img, imgLoading }) => {
 
           <CardMedia
             component="img"
-            image={img}
+            image={img[0]?.url}
             alt="Post"
             sx={{
               maxHeight: "600px",

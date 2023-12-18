@@ -4,7 +4,12 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const CustomModal = ({ open, onClose, title, children }) => {
   return (
-    <Modal open={open} onClose={onClose} disableAutoFocus>
+    <Modal
+      sx={{ outline: "none" }}
+      open={open}
+      onClose={onClose}
+      disableAutoFocus
+    >
       <Box
         sx={{
           position: "absolute",
