@@ -8,11 +8,12 @@ import ProfilePicMenu from "./ProfilePicMenu";
 const ProfileHero = ({ updateProfile }) => {
   const [picMenu, setPicMenu] = useState(null);
   const user = useSelector((state) => state.appReducer.user);
+
   return (
     <>
       <Box
         sx={{
-          background: `url(${user?.cover_photo})`,
+          background: `url(${user?.coverImages[0]?.url})`,
           bgcolor: "gray",
           backgroundRepeat: "no-repeat",
           width: "100%",
@@ -42,7 +43,7 @@ const ProfileHero = ({ updateProfile }) => {
             <Box>
               <Avatar
                 sx={AvatarStyle}
-                src={user?.profileImages}
+                src={user?.profileImages[0]?.url}
                 alt=""
                 onClick={(event) => {
                   setPicMenu(event.currentTarget);

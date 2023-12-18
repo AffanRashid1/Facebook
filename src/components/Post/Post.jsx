@@ -150,7 +150,7 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
               <Checkbox
                 icon={<ThumbUpOutlinedIcon />}
                 checkedIcon={<ThumbUpIcon />}
-                checked={data?.likes?.find(({ _id }) => _id == user?._id)}
+                checked={data?.likes?.find(({ _id }) => _id === user?._id)}
                 onChange={() => handleProfileLikeClick(data?._id)}
                 color="primary"
               />

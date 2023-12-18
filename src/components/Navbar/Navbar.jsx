@@ -33,6 +33,7 @@ import apiManager from "../../helper/apiManager";
 import { logo } from "../../assets/assets";
 import { Friends, Home, Marketplace, Videos, Games } from "../../assets/assets";
 import CustomModal from "../CustomModal";
+import DeleteAcc from "./DeleteAcc";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -43,8 +44,6 @@ const Navbar = () => {
   const [searchField, setSearchField] = useState("");
   const [logoutLoading, setLogoutLoading] = useState(false);
   const [delAccModal, setDelAccModal] = useState(false);
-  const [delEmail, setDelEmail] = useState("");
-  const [delPass, setDelPass] = useState("");
 
   const handleSearch = async () => {
     try {
@@ -80,25 +79,6 @@ const Navbar = () => {
     }
   };
 
-  const handleDelAccount = async (e) => {
-    e.preventDefault();
-    try {
-      let response = await apiManager({
-        method: "delete",
-        path: "/users/delete",
-        params: {
-          email: delEmail,
-          password: delPass,
-        },
-      });
-      localStorage.removeItem("token");
-      toast.success(response?.data?.message);
-      dispatch(setInitialLogged());
-      navigate("/login");
-    } catch (err) {
-      console.log(err?.message);
-    }
-  };
   return (
     <>
       <AppBar
@@ -109,7 +89,7 @@ const Navbar = () => {
           color: "text.primary",
         }}
       >
-        {logoutLoading ? (
+        {logoutLoading && (
           <Box
             sx={{
               position: "absolute",
@@ -120,7 +100,7 @@ const Navbar = () => {
           >
             <LinearProgress />
           </Box>
-        ) : null}
+        )}
         <Stack direction="row" justifyContent="space-between" padding="0 12px">
           <Stack spacing={3} direction={"row"} sx={{ alignItems: "center" }}>
             <Link to="/">
@@ -303,47 +283,9 @@ const Navbar = () => {
         </Menu>
       </AppBar>
 
-      {/* Delete Account Modal  */}
+      {/* Delete Modal  */}
 
-      <CustomModal
-        open={delAccModal}
-        onClose={() => setDelAccModal(false)}
-        title="Delete Account"
-      >
-        <form>
-          <TextField
-            variant="outlined"
-            label="Email"
-            type="email"
-            fullWidth
-            sx={{ marginBottom: "20px" }}
-            required
-            value={delEmail}
-            onChange={(e) => setDelEmail(e.target.value)}
-          />
-          <TextField
-            required
-            variant="outlined"
-            label="Password"
-            type="password"
-            fullWidth
-            value={delPass}
-            onChange={(e) => setDelPass(e.target.value)}
-          />
-          <Stack direction="row" justifyContent="space-between" mt={5}>
-            <Button variant="outlined" onClick={() => setDelAccModal(false)}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              onClick={handleDelAccount}
-            >
-              Done
-            </Button>
-          </Stack>
-        </form>
-      </CustomModal>
+      <DeleteAcc delAccModal={delAccModal} setDelAccModal={setDelAccModal} />
     </>
   );
 };
