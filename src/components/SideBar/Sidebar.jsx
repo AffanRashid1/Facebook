@@ -113,11 +113,6 @@ const Sidebar = () => {
         </ListItem>
 
         <Divider variant="fullWidth" sx={{ margin: "10px 0" }} />
-        {/* <ListItem>
-          <Typography color="typography.dark" fontWeight="bold">
-            Your Shortcuts
-          </Typography>
-        </ListItem> */}
       </List>
     </Box>
   );

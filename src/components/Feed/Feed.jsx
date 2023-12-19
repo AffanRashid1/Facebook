@@ -4,6 +4,7 @@ import CreatePost from "../Post/CreatePost";
 import Stories from "../Stories/Stories";
 import { useEffect, useState } from "react";
 import apiManager from "../../helper/apiManager";
+import { toast } from "react-toastify";
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -16,7 +17,7 @@ const Feed = () => {
       });
       setAllPosts(response?.data?.payload);
     } catch (err) {
-      console.log(err);
+      toast.error(err?.message);
     }
   };
 

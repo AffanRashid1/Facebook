@@ -19,7 +19,12 @@ import loginsvg from "../../assets/loginsvg.svg";
 import apiManager from "../../helper/apiManager";
 import usePageTitle from "../../hooks/usePageTitle";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { inputStyle } from "./loginStyle";
+import {
+  containerStyle,
+  inputStyle,
+  loginForm,
+  loginParaStyle,
+} from "./loginStyle";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -56,73 +61,41 @@ const Login = () => {
 
         localStorage.setItem("token", resp?.data?.payload?.token);
 
-        setLoginInput({
-          email: "",
-          password: "",
-        });
+        setLoginInput({});
         dispatch(setLogged());
         dispatch(setUser(resp?.data?.payload?.user));
-        setIsLoading(false);
         toast.success(resp?.data?.message);
         navigate("/");
       } catch (err) {
+        toast.error(err?.message);
+      } finally {
         setIsLoading(false);
-        toast.error(err?.response?.data?.message);
       }
     }
   };
   return (
     <>
-      {isLoading ? (
+      {isLoading && (
         <Box
           sx={{
             position: "absolute",
             top: "0",
-            overflow: "hidden",
             width: "100%",
           }}
         >
           <LinearProgress />
         </Box>
-      ) : null}
+      )}
       <Container maxWidth="100vw" sx={{ bgcolor: "#F0F2F5" }}>
-        <Box
-          sx={{
-            height: "100vh",
-            display: "flex",
-            justifyContent: "space-evenly",
-            flexDirection: { xs: "column", sm: "column", md: "row" },
-            alignItems: "center",
-          }}
-        >
+        <Box sx={containerStyle}>
           <Box>
             <img src={loginsvg} width={300} alt="svg" />
-            <Typography
-              sx={{
-                fontFamily: "monospace",
-                fontSize: { xs: "1rem", sm: "1.5rem" },
-                userSelect: "none",
-                textAlign: "left",
-                marginLeft: "25px",
-                color: "black",
-                display: { xs: "none", sm: "none", md: "block" },
-              }}
-            >
+            <Typography sx={loginParaStyle}>
               Facebook helps you connect and <br /> share with the people in
               your life.
             </Typography>
           </Box>
-          <Box
-            sx={{
-              boxShadow: {
-                xs: "unset",
-                sm: "unset",
-                md: "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
-              },
-              borderRadius: "10px",
-              padding: { xs: "0", sm: "0", md: "60px 30px" },
-            }}
-          >
+          <Box sx={loginForm}>
             <form
               style={{
                 display: "flex",

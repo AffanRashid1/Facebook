@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { setInitialLogged } from "../../store/reducer";
 import { setAllUser } from "../../store/reducer";
@@ -16,9 +15,6 @@ import {
   Stack,
   Autocomplete,
   LinearProgress,
-  Modal,
-  TextField,
-  Button,
   Typography,
 } from "@mui/material";
 import { toast } from "react-toastify";
@@ -32,12 +28,10 @@ import { Search, Icons, IconsBorder, UserBox } from "./navbarStyles";
 import apiManager from "../../helper/apiManager";
 import { logo } from "../../assets/assets";
 import { Friends, Home, Marketplace, Videos, Games } from "../../assets/assets";
-import CustomModal from "../CustomModal";
 import DeleteAcc from "./DeleteAcc";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useSelector((state) => state.appReducer.user);
   const [open, setOpen] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
@@ -54,7 +48,7 @@ const Navbar = () => {
       dispatch(setAllUser(res?.data?.payload));
       setSearchResult(res?.data?.payload);
     } catch (error) {
-      console.log(error);
+      toast.error(error?.message);
     }
   };
 

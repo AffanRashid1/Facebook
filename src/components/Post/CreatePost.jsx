@@ -7,23 +7,17 @@ import {
   Divider,
   IconButton,
   Typography,
-  Modal,
-  TextField,
   Stack,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import TagFacesIcon from "@mui/icons-material/TagFaces";
 import { useState } from "react";
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import GifBoxIcon from "@mui/icons-material/GifBox";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import CloseIcon from "@mui/icons-material/Close";
+
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import apiManager from "../../helper/apiManager";
-import { addInputStyle, VisuallyHiddenInput, UserBox } from "./postStyles";
+import { addInputStyle } from "./postStyles";
 import CreatePostModal from "./CreatePostModal";
 
 const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
@@ -130,13 +124,13 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
             </Box>
           </Stack>
           <Divider variant="middle" />
-          <Box
+          <Stack
             sx={{
               maxWidth: "100%",
-              display: "flex",
-              justifyContent: "space-around",
               margin: "7px 0",
             }}
+            justifyContent="space-around"
+            direction="row"
           >
             <IconButton
               aria-label="share"
@@ -190,7 +184,7 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
                 Feeling/activity
               </Typography>
             </IconButton>
-          </Box>
+          </Stack>
         </Card>
       </Box>
 

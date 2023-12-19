@@ -6,7 +6,6 @@ import HouseIcon from "@mui/icons-material/House";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LinkIcon from "@mui/icons-material/Link";
 import UpdateProfileModal from "./UpdateProfileModal";
-import { a } from "react-spring";
 
 const Intro = () => {
   const user = useSelector((state) => state.appReducer.user);

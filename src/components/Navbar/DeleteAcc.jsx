@@ -22,16 +22,30 @@ const DeleteAcc = ({ delAccModal, setDelAccModal }) => {
     });
   };
 
+  const validateFormData = () => {
+    if (!delFormData?.email.trim() || !delFormData?.password.trim()) {
+      toast.error("Fill Form");
+      return false;
+    }
+
+    if (delFormData?.password.length < 6 || delFormData?.password.length > 20) {
+      toast.error("Password length must be between 6 and 20 characters");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleDelAccount = async (e) => {
     e.preventDefault();
     try {
+      if (!validateFormData()) {
+        return;
+      }
       let response = await apiManager({
         method: "delete",
         path: "/users/delete",
-        params: {
-          email: delFormData?.email,
-          password: delFormData?.password,
-        },
+        params: delFormData,
       });
       localStorage.removeItem("token");
       toast.success(response?.data?.message);
@@ -48,7 +62,7 @@ const DeleteAcc = ({ delAccModal, setDelAccModal }) => {
         onClose={() => setDelAccModal(false)}
         title="Delete Account"
       >
-        <form>
+        <form onSubmit={handleDelAccount}>
           <TextField
             variant="outlined"
             label="Email"
@@ -74,11 +88,7 @@ const DeleteAcc = ({ delAccModal, setDelAccModal }) => {
             <Button variant="outlined" onClick={() => setDelAccModal(false)}>
               Cancel
             </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              onClick={handleDelAccount}
-            >
+            <Button type="submit" variant="contained">
               Done
             </Button>
           </Stack>

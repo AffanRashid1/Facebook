@@ -13,7 +13,7 @@ const ProfileHero = ({ updateProfile }) => {
     <>
       <Box
         sx={{
-          background: `url(${user?.coverImages[0]?.url})`,
+          // background: `url(${user?.coverImages[0]?.url})`,
           bgcolor: "gray",
           backgroundRepeat: "no-repeat",
           width: "100%",

@@ -10,21 +10,7 @@ const CustomModal = ({ open, onClose, title, children }) => {
       onClose={onClose}
       disableAutoFocus
     >
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 400,
-          bgcolor: "background.paper",
-          borderRadius: "10px",
-          boxShadow: 24,
-          pt: 2,
-          px: 4,
-          pb: 3,
-        }}
-      >
+      <Box sx={styles}>
         <Stack justifyContent="center">
           <CloseIcon
             sx={{
@@ -50,6 +36,20 @@ const CustomModal = ({ open, onClose, title, children }) => {
       </Box>
     </Modal>
   );
+};
+
+let styles = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  borderRadius: "10px",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
 };
 
 export default CustomModal;

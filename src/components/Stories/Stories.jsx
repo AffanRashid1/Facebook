@@ -118,21 +118,19 @@ export default function Stories() {
                     <AddIcon />
                   </Fab>
                 </div>
-                <p>
-                  <Typography
-                    id="create-story-text"
-                    sx={{
-                      position: "absolute",
-                      top: "90%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      zIndex: "2",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Create story
-                  </Typography>
-                </p>
+                <Typography
+                  id="create-story-text"
+                  sx={{
+                    position: "absolute",
+                    top: "90%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: "2",
+                    fontSize: "12px",
+                  }}
+                >
+                  Create story
+                </Typography>
               </Box>
             </div>
             <Story

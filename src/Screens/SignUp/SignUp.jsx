@@ -6,6 +6,7 @@ import {
   InputAdornment,
   InputBase,
   LinearProgress,
+  Stack,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -14,7 +15,7 @@ import { toast } from "react-toastify";
 import logo from "../../assets/facebook.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import apiManager from "../../helper/apiManager";
-import { inputStyle } from "./signupStyle";
+import { formStyle, inputStyle, signupParaStyle } from "./signupStyle";
 import usePageTitle from "../../hooks/usePageTitle";
 
 const SignUp = () => {
@@ -35,47 +36,70 @@ const SignUp = () => {
     });
   }
 
-  const registerHandler = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const validateFormData = () => {
+    const nameRegex = /^[a-zA-Z\s]+$/;
+
     if (
-      formDetails.email === "" ||
-      formDetails.name === "" ||
-      formDetails.password === ""
+      !formDetails.email.trim() ||
+      !formDetails.name.trim() ||
+      !formDetails.password.trim()
     ) {
       toast.error("Fill Form");
-    } else if (formDetails.password.length < 6) {
-      toast.error("Password length must be longer than 6");
-    } else if (formDetails.password.length > 20) {
-      toast.error("Password length must be shorter than 20");
-    } else if (formDetails.name.length < 3) {
-      toast.error("Name is too short");
-    } else if (formDetails.name.length > 20) {
-      toast.error("Name is too long");
-    } else {
-      try {
-        let response = await apiManager({
-          method: "post",
-          path: `/users/register`,
-          params: {
-            name: formDetails.name,
-            email: formDetails.email,
-            password: formDetails.password,
-          },
-        });
+      return false;
+    }
 
-        toast.success(response?.data?.message);
-        setIsLoading(false);
-        navigate("/login");
-        setFormDetails({
-          name: "",
-          email: "",
-          password: "",
-        });
-      } catch (err) {
-        setIsLoading(false);
-        toast.error(err?.response?.data?.message);
+    if (formDetails.password.length < 6) {
+      toast.error("Password length must be longer than 6");
+      return false;
+    }
+
+    if (formDetails.password.length > 20) {
+      toast.error("Password length must be shorter than 20");
+      return false;
+    }
+
+    if (formDetails.name.length < 3) {
+      toast.error("Name is too short");
+      return false;
+    }
+
+    if (formDetails.name.length > 20) {
+      toast.error("Name is too long");
+      return false;
+    }
+
+    if (!nameRegex.test(formDetails.name)) {
+      toast.error("Name should only contain Alphabets");
+      return false;
+    }
+
+    return true;
+  };
+
+  const registerHandler = async (e) => {
+    e.preventDefault();
+    try {
+      if (!validateFormData()) {
+        return;
       }
+      setIsLoading(true);
+      let response = await apiManager({
+        method: "post",
+        path: `/users/register`,
+        params: formDetails,
+      });
+
+      toast.success(response?.data?.message);
+      setIsLoading(false);
+      navigate("/login");
+      setFormDetails({
+        name: "",
+        email: "",
+        password: "",
+      });
+    } catch (err) {
+      setIsLoading(false);
+      toast.error(err?.response?.data?.message);
     }
   };
 
@@ -103,41 +127,17 @@ const SignUp = () => {
             alignItems: "center",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignItems: { xs: "center", sm: "center", md: "flex-start" },
-            }}
+          <Stack
+            direction="column"
+            alignItems={{ xs: "center", sm: "center", md: "flex-start" }}
           >
             <img src={logo} width={200} alt="logo" />
-            <Typography
-              sx={{
-                fontFamily: "monospace",
-                textAlign: "center",
-                fontSize: { xs: "1rem", sm: "1.5rem" },
-                userSelect: "none",
-                textAlign: "left",
-                color: "black",
-                display: { xs: "none", sm: "none", md: "block" },
-              }}
-            >
+            <Typography sx={signupParaStyle}>
               Facebook helps you connect and <br /> share with the people in
               your life.
             </Typography>
-          </Box>
-          <Box
-            sx={{
-              boxShadow: {
-                xs: "unset",
-                sm: "unset",
-                md: "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
-              },
-              borderRadius: "10px",
-              padding: { xs: "0", sm: "0", md: "60px 30px" },
-            }}
-          >
+          </Stack>
+          <Box sx={formStyle}>
             <form
               onSubmit={registerHandler}
               style={{

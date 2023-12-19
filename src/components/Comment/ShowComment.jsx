@@ -35,11 +35,11 @@ const ShowComment = ({
       });
       isProfile ? updateProfileData() : getFeedPosts();
       setMenuComment(null);
-      setDelLoading(false);
       toast.success(response?.data?.message);
     } catch (error) {
+      toast.error(error?.message);
+    } finally {
       setDelLoading(false);
-      console.log(error);
     }
   };
 

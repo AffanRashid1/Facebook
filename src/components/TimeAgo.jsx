@@ -21,13 +21,10 @@ const TimeAgo = ({ createdAt }) => {
       }
     };
 
-    // Initial update
     updateRelativeTime();
 
-    // Set up interval to update every minute
     const intervalId = setInterval(updateRelativeTime, 60000);
 
-    // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, [createdAt]);
 
