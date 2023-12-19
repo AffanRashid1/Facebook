@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../store/reducer";
 import apiManager from "../../helper/apiManager";
 import { toast } from "react-toastify";
+import ImagePreview from "../ImagePreview/ImagePreview";
 
 const UpdateProfileModal = ({ showUpdateModal, setShowUpdateModal }) => {
   const [loadingUpdateBtn, setLoadingUpdateBtn] = useState(false);
@@ -141,20 +142,18 @@ const UpdateProfileModal = ({ showUpdateModal, setShowUpdateModal }) => {
               style={UploadInputStyle}
               name="profilePic"
             />
-            {profileData?.profilePreview && (
-              <Box
-                sx={{
-                  width: "100%",
-                }}
-              >
-                <img
-                  src={profileData?.profilePreview}
-                  alt="img"
-                  style={{ width: "100%", borderRadius: "10px" }}
-                />
-              </Box>
-            )}
           </Button>
+          <ImagePreview
+            image={profileData?.profilePreview}
+            onCloseIcon={() => {
+              setProfileData({
+                ...profileData,
+                profilePic: null,
+                profilePreview: null,
+              });
+            }}
+          />
+
           <Button component="label" variant="contained">
             <CameraIcon sx={{ margin: "0 5px" }} /> Add Cover Picture
             <input
@@ -171,20 +170,18 @@ const UpdateProfileModal = ({ showUpdateModal, setShowUpdateModal }) => {
               }}
               name="coverPic"
             />
-            {profileData?.coverPreview && (
-              <Box
-                sx={{
-                  width: "100%",
-                }}
-              >
-                <img
-                  src={profileData?.coverPreview}
-                  alt=""
-                  style={{ width: "100%", borderRadius: "10px" }}
-                />
-              </Box>
-            )}
           </Button>
+
+          <ImagePreview
+            image={profileData?.coverPreview}
+            onCloseIcon={() => {
+              setProfileData({
+                ...profileData,
+                coverPic: null,
+                coverPreview: null,
+              });
+            }}
+          />
 
           <LoadingButton
             loading={loadingUpdateBtn}

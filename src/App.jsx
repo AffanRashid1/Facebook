@@ -4,11 +4,11 @@ import { ToastContainer, toast } from "react-toastify";
 import { setLogged, setUser } from "./store/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Hoc from "./Hoc";
 import { routes } from "./router";
 import NotFound from "./screens/NotFound";
 import { createTheme, ThemeProvider } from "@mui/material";
 import apiManager from "./helper/apiManager";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -53,7 +53,6 @@ function App() {
         setIsLoading(false);
       }, 1000);
     } catch (err) {
-      toast.error(err);
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
@@ -77,7 +76,7 @@ function App() {
                     path={e.path}
                     key={i}
                     element={
-                      <Hoc
+                      <ProtectedRoute
                         children={e.element}
                         isProtected={e.protected}
                         isLogged={isLogged}

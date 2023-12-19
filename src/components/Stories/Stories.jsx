@@ -95,7 +95,6 @@ export default function Stories() {
           ref={container}
           sx={{ marginBottom: "5rem" }}
         >
-          {/* stack behaves like flex box */}
           <Stack direction={"row"} className="stories-container">
             <div className="stories" style={{ border: "1px solid gray" }}>
               <Stack

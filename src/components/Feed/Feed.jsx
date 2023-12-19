@@ -34,7 +34,7 @@ const Feed = () => {
         }}
       />
       {!allPosts?.length ? (
-        <Typography textAlign={"center"} color="typography.light">
+        <Typography textAlign={"center"} color="typography.dark">
           No Post Yet
         </Typography>
       ) : (

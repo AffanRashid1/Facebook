@@ -27,7 +27,7 @@ const CustomModal = ({ open, onClose, title, children }) => {
             variant="h6"
             color="typography.dark"
             textAlign="center"
-            margin="7px 0"
+            margin="10px 0"
           >
             {title}
           </Typography>
@@ -44,12 +44,15 @@ let styles = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
+  maxHeight: "70vh",
   bgcolor: "background.paper",
   borderRadius: "10px",
   boxShadow: 24,
   pt: 2,
   px: 4,
   pb: 3,
+  overflowY: "scroll",
+  overflowX: "hidden",
 };
 
 export default CustomModal;

@@ -25,6 +25,8 @@ import {
   loginForm,
   loginParaStyle,
 } from "./loginStyle";
+import PasswordInput from "../../components/PasswordInput/PasswordInput";
+import LinearProgressBar from "../../components/LinearProgressBar/LinearProgressBar";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -43,49 +45,60 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  const validateFormData = () => {
+    if (!loginInput.email.trim() || !loginInput.password.trim()) {
+      toast.error("Must fill the fields");
+      return false;
+    }
+
+    if (loginInput.password.length < 6) {
+      toast.error("Password length must be longer than 6");
+      return false;
+    }
+
+    if (loginInput?.password.length < 6 || loginInput?.password.length > 20) {
+      toast.error("Password length must be between 6 and 20 characters");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    if (loginInput.email === "" || loginInput.password === "") {
-      toast.error("Must Fill the Field");
-    } else {
-      try {
-        let resp = await apiManager({
-          method: "post",
-          path: `/users/login`,
-          params: {
-            email: loginInput.email,
-            password: loginInput.password,
-          },
-        });
-
-        localStorage.setItem("token", resp?.data?.payload?.token);
-
-        setLoginInput({});
-        dispatch(setLogged());
-        dispatch(setUser(resp?.data?.payload?.user));
-        toast.success(resp?.data?.message);
-        navigate("/");
-      } catch (err) {
-        toast.error(err?.message);
-      } finally {
-        setIsLoading(false);
+    try {
+      if (!validateFormData()) {
+        return;
       }
+
+      setIsLoading(true);
+      let resp = await apiManager({
+        method: "post",
+        path: `/users/login`,
+        params: {
+          email: loginInput.email,
+          password: loginInput.password,
+        },
+      });
+
+      localStorage.setItem("token", resp?.data?.payload?.token);
+
+      setLoginInput({});
+      dispatch(setLogged());
+      dispatch(setUser(resp?.data?.payload?.user));
+      toast.success(resp?.data?.message);
+      navigate("/");
+    } catch (err) {
+      toast.error(err?.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
     <>
-      {isLoading && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: "0",
-            width: "100%",
-          }}
-        >
-          <LinearProgress />
-        </Box>
-      )}
+      <LinearProgressBar isLoading={isLoading} />
+
       <Container maxWidth="100vw" sx={{ bgcolor: "#F0F2F5" }}>
         <Box sx={containerStyle}>
           <Box>
@@ -131,28 +144,9 @@ const Login = () => {
                 type="email"
                 required
               />
-              <InputBase
-                placeholder="Enter Password"
-                focused
+              <PasswordInput
                 value={loginInput.password}
                 onChange={handleInputChange}
-                name="password"
-                sx={inputStyle}
-                type={showPassword ? "text" : "password"}
-                required
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => {
-                        setShowPassword(!showPassword);
-                      }}
-                      sx={{ color: "black" }}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
               />
               <Button
                 variant="contained"

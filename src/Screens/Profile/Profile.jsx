@@ -1,21 +1,7 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  Container,
-  Divider,
-  FormControl,
-  Grid,
-  Modal,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import CreatePost from "../../components/Post/CreatePost";
 import Post from "../../components/Post/Post";
-
 import apiManager from "../../helper/apiManager";
 import Navbar from "../../components/Navbar/Navbar";
 import usePageTitle from "../../hooks/usePageTitle";
@@ -24,7 +10,6 @@ import ProfileHero from "../../components/Profile/ProfileHero";
 
 const Profile = () => {
   const [userPost, setUserPost] = useState([]);
-  const [isProfile, setIsProfile] = useState(true);
 
   usePageTitle("Profile");
 
@@ -63,9 +48,9 @@ const Profile = () => {
             <Intro />
           </Grid>
           <Grid item xs={12} md={6}>
-            <CreatePost ProfilePosts={() => myPosts()} isProfile={isProfile} />
+            <CreatePost profilePosts={() => myPosts()} isProfile={true} />
             <Box>
-              {userPost?.length === undefined || 0 ? (
+              {!userPost?.length ? (
                 <Typography textAlign={"center"}>No Post Yet</Typography>
               ) : (
                 userPost.map((post, i) => {
@@ -74,7 +59,7 @@ const Profile = () => {
                       key={i}
                       data={post}
                       updateProfileData={() => myPosts()}
-                      isProfile={isProfile}
+                      isProfile={true}
                     />
                   );
                 })

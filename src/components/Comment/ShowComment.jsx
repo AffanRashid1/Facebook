@@ -15,12 +15,7 @@ import apiManager from "../../helper/apiManager";
 
 import { LoadingButton } from "@mui/lab";
 
-const ShowComment = ({
-  comment,
-  isProfile,
-  updateProfileData,
-  getFeedPosts,
-}) => {
+const ShowComment = ({ comment, updateData }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [menuComment, setMenuComment] = useState(null);
   const [delLoading, setDelLoading] = useState(false);
@@ -33,7 +28,7 @@ const ShowComment = ({
         method: "delete",
         path: `/posts/delete-comment/${id}`,
       });
-      isProfile ? updateProfileData() : getFeedPosts();
+      updateData();
       setMenuComment(null);
       toast.success(response?.data?.message);
     } catch (error) {

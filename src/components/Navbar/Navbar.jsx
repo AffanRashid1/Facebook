@@ -29,6 +29,7 @@ import apiManager from "../../helper/apiManager";
 import { logo } from "../../assets/assets";
 import { Friends, Home, Marketplace, Videos, Games } from "../../assets/assets";
 import DeleteAcc from "./DeleteAcc";
+import LinearProgressBar from "../LinearProgressBar/LinearProgressBar";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -83,18 +84,7 @@ const Navbar = () => {
           color: "text.primary",
         }}
       >
-        {logoutLoading && (
-          <Box
-            sx={{
-              position: "absolute",
-              top: "0",
-              overflow: "hidden",
-              width: "100%",
-            }}
-          >
-            <LinearProgress />
-          </Box>
-        )}
+        <LinearProgressBar isLoading={logoutLoading} />
         <Stack direction="row" justifyContent="space-between" padding="0 12px">
           <Stack spacing={3} direction={"row"} sx={{ alignItems: "center" }}>
             <Link to="/">

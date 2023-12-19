@@ -6,13 +6,7 @@ import apiManager from "../../helper/apiManager";
 import ShowComment from "./ShowComment";
 import { LoadingButton } from "@mui/lab";
 
-const Comment = ({
-  data,
-  commentBox,
-  isProfile,
-  updateProfileData,
-  getFeedPosts,
-}) => {
+const Comment = ({ data, showComments }) => {
   const user = useSelector((state) => state.appReducer.user);
   const [commentInput, setCommentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -54,15 +48,13 @@ const Comment = ({
 
   return (
     <>
-      <Box sx={{ display: commentBox ? "block" : "none" }}>
+      <Box sx={{ display: showComments ? "block" : "none" }}>
         {data?.comments?.map((comment, i) => {
           return (
             <ShowComment
               comment={comment}
               key={i}
-              isProfile={isProfile}
-              getFeedPosts={getFeedPosts}
-              updateProfileData={updateProfileData}
+              updateData={isProfile ? updateProfileData : getFeedPosts}
             />
           );
         })}

@@ -1,26 +1,13 @@
-import React from "react";
-import {
-  Avatar,
-  Box,
-  Card,
-  InputBase,
-  Divider,
-  IconButton,
-  Typography,
-  Stack,
-} from "@mui/material";
-import VideoCallIcon from "@mui/icons-material/VideoCall";
-import CollectionsIcon from "@mui/icons-material/Collections";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
-import { useState } from "react";
-
+import React, { useState } from "react";
+import { Avatar, Box, Card, InputBase, Divider, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import apiManager from "../../helper/apiManager";
 import { addInputStyle } from "./postStyles";
 import CreatePostModal from "./CreatePostModal";
+import CreatePostIcons from "./CreatePostIcons";
 
-const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
+const CreatePost = ({ profilePosts, getFeedPosts, isProfile }) => {
   const [open, setOpen] = useState(false);
   const [loadingBtn, setLoadingBtn] = useState(false);
 
@@ -83,7 +70,7 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
         },
       });
 
-      isProfile ? ProfilePosts() : getFeedPosts();
+      isProfile ? profilePosts() : getFeedPosts();
       toast.success(res?.data?.message);
     } catch (error) {
       toast.error(error?.message);
@@ -124,71 +111,11 @@ const CreatePost = ({ ProfilePosts, getFeedPosts, isProfile }) => {
             </Box>
           </Stack>
           <Divider variant="middle" />
-          <Stack
-            sx={{
-              maxWidth: "100%",
-              margin: "7px 0",
-            }}
-            justifyContent="space-around"
-            direction="row"
-          >
-            <IconButton
-              aria-label="share"
-              sx={{ display: "flex", alignItems: "center" }}
-              onClick={(e) => setOpen(true)}
-            >
-              <VideoCallIcon sx={{ color: "#F23E5C", fontSize: "30px" }} />
-              <Typography
-                variant="small"
-                sx={{
-                  fontSize: { sm: "13px", lg: "16px" },
-                  marginLeft: "8px",
-                  display: { xs: "none", sm: "flex" },
-                }}
-              >
-                Live video
-              </Typography>
-            </IconButton>
-            <IconButton
-              aria-label="share"
-              sx={{ display: "flex", alignItems: "center" }}
-              onClick={(e) => setOpen(true)}
-            >
-              <CollectionsIcon sx={{ color: "#58C472", fontSize: "25px" }} />
-              <Typography
-                variant="small"
-                sx={{
-                  fontSize: { sm: "13px", lg: "16px" },
-                  marginLeft: "8px",
-                  display: { xs: "none", sm: "flex" },
-                }}
-              >
-                Photo/video
-              </Typography>
-            </IconButton>
-
-            <IconButton
-              aria-label="share"
-              sx={{ display: "flex", alignItems: "center" }}
-              onClick={(e) => setOpen(true)}
-            >
-              <TagFacesIcon sx={{ color: "#F5BE3E", fontSize: "25px" }} />
-              <Typography
-                variant="small"
-                sx={{
-                  fontSize: { sm: "13px", lg: "16px" },
-                  marginLeft: "8px",
-                  display: { xs: "none", sm: "flex" },
-                }}
-              >
-                Feeling/activity
-              </Typography>
-            </IconButton>
-          </Stack>
+          <CreatePostIcons setOpen={setOpen} />
         </Card>
       </Box>
 
-      {/* add ProfilePosts modal */}
+      {/* add profilePosts modal */}
 
       <CreatePostModal
         open={open}

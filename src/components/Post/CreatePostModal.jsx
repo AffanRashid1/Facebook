@@ -134,7 +134,7 @@ const CreatePostModal = ({
                 name="caption"
                 autoFocus
               />
-              {formData.imgUrl !== null && (
+              {formData.imgUrl && (
                 <Box
                   sx={{
                     width: "100%",

@@ -1,28 +1,21 @@
 import React, { useEffect, useState } from "react";
 import ImageIcon from "@mui/icons-material/Image";
 import { PermIdentity } from "@mui/icons-material";
-import CloseIcon from "@mui/icons-material/Close";
-import { Button, IconButton, Menu, MenuItem, Modal } from "@mui/material";
+import { Button, Menu, MenuItem } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import CustomModal from "../CustomModal";
+import ImagePreview from "../ImagePreview/ImagePreview";
 
 const ProfilePicMenu = ({ picMenu, setPicMenu, updateProfile }) => {
-  const [profilePic, setProfilePic] = useState(null);
-  const [profilePreview, setProfilePreview] = useState(null);
+  const [profilePicData, setProfilePicData] = useState({
+    profilePic: null,
+    profilePreview: null,
+  });
   const [profilePicModal, setProfilePicModal] = useState(false);
   const [showPic, setShowPic] = useState(false);
-
   const menuOpen = Boolean(picMenu);
   const user = useSelector((state) => state.appReducer.user);
-
-  useEffect(() => {
-    if (profilePic) {
-      console.log(profilePic);
-      setProfilePreview(URL.createObjectURL(profilePic));
-      setProfilePicModal(true);
-    }
-  }, [profilePic]);
 
   return (
     <>
@@ -60,8 +53,15 @@ const ProfilePicMenu = ({ picMenu, setPicMenu, updateProfile }) => {
             id="profilePictureInput"
             accept="image/*"
             style={{ display: "none" }}
-            filename={profilePic}
-            onChange={(e) => setProfilePic(e.target.files[0])}
+            filename={profilePicData?.profilePic}
+            onChange={(e) => {
+              setProfilePicData({
+                ...profilePicData,
+                profilePic: e.target.files[0],
+                profilePreview: URL.createObjectURL(e.target.files[0]),
+              });
+              setProfilePicModal(true);
+            }}
           />
         </MenuItem>
       </Menu>
@@ -75,43 +75,18 @@ const ProfilePicMenu = ({ picMenu, setPicMenu, updateProfile }) => {
         }}
         title="Update Profile Picture"
       >
-        {profilePreview && (
-          <Box
-            sx={{
-              width: "100%",
-            }}
-          >
-            <IconButton
-              sx={{
-                position: "relative",
-                top: "60px",
-                right: { md: "-85%", sm: "-80%", xs: "-80%" },
-                bgcolor: "background.paper",
-              }}
-              onClick={() => {
-                setProfilePicModal(false);
-                setProfilePreview(null);
-                setProfilePic(null);
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-            <img
-              src={profilePreview}
-              alt=""
-              style={{
-                width: "100%",
-                borderRadius: "10px",
-                margin: "10px 0",
-              }}
-            />
-          </Box>
-        )}
+        <ImagePreview
+          image={profilePicData?.profilePreview}
+          onCloseIcon={() => {
+            setProfilePicData({});
+          }}
+        />
+
         <Button
           fullWidth
           variant="contained"
           onClick={() => {
-            updateProfile(profilePic);
+            // updateProfile(profilePic);
           }}
         >
           UPDATE PROFILE PICTURE

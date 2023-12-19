@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-const Hoc = ({ children, isLogged, isProtected }) => {
+const ProtectedRoute = ({ children, isLogged, isProtected }) => {
   if (isProtected && !isLogged) {
     return <Navigate to="/login" />;
   }
@@ -12,4 +12,4 @@ const Hoc = ({ children, isLogged, isProtected }) => {
   return children;
 };
 
-export default Hoc;
+export default ProtectedRoute;

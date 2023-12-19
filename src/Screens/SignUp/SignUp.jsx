@@ -1,22 +1,21 @@
+import React, { useState } from "react";
 import {
   Box,
   Button,
   Container,
-  IconButton,
-  InputAdornment,
   InputBase,
   LinearProgress,
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../../assets/facebook.svg";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import apiManager from "../../helper/apiManager";
 import { formStyle, inputStyle, signupParaStyle } from "./signupStyle";
 import usePageTitle from "../../hooks/usePageTitle";
+import PasswordInput from "../../components/PasswordInput/PasswordInput";
+import LinearProgressBar from "../../components/LinearProgressBar/LinearProgressBar";
 
 const SignUp = () => {
   usePageTitle("Sign Up");
@@ -25,7 +24,6 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -44,17 +42,12 @@ const SignUp = () => {
       !formDetails.name.trim() ||
       !formDetails.password.trim()
     ) {
-      toast.error("Fill Form");
+      toast.error("Must fill the fields");
       return false;
     }
 
-    if (formDetails.password.length < 6) {
-      toast.error("Password length must be longer than 6");
-      return false;
-    }
-
-    if (formDetails.password.length > 20) {
-      toast.error("Password length must be shorter than 20");
+    if (formDetails?.password.length < 6 || formDetails?.password.length > 20) {
+      toast.error("Password length must be between 6 and 20 characters");
       return false;
     }
 
@@ -105,18 +98,7 @@ const SignUp = () => {
 
   return (
     <>
-      {isLoading && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: "0",
-            overflow: "hidden",
-            width: "100%",
-          }}
-        >
-          <LinearProgress />
-        </Box>
-      )}
+      <LinearProgressBar isLoading={isLoading} />
       <Container maxWidth="100vw" sx={{ bgcolor: "#F0F2F5" }}>
         <Box
           sx={{
@@ -180,29 +162,9 @@ const SignUp = () => {
                 value={formDetails.email}
                 sx={inputStyle}
               />
-              <InputBase
-                label="Password"
-                placeholder="Enter Password"
-                color="primary"
-                focused
-                name="password"
+              <PasswordInput
                 onChange={handleInputChange}
                 value={formDetails.password}
-                sx={inputStyle}
-                type={showPassword ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => {
-                        setShowPassword(!showPassword);
-                      }}
-                      sx={{ color: "black" }}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
               />
               <Button variant="contained" size="medium" type="submit">
                 Sign Up

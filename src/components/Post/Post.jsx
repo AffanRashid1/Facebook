@@ -21,32 +21,50 @@ import { Like } from "../../assets/assets";
 import Checkbox from "@mui/material/Checkbox";
 import apiManager from "../../helper/apiManager";
 import Comment from "../Comment/Comment";
-import TimeAgo from "../TimeAgo";
+import TimeAgo from "../TimeAgo/TimeAgo";
 import PostImg from "./PostImg";
 import PostMenu from "./PostMenu";
 import LikeModal from "./LikeModal";
+import { toast } from "react-toastify";
 
 const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
   const [likeModal, setLikeModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [commentBox, setCommentBox] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+  const [isChecked, setIsChecked] = useState(
+    data?.likes?.some(({ _id }) => _id === user?._id)
+  );
 
   const open = Boolean(anchorEl);
   const user = useSelector((state) => state.appReducer.user);
 
+  // const handleProfileLikeClick = async (postId) => {
+  //   try {
+  //     let response = await apiManager({
+  //       method: "post",
+  //       path: `/posts/like/${postId}`,
+  //     });
+
+  //     isProfile ? updateProfileData() : getFeedPosts();
+  //   } catch (error) {
+  //     toast?.error(error?.message);
+  //   }
+  // };
+
   const handleProfileLikeClick = async (postId) => {
     try {
+      const newChecked = !isChecked;
+
+      setIsChecked(newChecked);
+
       let response = await apiManager({
         method: "post",
         path: `/posts/like/${postId}`,
       });
-
-      isProfile ? updateProfileData() : getFeedPosts();
     } catch (error) {
-      console.log(error);
+      toast?.error(error?.message);
     }
   };
-
   return (
     <>
       <Card key={data?._id} sx={{ marginBottom: "20px", borderRadius: "10px" }}>
@@ -116,10 +134,17 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
         >
           <FormControlLabel
             control={
+              // <Checkbox
+              //   icon={<ThumbUpOutlinedIcon />}
+              //   checkedIcon={<ThumbUpIcon />}
+              //   checked={data?.likes?.find(({ _id }) => _id === user?._id)}
+              //   onChange={() => handleProfileLikeClick(data?._id)}
+              //   color="primary"
+              // />
               <Checkbox
                 icon={<ThumbUpOutlinedIcon />}
                 checkedIcon={<ThumbUpIcon />}
-                checked={data?.likes?.find(({ _id }) => _id === user?._id)}
+                checked={isChecked}
                 onChange={() => handleProfileLikeClick(data?._id)}
                 color="primary"
               />
@@ -130,7 +155,7 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
             aria-label="share"
             sx={{ display: "flex", alignItems: "center" }}
             onClick={() => {
-              setCommentBox(!commentBox);
+              setShowComments(!showComments);
             }}
           >
             <ChatBubbleOutlineIcon />
@@ -153,13 +178,7 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
         </CardActions>
         <Divider />
         {/* Comment Section */}
-        <Comment
-          data={data}
-          commentBox={commentBox}
-          isProfile={isProfile}
-          updateProfileData={updateProfileData}
-          getFeedPosts={getFeedPosts}
-        />
+        <Comment data={data} showComments={showComments} />
       </Card>
 
       {/* Like Modal  */}
