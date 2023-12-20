@@ -53,11 +53,7 @@ const ProfileHero = ({ updateProfile }) => {
 
             {/* profile pic menu  */}
 
-            <ProfilePicMenu
-              picMenu={picMenu}
-              setPicMenu={setPicMenu}
-              updateProfile={updateProfile}
-            />
+            <ProfilePicMenu picMenu={picMenu} setPicMenu={setPicMenu} />
 
             <Typography
               sx={{

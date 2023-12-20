@@ -1,7 +1,7 @@
-import styled from "@emotion/styled";
+import React from "react";
+import { useSelector } from "react-redux";
 import {
   Avatar,
-  Box,
   List,
   ListItem,
   ListItemButton,
@@ -13,8 +13,6 @@ import {
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import SearchIcon from "@mui/icons-material/Search";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { useSelector } from "react-redux";
-import React from "react";
 
 const Right = () => {
   const allUsers = useSelector((state) => state.appReducer.allUsers);

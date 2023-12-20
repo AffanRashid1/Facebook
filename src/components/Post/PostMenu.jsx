@@ -13,6 +13,7 @@ const PostMenu = ({
   isProfile,
   getFeedPosts,
   updateProfileData,
+  updatePosts,
 }) => {
   const [delLoading, setDelLoading] = useState(false);
   const user = useSelector((state) => state.appReducer.user);
@@ -25,6 +26,7 @@ const PostMenu = ({
         path: `/posts/deletePost/${data?._id}`,
       });
       isProfile ? updateProfileData() : getFeedPosts();
+      updatePosts();
       toast.success(response?.data?.message);
       setAnchorEl(null);
     } catch (error) {

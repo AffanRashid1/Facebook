@@ -2,28 +2,19 @@ import React from "react";
 import {
   Avatar,
   Box,
-  Card,
-  InputBase,
-  Divider,
   IconButton,
   Typography,
   Modal,
   TextField,
-  Stack,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import VideoCallIcon from "@mui/icons-material/VideoCall";
 import CollectionsIcon from "@mui/icons-material/Collections";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
-import { useState } from "react";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import GifBoxIcon from "@mui/icons-material/GifBox";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import apiManager from "../../helper/apiManager";
-import { addInputStyle, VisuallyHiddenInput, UserBox } from "./postStyles";
+import { VisuallyHiddenInput, UserBox } from "./postStyles";
 
 const CreatePostModal = ({
   open,
@@ -118,7 +109,6 @@ const CreatePostModal = ({
               }}
             >
               <TextField
-                id="standard-multiline-static"
                 multiline
                 rows={3}
                 placeholder="What's on your mind?"
@@ -198,7 +188,6 @@ const CreatePostModal = ({
                       });
                     }}
                     accept="image/*"
-                    multiple
                   />
                 </IconButton>
                 <IconButton>

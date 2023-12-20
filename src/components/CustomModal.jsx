@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, IconButton, Modal, Stack, Typography } from "@mui/material";
+import { Box, Modal, Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 const CustomModal = ({ open, onClose, title, children }) => {

@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import CustomModal from "../CustomModal";
 import ImagePreview from "../ImagePreview/ImagePreview";
 
-const ProfilePicMenu = ({ picMenu, setPicMenu, updateProfile }) => {
+const ProfilePicMenu = ({ picMenu, setPicMenu }) => {
   const [profilePicData, setProfilePicData] = useState({
     profilePic: null,
     profilePreview: null,

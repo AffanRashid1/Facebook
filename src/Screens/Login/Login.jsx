@@ -1,24 +1,13 @@
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputBase,
-  LinearProgress,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, InputBase, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogged, setUser } from "../../store/reducer";
-import loginsvg from "../../assets/loginsvg.svg";
+import { LoginSvg } from "../../assets/assets";
 import apiManager from "../../helper/apiManager";
 import usePageTitle from "../../hooks/usePageTitle";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   containerStyle,
   inputStyle,
@@ -102,7 +91,7 @@ const Login = () => {
       <Container maxWidth="100vw" sx={{ bgcolor: "#F0F2F5" }}>
         <Box sx={containerStyle}>
           <Box>
-            <img src={loginsvg} width={300} alt="svg" />
+            <img src={LoginSvg} width={300} alt="svg" />
             <Typography sx={loginParaStyle}>
               Facebook helps you connect and <br /> share with the people in
               your life.

@@ -1,15 +1,15 @@
-import { Avatar, Box, Divider, IconButton, InputBase } from "@mui/material";
 import React, { useState } from "react";
+import { Avatar, Box, Divider, IconButton, InputBase } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useSelector } from "react-redux";
+import { LoadingButton } from "@mui/lab";
 import apiManager from "../../helper/apiManager";
 import ShowComment from "./ShowComment";
-import { LoadingButton } from "@mui/lab";
 
 const Comment = ({ data, showComments }) => {
-  const user = useSelector((state) => state.appReducer.user);
   const [commentInput, setCommentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const user = useSelector((state) => state.appReducer.user);
 
   const handleComment = async () => {
     setIsLoading(true);

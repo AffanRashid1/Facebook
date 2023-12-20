@@ -13,7 +13,6 @@ export default function Stories() {
   const user = useSelector((state) => state.appReducer.user);
 
   useEffect(() => {
-    //
     if (isScrollEnd) {
       container.current.scrollTo(500, 0);
       btnNext.current.classList.add("active");
@@ -30,21 +29,16 @@ export default function Stories() {
     }
   }, [isScrollEnd]);
 
-  // handle function will be executed during the initial mounting and depends on the scrollLeft property of the container
-  // it will decide which button to be shown (either prev of next)
   useEffect(() => {
     function handleScroll() {
       const currentScrollWidth = container.current.scrollLeft;
-      //show prev button if scroll width is greater than 200
       if (currentScrollWidth > 200) {
         btnNext.current.classList.add("active");
         btnPrev.current.classList.remove("active");
         if (btnPrev.current.classList.contains("active")) {
           btnPrev.current.style.display = "block";
         }
-        // else show the next button
       } else {
-        //removing prev button initially  (active will make display none)
         btnPrev.current.classList.add("active");
         if (btnNext.current.classList.contains("active")) {
           btnNext.current.classList.remove("active");
@@ -52,7 +46,6 @@ export default function Stories() {
       }
     }
 
-    // continuously calling the handleScroll function, on scroll event
     container.current.addEventListener("scroll", handleScroll);
 
     // clean up function

@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import { Box, Skeleton, Typography } from "@mui/material";
 import Post from "../Post/Post";
 import CreatePost from "../Post/CreatePost";
 import Stories from "../Stories/Stories";
-import { useEffect, useState } from "react";
 import apiManager from "../../helper/apiManager";
 import { toast } from "react-toastify";
 

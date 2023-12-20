@@ -1,5 +1,5 @@
-import { Box, LinearProgress } from "@mui/material";
 import React from "react";
+import { Box, LinearProgress } from "@mui/material";
 
 const LinearProgressBar = ({ isLoading }) => {
   return (

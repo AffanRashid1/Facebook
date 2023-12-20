@@ -28,6 +28,7 @@ const TimeAgo = ({ createdAt }) => {
     return () => clearInterval(intervalId);
   }, [createdAt]);
 
+  console.log(timeAgo);
   return <p>{timeAgo}</p>;
 };
 

@@ -1,11 +1,4 @@
-import { Home, Settings } from "@mui/icons-material";
-import LiveTvIcon from "@mui/icons-material/LiveTv";
-import StorefrontIcon from "@mui/icons-material/Storefront";
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
-import AppsIcon from "@mui/icons-material/Apps";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import GroupsIcon from "@mui/icons-material/Groups";
-import { Divider, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   Box,
@@ -16,7 +9,13 @@ import {
   ListItemText,
   Avatar,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Settings } from "@mui/icons-material";
+import LiveTvIcon from "@mui/icons-material/LiveTv";
+import StorefrontIcon from "@mui/icons-material/Storefront";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import AppsIcon from "@mui/icons-material/Apps";
+import GroupsIcon from "@mui/icons-material/Groups";
+import { Divider, Typography } from "@mui/material";
 
 const Sidebar = () => {
   const user = useSelector((state) => state.appReducer.user);

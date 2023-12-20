@@ -38,19 +38,6 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
   const open = Boolean(anchorEl);
   const user = useSelector((state) => state.appReducer.user);
 
-  // const handleProfileLikeClick = async (postId) => {
-  //   try {
-  //     let response = await apiManager({
-  //       method: "post",
-  //       path: `/posts/like/${postId}`,
-  //     });
-
-  //     isProfile ? updateProfileData() : getFeedPosts();
-  //   } catch (error) {
-  //     toast?.error(error?.message);
-  //   }
-  // };
-
   const handleProfileLikeClick = async (postId) => {
     try {
       const newChecked = !isChecked;
@@ -86,14 +73,12 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
                 open={open}
                 setAnchorEl={setAnchorEl}
                 data={data}
-                isProfile={isProfile}
-                getFeedPosts={getFeedPosts}
-                updateProfileData={updateProfileData}
+                updatePosts={isProfile ? updateProfileData : getFeedPosts}
               />
             </>
           }
           title={data?.postOwner?.name}
-          subheader={<TimeAgo createdAt={data?.postOwner?.createdAt} />}
+          subheader={<TimeAgo createdAt={data?.createdAt} />}
         />
         <CardContent>
           <Typography variant="body2" color="text.primary">
@@ -134,13 +119,6 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
         >
           <FormControlLabel
             control={
-              // <Checkbox
-              //   icon={<ThumbUpOutlinedIcon />}
-              //   checkedIcon={<ThumbUpIcon />}
-              //   checked={data?.likes?.find(({ _id }) => _id === user?._id)}
-              //   onChange={() => handleProfileLikeClick(data?._id)}
-              //   color="primary"
-              // />
               <Checkbox
                 icon={<ThumbUpOutlinedIcon />}
                 checkedIcon={<ThumbUpIcon />}
@@ -180,9 +158,7 @@ const Post = ({ data, updateProfileData, getFeedPosts, isProfile }) => {
         {/* Comment Section */}
         <Comment data={data} showComments={showComments} />
       </Card>
-
       {/* Like Modal  */}
-
       <LikeModal
         likeModal={likeModal}
         setLikeModal={setLikeModal}

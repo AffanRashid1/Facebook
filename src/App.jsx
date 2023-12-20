@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Loader from "./components/Loader/Loader";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { setLogged, setUser } from "./store/reducer";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { routes } from "./router";
 import NotFound from "./screens/NotFound";
@@ -14,9 +14,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
-  const isLogged = useSelector((state) => state.appReducer.isLogged);
 
-  const darkTheme = createTheme({
+  const theme = createTheme({
     palette: {
       mode: "dark",
       primary: {
@@ -49,24 +48,25 @@ function App() {
 
       dispatch(setLogged());
       dispatch(setUser(response?.data?.payload?.user));
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
     } catch (err) {
+      console.log(err);
+    } finally {
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
     }
   };
+
   useEffect(() => {
     userCall();
   }, []);
+
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Routes>
               <Route path="*" element={<NotFound />}></Route>
@@ -79,7 +79,6 @@ function App() {
                       <ProtectedRoute
                         children={e.element}
                         isProtected={e.protected}
-                        isLogged={isLogged}
                       />
                     }
                   />
