@@ -4,7 +4,7 @@ import { PermIdentity } from "@mui/icons-material";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
-import CustomModal from "../CustomModal";
+import CustomModal from "../CustomModal/CustomModal";
 import ImagePreview from "../ImagePreview/ImagePreview";
 
 const ProfilePicMenu = ({ picMenu, setPicMenu }) => {
@@ -77,7 +77,7 @@ const ProfilePicMenu = ({ picMenu, setPicMenu }) => {
       >
         <ImagePreview
           image={profilePicData?.profilePreview}
-          onCloseIcon={() => {
+          onClick={() => {
             setProfilePicData({});
           }}
         />

@@ -2,7 +2,7 @@ import { Box, Button, FormControl, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { UploadInputStyle } from "../../screens/Profile/profileStyle";
 import CameraIcon from "@mui/icons-material/Camera";
-import CustomModal from "../../components/CustomModal";
+import CustomModal from "../CustomModal/CustomModal";
 import { LoadingButton } from "@mui/lab";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../store/reducer";
@@ -145,7 +145,7 @@ const UpdateProfileModal = ({ showUpdateModal, setShowUpdateModal }) => {
           </Button>
           <ImagePreview
             image={profileData?.profilePreview}
-            onCloseIcon={() => {
+            onClick={() => {
               setProfileData({
                 ...profileData,
                 profilePic: null,
@@ -174,7 +174,7 @@ const UpdateProfileModal = ({ showUpdateModal, setShowUpdateModal }) => {
 
           <ImagePreview
             image={profileData?.coverPreview}
-            onCloseIcon={() => {
+            onClick={() => {
               setProfileData({
                 ...profileData,
                 coverPic: null,

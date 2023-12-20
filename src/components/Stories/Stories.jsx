@@ -135,7 +135,7 @@ export default function Stories() {
               image={
                 "https://ca.slack-edge.com/T0323TS4AK0-U04HT575P2S-6cb8f52fb4eb-512"
               }
-              name={"Yasir Ustad"}
+              name={"Yasir Khan"}
             />
           </Stack>
           <div

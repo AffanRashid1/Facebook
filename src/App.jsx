@@ -45,7 +45,6 @@ function App() {
         method: "get",
         path: `/users/user`,
       });
-
       dispatch(setLogged());
       dispatch(setUser(response?.data?.payload?.user));
     } catch (err) {

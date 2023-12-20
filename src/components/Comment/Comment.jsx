@@ -38,11 +38,11 @@ const Comment = ({ data, showComments }) => {
 
         data?.comments.push(commentData);
         setCommentInput("");
-        setIsLoading(false);
       }
     } catch (err) {
-      setIsLoading(false);
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 

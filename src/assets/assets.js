@@ -6,5 +6,15 @@ import Videos from "./navIcons/videos.svg";
 import Like from "./facebook-like.svg";
 import LoginSvg from "./loginsvg.svg";
 import logo from "./logo.png";
-
-export { Home, Friends, Games, Marketplace, Videos, Like, LoginSvg, logo };
+import RegisterSvg from "./Signup.svg";
+export {
+  Home,
+  Friends,
+  Games,
+  Marketplace,
+  Videos,
+  Like,
+  LoginSvg,
+  logo,
+  RegisterSvg,
+};

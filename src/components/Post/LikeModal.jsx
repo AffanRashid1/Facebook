@@ -1,5 +1,5 @@
 import React from "react";
-import CustomModal from "../CustomModal";
+import CustomModal from "../CustomModal/CustomModal";
 import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
 import { Like } from "../../assets/assets";
 

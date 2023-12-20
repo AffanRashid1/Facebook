@@ -4,18 +4,17 @@ import {
   Button,
   Container,
   InputBase,
-  LinearProgress,
   Stack,
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import logo from "../../assets/facebook.svg";
 import apiManager from "../../helper/apiManager";
 import { formStyle, inputStyle, signupParaStyle } from "./signupStyle";
 import usePageTitle from "../../hooks/usePageTitle";
 import PasswordInput from "../../components/PasswordInput/PasswordInput";
 import LinearProgressBar from "../../components/LinearProgressBar/LinearProgressBar";
+import { RegisterSvg } from "../../assets/assets";
 
 const SignUp = () => {
   usePageTitle("Sign Up");
@@ -51,13 +50,8 @@ const SignUp = () => {
       return false;
     }
 
-    if (formDetails.name.length < 3) {
-      toast.error("Name is too short");
-      return false;
-    }
-
-    if (formDetails.name.length > 20) {
-      toast.error("Name is too long");
+    if (formDetails.name.length < 3 || formDetails.name.length > 20) {
+      toast.error("Name length must be between 3 and 20 characters");
       return false;
     }
 
@@ -83,7 +77,6 @@ const SignUp = () => {
       });
 
       toast.success(response?.data?.message);
-      setIsLoading(false);
       navigate("/login");
       setFormDetails({
         name: "",
@@ -91,8 +84,9 @@ const SignUp = () => {
         password: "",
       });
     } catch (err) {
-      setIsLoading(false);
       toast.error(err?.response?.data?.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -113,7 +107,7 @@ const SignUp = () => {
             direction="column"
             alignItems={{ xs: "center", sm: "center", md: "flex-start" }}
           >
-            <img src={logo} width={200} alt="logo" />
+            <img src={RegisterSvg} width={200} alt="logo" />
             <Typography sx={signupParaStyle}>
               Facebook helps you connect and <br /> share with the people in
               your life.

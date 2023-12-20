@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Skeleton, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Post from "../Post/Post";
 import CreatePost from "../Post/CreatePost";
 import Stories from "../Stories/Stories";
@@ -28,20 +28,16 @@ const Feed = () => {
   return (
     <Box sx={{ paddingTop: { md: "70px", sm: "50px", xs: "25px" } }}>
       <Stories />
-      <CreatePost
-        getFeedPosts={() => {
-          getFeedPosts();
-        }}
-      />
+      <CreatePost getFeedPosts />
       {!allPosts?.length ? (
-        <Typography textAlign={"center"} color="typography.dark">
+        <Typography textAlign="center" color="typography.dark">
           No Post Yet
         </Typography>
       ) : (
         allPosts.map((post, i) => {
           return (
             <Post
-              key={i}
+              key={post._id}
               data={post}
               getFeedPosts={() => {
                 getFeedPosts();

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import CustomModal from "../CustomModal";
+import CustomModal from "../CustomModal/CustomModal";
 import { Button, Stack, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -55,6 +55,7 @@ const DeleteAcc = ({ delAccModal, setDelAccModal }) => {
       toast?.error(err?.message);
     }
   };
+
   return (
     <>
       <CustomModal
